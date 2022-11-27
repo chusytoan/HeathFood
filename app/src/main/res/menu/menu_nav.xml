@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group android:checkableBehavior="single">
+    <item
+        android:id="@+id/id_HOME"
+        android:title="HOME"
+        android:icon="@drawable/icon_home"
+        />
+    <item
+        android:id="@+id/id_adloaisp"
+        android:title="ADD LOẠI SẢN PHẨM"
+        android:icon="@drawable/icon_add"
+        />
+    <item
+        android:id="@+id/id_addsanpham"
+        android:title="ADD SẢN PHẨM"
+        android:icon="@drawable/icon_add"
+        />
+    <item
+        android:id="@+id/id_editprofile"
+        android:title="profile"
+        android:icon="@drawable/icon_addnv"
+        />
+    <item
+        android:id="@+id/id_add_donhang"
+        android:title="cart"
+        android:icon="@drawable/icon_addnv"
+        />
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/id_dangnhap"
+                android:title="ĐĂNG NHẬP"
+                android:icon="@drawable/icon_dangnhap"
+                />
+            <item
+                android:id="@+id/id_doimatkhau"
+                android:title="ĐỔI MẬT KHẨU"
+                android:icon="@drawable/icon_doipass"
+                />
+            <item
+                android:id="@+id/id_dangxuat"
+                android:title="ĐĂNG XUẤT"
+                android:icon="@drawable/icon_out"
+                />
+        </menu>
+    </item>
+
+
+
+
+</group>
+</menu>

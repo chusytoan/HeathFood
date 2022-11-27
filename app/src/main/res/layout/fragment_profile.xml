@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    tools:context=".FRAGMENT.FragmentProfile">
+
+<!--    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:src="@drawable/avatar_default"-->
+<!--        android:id="@+id/avt_update"-->
+<!--        />-->
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/gifadmin"
+        android:id="@+id/avt_update"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="adress"
+        android:padding="30dp"
+        android:layout_below="@+id/avt_update"
+        android:layout_marginTop="20dp"
+        android:inputType="textPostalAddress"
+        android:id="@+id/ed_adress"
+        android:background="@drawable/backdrouprofile"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="30dp"
+        android:inputType="number"
+        android:hint="SĐT"
+        android:id="@+id/ed_phone"
+        android:layout_below="@+id/ed_adress"
+        android:background="@drawable/backdrouprofile"
+
+        />
+
+    <Button
+        android:id="@+id/btn_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ed_phone"
+        android:backgroundTint="#056700"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/backdrouprofile"
+        android:text="ok" />
+
+
+</LinearLayout>

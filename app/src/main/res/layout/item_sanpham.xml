@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    android:layout_marginBottom="10dp"
+    android:id="@+id/item_sp"
+
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+
+        >
+        <ImageView
+            android:id="@+id/img_sanpham"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:src="@drawable/img2"
+            android:scaleType="centerCrop"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ten san pham"
+            android:id="@+id/tv_ten_sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            />
+        <TextView
+            android:id="@+id/tv_mota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="................................
+.............................
+...............................................
+...............................................
+......................................
+............................"
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_gia"
+            android:text="Gia: 10$"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"
+            android:textColor="#00BCD4"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="loaisp"
+            android:textStyle="bold"
+            android:id="@+id/tv_loaips"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lượt bán: 10"
+            android:textStyle="bold"
+            android:id="@+id/tv_luotban"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:layout_gravity="bottom"
+
+                >
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_star"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_star"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_star"/>
+                <ImageView
+                    android:id="@+id/img_start4"
+                    android:layout_width="20dp"
+                    android:layout_height="14dp"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_star"/>
+                <ImageView
+                    android:id="@+id/img_start5"
+                    android:layout_width="20dp"
+                    android:layout_height="14dp"
+                    android:visibility="invisible"
+                    android:src="@drawable/ic_star"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="right"
+                android:layout_marginRight="20dp"
+                >
+
+                <ImageView
+                    android:id="@+id/img_deleSP"
+                    android:layout_width="26dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_delete" />
+                <ImageView
+                    android:id="@+id/img_edit"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/ic_edit"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

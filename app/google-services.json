@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "430933615767",
+    "firebase_url": "https://healthfoodapp-a1c25-default-rtdb.firebaseio.com",
+    "project_id": "healthfoodapp-a1c25",
+    "storage_bucket": "healthfoodapp-a1c25.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430933615767:android:36b4ee685dcd428cb0b5d2",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "430933615767-bk5choivg8c1o0mu5jju0njsqhbm8bpk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "72591480dc469ffcff73e996b026ccb804e008b0"
+          }
+        },
+        {
+          "client_id": "430933615767-931uoglaugb21lgrdcs811dag7kmj6v8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1kuUJooP_ONuqkVMVhH6TGaoLTpDSCxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "430933615767-931uoglaugb21lgrdcs811dag7kmj6v8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

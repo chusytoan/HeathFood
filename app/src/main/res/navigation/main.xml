@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/id_HOME">
+    <fragment
+        android:id="@+id/id_HOME"
+        android:name="com.example.myapplication.FRAGMENT.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home"/>
+    <fragment
+        android:id="@+id/id_adloaisp"
+        android:name="com.example.myapplication.FRAGMENT.AddLoaiSanPham"
+        android:label="LoaiSanPhamFragment"
+        tools:layout="@layout/them_loai_san_pham"/>
+    <fragment
+        android:id="@+id/id_addsanpham"
+        android:name="com.example.myapplication.FRAGMENT.AddSanPhamFragment"
+        android:label="SanPhamFragment"
+        tools:layout="@layout/them_san_pham"/>
+    <fragment
+        android:id="@+id/id_editprofile"
+        android:name="com.example.myapplication.FRAGMENT.FragmentProfile"
+        android:label="SanPhamFragment"
+        tools:layout="@layout/fragment_profile"/>
+    <fragment
+        android:id="@+id/id_add_donhang"
+        android:name="com.example.myapplication.FRAGMENT.GioHangFragment"
+        android:label="SanPhamFragment"
+        tools:layout="@layout/fragment_gio_hang"/>
+    <activity
+        android:id="@+id/id_dangxuat"
+        android:name="com.example.myapplication.LoginActivity"
+        android:label="LoginActivity" />
+
+</navigation>

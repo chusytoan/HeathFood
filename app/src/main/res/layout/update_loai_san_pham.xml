@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/img"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <TextView
+
+        android:background="#FFC107"
+        android:layout_width="match_parent"
+        android:text="UPDATE LOẠI SẢN PHẨM"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:textColor="@color/black"
+        android:layout_height="@dimen/height_tv"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+
+    <ImageView
+        android:id="@+id/img_LoaisanphamUP"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="@dimen/magin_update"
+        android:src="@drawable/img1" />
+    <ImageView
+        android:id="@+id/btn_uploadLoai"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="@dimen/magin_update"
+        android:src="@drawable/up_file" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tv_maLoai"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Loại Sản phẩm"
+        android:textColorHint="@color/black"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="15dp"
+            android:textStyle="bold"
+            android:enabled="false"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ed_nameLoai"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập tên loại sản phẩm"
+        android:layout_marginTop="@dimen/magin_update"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/btn_updateLoai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF9800"
+        android:textColor="#f000"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/magin_botom"
+        android:text="Update"/>
+    </LinearLayout>
+</LinearLayout>

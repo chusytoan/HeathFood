@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="magin_update">10dp</dimen>
+    <dimen name="magin_botom">20dp</dimen>
+    <dimen name="height_tv">50dp</dimen>
+</resources>
