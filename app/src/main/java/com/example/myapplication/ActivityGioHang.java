@@ -1,11 +1,13 @@
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +32,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -74,48 +77,85 @@ public class ActivityGioHang extends AppCompatActivity {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         reference = FirebaseDatabase.getInstance().getReference("GioHangs");
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                double tongTien = 0;
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    GioHang gh =dataSnapshot.getValue(GioHang.class);
+        FirebaseUser userCurrent = FirebaseAuth.getInstance().getCurrentUser();
+        if(userCurrent != null){
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    list.clear();
+                    double tongTien = 0;
+                    for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        GioHang gh =dataSnapshot.getValue(GioHang.class);
 
-                    if(gh.getIdUser().equals(user.getUid())){
-                        list.add(gh);
+                        if(gh.getIdUser().equals(userCurrent.getUid())){
+                            list.add(gh);
 
-                        tongTien += gh.getDonGia()*gh.getSoLuong();
+                            tongTien += gh.getDonGia()*gh.getSoLuong();
+                        }
+
                     }
+                    tv_tongTien.setText(tongTien+"");
+                    gioHangAdapter = new GioHangAdapter(ActivityGioHang.this, list);
+                    recyclerView.setAdapter(gioHangAdapter);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-                tv_tongTien.setText(tongTien+"");
-                gioHangAdapter = new GioHangAdapter(ActivityGioHang.this, list);
-                recyclerView.setAdapter(gioHangAdapter);
-            }
+            });
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-        FirebaseUser userCurrent = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference referencekhs = FirebaseDatabase.getInstance().getReference("KhachHangs");
-        referencekhs.child(userCurrent.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "onComplete: " + task.getResult().getValue());
-                    KhachHang kh = task.getResult().getValue(KhachHang.class);
-                    khachHangs.add(kh);
-                    addressAdapter = new SpinnerAddressAdapter(khachHangs);
-                    spin_Adress.setAdapter(addressAdapter);
-                    tv_phone.setText(kh.getSdt());
+        referencekhs.child(userCurrent.getUid()).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        KhachHang kh = snapshot.getValue(KhachHang.class);
+                        khachHangs.add(kh);
+                        addressAdapter = new SpinnerAddressAdapter(khachHangs);
+                        spin_Adress.setAdapter(addressAdapter);
+                        tv_phone.setText(kh.getSdt());
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+        if(userCurrent!=null){
+            referencekhs.child(userCurrent.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "onComplete: " + task.getResult().getValue());
+                        KhachHang kh = task.getResult().getValue(KhachHang.class);
+                        khachHangs.add(kh);
+                        addressAdapter = new SpinnerAddressAdapter(khachHangs);
+                        spin_Adress.setAdapter(addressAdapter);
+                        tv_phone.setText(kh.getSdt());
+                    }
                 }
-            }
-        });
+            });
+        }
+
 
         btn_mua.setOnClickListener(new View.OnClickListener() {
             @Override

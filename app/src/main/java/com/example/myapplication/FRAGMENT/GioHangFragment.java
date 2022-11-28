@@ -1,6 +1,7 @@
 package com.example.myapplication.FRAGMENT;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 
 import com.example.myapplication.ADAPTER.GioHangAdapter;
 import com.example.myapplication.ADAPTER.SpinnerAddressAdapter;
+import com.example.myapplication.ActivityGioHang;
+import com.example.myapplication.LoginActivity;
 import com.example.myapplication.MODEL.DonHang;
 import com.example.myapplication.MODEL.FCMSend;
 import com.example.myapplication.MODEL.GioHang;
@@ -77,85 +80,92 @@ List<KhachHang> khachHangs;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         reference = FirebaseDatabase.getInstance().getReference("GioHangs");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                double tongTien = 0;
-                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-                GioHang gh =dataSnapshot.getValue(GioHang.class);
+        if(user!=null){
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    list.clear();
+                    double tongTien = 0;
+                    for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        GioHang gh =dataSnapshot.getValue(GioHang.class);
 
-                    if(gh.getIdUser().equals(user.getUid())){
-                        list.add(gh);
+                        if(gh.getIdUser().equals(user.getUid())){
+                            list.add(gh);
 
-                        tongTien += gh.getDonGia()*gh.getSoLuong();
+                            tongTien += gh.getDonGia()*gh.getSoLuong();
                         }
 
                     }
                     tv_tongTien.setText(tongTien+"");
                     gioHangAdapter = new GioHangAdapter(getContext(), list);
-                 recyclerView.setAdapter(gioHangAdapter);
-            }
+                    recyclerView.setAdapter(gioHangAdapter);
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }
+
         FirebaseUser userCurrent = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference referencekhs = FirebaseDatabase.getInstance().getReference("KhachHangs");
-        referencekhs.child(userCurrent.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "onComplete: " + task.getResult().getValue());
-                    KhachHang kh = task.getResult().getValue(KhachHang.class);
-                    khachHangs.add(kh);
-                    addressAdapter = new SpinnerAddressAdapter(khachHangs);
-                    spin_Adress.setAdapter(addressAdapter);
-                    tv_phone.setText(kh.getSdt());
+        if(userCurrent!=null){
+            referencekhs.child(userCurrent.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "onComplete: " + task.getResult().getValue());
+                        KhachHang kh = task.getResult().getValue(KhachHang.class);
+                        khachHangs.add(kh);
+                        addressAdapter = new SpinnerAddressAdapter(khachHangs);
+                        spin_Adress.setAdapter(addressAdapter);
+                        tv_phone.setText(kh.getSdt());
+                    }
                 }
-            }
-        });
+            });
+        }
+
 
         btn_mua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-        progressDialog.show();
-              DatabaseReference  referencedh =  FirebaseDatabase.getInstance().getReference("DonHangs");
+                progressDialog.show();
+                DatabaseReference  referencedh =  FirebaseDatabase.getInstance().getReference("DonHangs");
 
                 DonHang dh = new DonHang();
-
-              dh.setTongTien(Double.parseDouble(tv_tongTien.getText().toString()));
-              KhachHang kh = (KhachHang) spin_Adress.getSelectedItem();
-        if(kh==null){
-            progressDialog.dismiss();
-            Toast.makeText(getContext(), "vui long them sdt va dia chi", Toast.LENGTH_SHORT).show();
-            return;
-        }
-              if(kh.getDiachi().equals("")){
-                 progressDialog.dismiss();
-                  Toast.makeText(getContext(), "Vui long them dia chi", Toast.LENGTH_SHORT).show();
-                  return;
-              }
-              if(kh.getSdt().equals("")){
-                  progressDialog.dismiss();
-                  Toast.makeText(getContext(), "Vui long them sdt", Toast.LENGTH_SHORT).show();
-                  return;
-              }
+                String maDH = String.valueOf(System.currentTimeMillis());
+                dh.setMaDonHang(maDH);
+                dh.setTongTien(Double.parseDouble(tv_tongTien.getText().toString()));
+                KhachHang kh = (KhachHang) spin_Adress.getSelectedItem();
+                if(kh==null){
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "vui long them sdt va dia chi", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(kh.getDiachi().equals("")){
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Vui long them dia chi", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(kh.getSdt().equals("")){
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Vui long them sdt", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                dh.setTrangThai("đang ở kho");
                 dh.setName(kh.getName());
-             dh.setDiaChi(kh.getDiachi());
-              dh.setSdt(tv_phone.getText().toString());
-              dh.setSanphams(list);
-
+                dh.setDiaChi(kh.getDiachi());
+                dh.setSdt(tv_phone.getText().toString());
+                dh.setSanphams(list);
                 DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens").child("0777476404");
                 tokens.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Token token = snapshot.getValue(Token.class);
                         FCMSend.pushNotification(getContext(), token.getToken(), "Thông báo đơn hàng mới", "Bạn vừa nhận 1 đơn hàng mới:"
-                        +"\n" + kh.getName() +"\n"+ kh.getSdt() +"\n" + kh.getDiachi());
+                                +"\n" + kh.getName() +"\n"+ kh.getSdt() +"\n" + kh.getDiachi());
                     }
 
                     @Override
@@ -163,16 +173,16 @@ List<KhachHang> khachHangs;
 
                     }
                 });
-              referencedh.push().setValue(dh).addOnCompleteListener(new OnCompleteListener<Void>() {
-                  @Override
-                  public void onComplete(@NonNull Task<Void> task) {
-                      progressDialog.dismiss();
+                referencedh.child(maDH).setValue(dh).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        progressDialog.dismiss();
                         if(task.isSuccessful()){
                             Toast.makeText(getContext(), "Gui don hang thanh cong", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                  }
-              });
+                    }
+                });
 
             }
         });
