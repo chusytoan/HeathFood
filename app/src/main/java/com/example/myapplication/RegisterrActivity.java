@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,6 +34,8 @@ public class RegisterrActivity extends AppCompatActivity {
 // Initialize Firebase Auth
   EditText ed_name, ed_email,ed_password,enterpassword;
   Button btn_add;
+
+  ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,22 +71,6 @@ public class RegisterrActivity extends AppCompatActivity {
                             String userid = userCurent.getUid();
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                           if(email.matches("^nhanvien+\\w+\\@+\\w+\\.+\\w+")){
-                             //String id, String name, String email, String password, String imgURL, boolean trangThaiTym, int loaiUser, int soSaoDanhGia, String sdt, String diachi
-                                 NhanVien nv = new NhanVien(userid, ed_name.getText().toString(), email,pass,"default",false,2,1,"", "");
-                                db.collection("Users").document("nhanvien")
-                                                .collection("nhanviens")
-                                                        .document(userid)
-                                                                .set(nv).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            Toast.makeText(RegisterrActivity.this, "dang ky thanh cong", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(RegisterrActivity.this, MainActivity.class));
-                                        }
-                                    }
-                                });
-                            }else {
                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("KhachHangs");
                                //String id, String name, String email, String password, String imgURL, boolean trangThaiTym, int loaiUser, int soSaoDanhGia, List<DonHang> list
                                KhachHang kh = new KhachHang(userid, ed_name.getText().toString(), email,pass,"default",false,3,1,"", "");
@@ -90,14 +78,29 @@ public class RegisterrActivity extends AppCompatActivity {
                                    @Override
                                    public void onComplete(@NonNull Task<Void> task) {
                                        if(task.isSuccessful()){
-                                           Toast.makeText(RegisterrActivity.this, "dang ky thanh cong", Toast.LENGTH_SHORT).show();
+
+                                           UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                   .setDisplayName(ed_name.getText().toString())
+                                                   .setPhotoUri(null)
+                                                   .build();
+                                           progressDialog.show();
+                                           userCurent.updateProfile(profileUpdates)
+                                                   .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                                       @Override
+                                                       public void onComplete(@NonNull Task<Void> task) {
+                                                           progressDialog.dismiss();
+                                                           if (task.isSuccessful()) {
+                                                              // Toast.makeText(RegisterrActivity.this, "update profile cucsess", Toast.LENGTH_SHORT).show();
+                                                               Toast.makeText(RegisterrActivity.this, "dang ky thanh cong", Toast.LENGTH_SHORT).show();
+                                                           }
+                                                       }
+                                                   });
                                            startActivity(new Intent(RegisterrActivity.this, MainActivity.class));
                                        }
                                    }
                                });
 
-
-                            }
 
                         }
                     }
@@ -109,5 +112,6 @@ public class RegisterrActivity extends AppCompatActivity {
         ed_password = findViewById(R.id.ed_password);
         enterpassword = findViewById(R.id.enter_password);
         btn_add = findViewById(R.id.btn_ok);
+        progressDialog = new ProgressDialog(this);
     }
 }

@@ -74,7 +74,7 @@ List<KhachHang> khachHangs;
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_gio_hang, container, false);
         MainActivity mainActivity = (MainActivity) getActivity();
-        mainActivity.chipNavigationBar.setVisibility(View.INVISIBLE);
+
         mainActivity.navigationView.setVisibility(View.INVISIBLE);
         anhXa();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));

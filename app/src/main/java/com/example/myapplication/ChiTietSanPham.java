@@ -330,7 +330,6 @@ CommentAdapter commentAdapter;
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                             KhachHang kh = dataSnapshot.getValue(KhachHang.class);
-                            Log.d(TAG, "dcm: " + kh.getId()+kh.getName()+"??dcm");
                             if(kh.getId().equals(usercurent.getUid())){
                                 Comment cmt = new Comment();
                                 cmt.setId_comment(maSP);

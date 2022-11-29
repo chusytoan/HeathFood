@@ -164,7 +164,8 @@ public class ActivityGioHang extends AppCompatActivity {
                     DatabaseReference  referencedh =  FirebaseDatabase.getInstance().getReference("DonHangs");
 
                 DonHang dh = new DonHang();
-                dh.setMaDonHang(String.valueOf(System.currentTimeMillis()));
+                String maDH = String.valueOf(System.currentTimeMillis());
+                dh.setMaDonHang(maDH);
                 dh.setTongTien(Double.parseDouble(tv_tongTien.getText().toString()));
                 KhachHang kh = (KhachHang) spin_Adress.getSelectedItem();
                 if(kh==null){
@@ -201,7 +202,7 @@ public class ActivityGioHang extends AppCompatActivity {
 
                     }
                 });
-                referencedh.child(String.valueOf(System.currentTimeMillis())).setValue(dh).addOnCompleteListener(new OnCompleteListener<Void>() {
+                referencedh.child(maDH).setValue(dh).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         progressDialog.dismiss();

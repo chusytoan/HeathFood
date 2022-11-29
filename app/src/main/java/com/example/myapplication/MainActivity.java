@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.myapplication.FRAGMENT.FragmentProfile;
@@ -30,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -109,6 +111,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser!=null){
+            String name = currentUser.getDisplayName();
+            String emial = currentUser.getEmail();
+
+            Toast.makeText(this, name + "   "+emial, Toast.LENGTH_SHORT).show();
+           // Log.d("MainActivity", name + "   "+emial);
+        }
 
     }
 
