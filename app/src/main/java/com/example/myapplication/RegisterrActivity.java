@@ -41,7 +41,9 @@ public class RegisterrActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sog_in);
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
         anhXaView();
+
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
