@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 
 import com.example.myapplication.FRAGMENT.FragmentProfile;
+import com.example.myapplication.FRAGMENT.FragmentUserProfile;
 import com.example.myapplication.FRAGMENT.GioHangFragment;
 import com.example.myapplication.FRAGMENT.HomeFragment;
 import com.example.myapplication.MODEL.FCMSend;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                         break;
                     case R.id.profile:
-                        fragment = new FragmentProfile();
+                        fragment = new FragmentUserProfile();
                         break;
                     case R.id.cart:
                         fragment = new GioHangFragment();

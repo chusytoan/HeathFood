@@ -10,6 +10,7 @@ public class Sanpham {
     private int time_ship;
     private String describe;//mo ta
     private int luot_mua;//so luong
+    private boolean trangThaiFavorite;
     private int favorite;
     private String imgURL;
 
@@ -20,7 +21,7 @@ public class Sanpham {
     public Sanpham() {
     }
 
-    public Sanpham(String maLoai, String masp, String name, double price, int time_ship, String describe, int luot_mua, int favorite, String imgURL, String ten_loai, String id_kh, int starDanhGia) {
+    public Sanpham(String maLoai, String masp, String name, double price, int time_ship, String describe, int luot_mua, boolean trangThaiFavorite, int favorite, String imgURL, String ten_loai, String id_kh, int starDanhGia) {
         this.maLoai = maLoai;
         this.masp = masp;
         this.name = name;
@@ -28,11 +29,20 @@ public class Sanpham {
         this.time_ship = time_ship;
         this.describe = describe;
         this.luot_mua = luot_mua;
+        this.trangThaiFavorite = trangThaiFavorite;
         this.favorite = favorite;
         this.imgURL = imgURL;
         this.ten_loai = ten_loai;
         this.id_kh = id_kh;
         this.starDanhGia = starDanhGia;
+    }
+
+    public boolean isTrangThaiFavorite() {
+        return trangThaiFavorite;
+    }
+
+    public void setTrangThaiFavorite(boolean trangThaiFavorite) {
+        this.trangThaiFavorite = trangThaiFavorite;
     }
 
     public String getMaLoai() {

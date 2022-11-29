@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.myapplication.FRAGMENT.FragmentUserProfile;
 import com.example.myapplication.MODEL.Admin;
 import com.example.myapplication.MODEL.NhanVien;
 import com.example.myapplication.MODEL.User;
@@ -25,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
@@ -45,9 +47,13 @@ int REQUEST_CODE_SIGIN = 100;
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
                 String username = ed_user.getText().toString().trim();
                 String passWord = ed_pass.getText().toString().trim();
                 clickLogin(username, passWord);
+
             }
         });
         btn_dangky.setOnClickListener(new View.OnClickListener() {
