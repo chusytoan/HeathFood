@@ -141,4 +141,7 @@ int REQUEST_CODE_SIGIN = 100;
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+//    public void logout(View view){
+//        mAuth.signOut();
+//    }
 }
