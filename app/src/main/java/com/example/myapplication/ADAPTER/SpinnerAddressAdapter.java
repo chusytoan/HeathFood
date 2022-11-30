@@ -34,9 +34,13 @@ public class SpinnerAddressAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
+
+
     public class Viewholder{
         TextView tv_address;
     }
+
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Viewholder holder;

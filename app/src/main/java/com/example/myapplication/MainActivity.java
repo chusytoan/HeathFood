@@ -98,14 +98,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser!=null){
-            String name = currentUser.getDisplayName();
-            String emial = currentUser.getEmail();
 
-            Toast.makeText(this, name + "   "+emial, Toast.LENGTH_SHORT).show();
-           // Log.d("MainActivity", name + "   "+emial);
-        }
 
     }
 

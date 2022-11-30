@@ -5,4 +5,8 @@
     android:orientation="vertical"
     android:id="@+id/liner_cho">
 
+    <ListView
+        android:id="@+id/lv_choxacnhan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

@@ -5,5 +5,8 @@
     android:background="#F44336"
     android:orientation="vertical"
     android:id="@+id/liner_historymua">
-
+    <ListView
+        android:id="@+id/lv_choxacnhan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

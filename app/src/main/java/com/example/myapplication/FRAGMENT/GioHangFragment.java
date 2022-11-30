@@ -154,7 +154,7 @@ List<KhachHang> khachHangs;
                     Toast.makeText(getContext(), "Vui long them sdt", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                dh.setTrangThai("đang ở kho");
+                dh.setTrangThai("wait for confirmation");
                 dh.setName(kh.getName());
                 dh.setDiaChi(kh.getDiachi());
                 dh.setSdt(tv_phone.getText().toString());

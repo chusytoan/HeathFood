@@ -64,7 +64,7 @@ public class ProfileSetting extends AppCompatActivity {
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressDialog.show();
+
                 String addressss = ed_address.getText().toString();
                 String phonee = ed_phone.getText().toString();
                 if(userCurrent==null){
@@ -100,8 +100,8 @@ public class ProfileSetting extends AppCompatActivity {
 
                                     @Override
                                     public void onVerificationCompleted(PhoneAuthCredential credential) {
-                                        progressDialog.dismiss();
-                                        Dialog dialog = new Dialog(getBaseContext());
+
+                                        Dialog dialog = new Dialog(ProfileSetting.this);
                                         dialog.setContentView(R.layout.layout_update_profile);
                                         dialog.setTitle("Enter otp");
                                         Window window = dialog.getWindow();
