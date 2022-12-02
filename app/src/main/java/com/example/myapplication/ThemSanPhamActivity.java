@@ -93,7 +93,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                 Loaisanpham lsp = (Loaisanpham) spinnerLoaisp.getSelectedItem();
                 Map<String, Sanpham> map  = new HashMap<>();
 
-                map.put(masp, new Sanpham(lsp.getMaLoai(),masp, name, price, time_ship, describe, 0,false, 0, muri,lsp.getName(),null,3));
+                map.put(masp, new Sanpham(lsp.getMaLoai(),masp, name, price, time_ship, describe, 0, muri,lsp.getName(),null,3));
                 Loaisanpham lspnew = new Loaisanpham(lsp.getMaLoai(),lsp.getName(),lsp.getImgURL(), map);
 
                 db.collection("LoaiSanPhams").document(lsp.getMaLoai()).set(lspnew, SetOptions.merge())

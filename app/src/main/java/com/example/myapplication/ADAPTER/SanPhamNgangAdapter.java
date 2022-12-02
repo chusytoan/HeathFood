@@ -32,6 +32,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -43,9 +48,10 @@ import java.util.List;
 
 public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapter.ViewHolder> {
     private Context context;
-    private List<Sanpham>list;
+    private List<Sanpham> list;
 
-    public HomeFragment fragHome = new HomeFragment();
+    DatabaseReference likes;
+
     public SanPhamNgangAdapter(Context context, List<Sanpham> list) {
         this.context = context;
         this.list = list;
@@ -55,30 +61,54 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_sp_horizoltal,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_sp_horizoltal, parent, false);
 
         return new ViewHolder(view);
     }
 
+    boolean testclick = false;
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Sanpham sp = list.get(position);
-        if(sp==null)
+        if (sp == null)
             return;
 
-        //new DownloadImageTask(holder.img_sp).execute(sp.getImgURL());
         Glide.with(context).load(sp.getImgURL()).into(holder.img_sp);
         holder.tv_name.setText(sp.getName());
-        holder.tv_price.setText(sp.getPrice()+"$");
-        holder.tv_minutes.setText(sp.getTime_ship()+"minutes");
+        holder.tv_price.setText(sp.getPrice() + "$");
+        holder.tv_minutes.setText(sp.getTime_ship() + "minutes");
         holder.tv_ten_loai.setText(sp.getTen_loai());
-        holder.tv_soLuotTym.setText(sp.getFavorite()+"");
+        //holder.tv_soLuotTym.setText(sp.getFavorite()+"");
         FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
-        holder.img_favorite.setOnClickListener(new View.OnClickListener() {
+        String idUser = usercurent.getUid();
+        String maSp = sp.getMasp();
+
+        holder.getLikeButtonStatus(maSp, idUser);
+        likes = FirebaseDatabase.getInstance().getReference("tyms");
+        holder.imgFood_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                testclick = true;
+                likes.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(testclick==true){
+                            if(snapshot.child(maSp).hasChild(idUser)){
+                                likes.child(maSp).child(idUser).removeValue();
+                                testclick = false;
+                            }else {
+                                likes.child(maSp).child(idUser).setValue(true);
+                                testclick = false;
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
 
@@ -86,27 +116,51 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
 
     @Override
     public int getItemCount() {
-        if(list!=null)
+        if (list != null)
             return list.size();
         return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView img_sp, img_favorite, tym_bay;
-        TextView tv_name, tv_price, tv_minutes, tv_ten_loai,tv_soLuotTym;
+        ImageView img_sp, img_favorite, imgFood_favorite;
+        TextView tv_name, tv_price, tv_minutes, tv_ten_loai, tv_soLuotTym;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img_sp = itemView.findViewById(R.id.img_food);
-            img_favorite = itemView.findViewById(R.id.imgFood_favorite);
+            // img_favorite = itemView.findViewById(R.id.imgFood_favorite);
             tv_name = itemView.findViewById(R.id.tv_namOfFood);
             tv_price = itemView.findViewById(R.id.tv_price_food);
             tv_minutes = itemView.findViewById(R.id.tv_time_ship);
             tv_ten_loai = itemView.findViewById(R.id.tv_gerMan_food);
             tv_soLuotTym = itemView.findViewById(R.id.tv_luotTym);
-            tym_bay = itemView.findViewById(R.id.imgFood_favoritebay);
+            imgFood_favorite = itemView.findViewById(R.id.imgFood_favorite);
 
         }
 
+        public void getLikeButtonStatus(String maSp, String idUser) {
+            likes = FirebaseDatabase.getInstance().getReference("tyms");
+            likes.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.child(maSp).hasChild(idUser)) {
+                        int likeCount = (int) snapshot.child(maSp).getChildrenCount();
+                        tv_soLuotTym.setText(likeCount + " favorites");
+                        imgFood_favorite.setImageResource(R.drawable.ic_favorite_24);
+                    } else {
+                        int likeCount = (int) snapshot.child(maSp).getChildrenCount();
+                        tv_soLuotTym.setText(likeCount + " favorites");
+                        imgFood_favorite.setImageResource(R.drawable.ic_favorite_border_24);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
     }
 
 

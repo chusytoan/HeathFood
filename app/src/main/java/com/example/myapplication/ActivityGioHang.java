@@ -27,8 +27,11 @@ import com.example.myapplication.MODEL.FCMSend;
 import com.example.myapplication.MODEL.GioHang;
 import com.example.myapplication.MODEL.KhachHang;
 
+import com.example.myapplication.MODEL.Sanpham;
 import com.example.myapplication.MODEL.Token;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +42,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -202,6 +207,7 @@ public class ActivityGioHang extends AppCompatActivity {
 
                     }
                 });
+
                 referencedh.child(maDH).setValue(dh).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -232,7 +238,7 @@ public class ActivityGioHang extends AppCompatActivity {
         img_onBack = findViewById(R.id.img_onBack);
         tv_phone = findViewById(R.id.tv_sdt);
         layout_buy = findViewById(R.id.layout_buy);
-        btn_start_buy = findViewById(R.id.btn_buy);
+
         progressDialog = new ProgressDialog(this);
         khachHangs = new ArrayList<>();
     }

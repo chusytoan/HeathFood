@@ -50,7 +50,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.Viewhold
 
         holder.tv_gia.setText("Giá: " + sp.getPrice()+"$");
         holder.tv_ten_loai.setText(sp.getTen_loai());
-        holder.tv_luotBan.setText("Lượt bán: "+sp.getLuot_mua());
+
         if(sp.getDescribe()!=null){
             if(sp.getDescribe().length()>50){
                 holder.tv_mo_Ta.setText(sp.getDescribe().substring(0,50) + "...");

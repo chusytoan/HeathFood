@@ -102,7 +102,6 @@ public class SanPhamGridAdapter extends BaseAdapter {
 
         holder.tv_gia.setText("Giá: " + sp.getPrice()+"$");
         holder.tv_ten_loai.setText(sp.getTen_loai());
-        holder.tv_luotBan.setText("Lượt bán: "+sp.getLuot_mua());
         if(sp.getDescribe()!=null){
             if(sp.getDescribe().length()>50){
                 holder.tv_mo_Ta.setText(sp.getDescribe().substring(0,50) + "...");
@@ -153,9 +152,7 @@ public class SanPhamGridAdapter extends BaseAdapter {
                 intent.putExtra("star", sp.getStarDanhGia());
                 intent.putExtra("favorite", sp.getFavorite());
                 intent.putExtra("time", sp.getTime_ship());
-                intent.putExtra("tenLoai", sp.getMaLoai());
-                intent.putExtra("LuotBan", sp.getLuot_mua());
-
+                intent.putExtra("MaLoai", sp.getMaLoai());
                 context.startActivity(intent);
             }
         });

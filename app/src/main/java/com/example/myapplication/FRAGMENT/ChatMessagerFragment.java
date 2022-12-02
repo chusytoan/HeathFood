@@ -79,11 +79,12 @@ public class ChatMessagerFragment extends Fragment {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                     ChatMessage chat=snapshot.getValue(ChatMessage.class);
-                    listchats.add(chat);
+                    if(chat.getId_user().equals(usercurent.getUid())){
+                        listchats.add(chat);
+                    }
+
                     chatAdapter = new ChatAdapter(getContext(),listchats);
                     rcv_chats.setAdapter(chatAdapter);
-
-
                 }
 
                 @Override

@@ -9,8 +9,6 @@ public class Sanpham {
     private double price;
     private int time_ship;
     private String describe;//mo ta
-    private int luot_mua;//so luong
-    private boolean trangThaiFavorite;
     private int favorite;
     private String imgURL;
 
@@ -22,15 +20,13 @@ public class Sanpham {
     }
 
 
-    public Sanpham(String maLoai, String masp, String name, double price, int time_ship, String describe, int luot_mua, boolean trangThaiFavorite, int favorite, String imgURL, String ten_loai, String id_kh, int starDanhGia) {
+    public Sanpham(String maLoai, String masp, String name, double price, int time_ship, String describe, int favorite, String imgURL, String ten_loai, String id_kh, int starDanhGia) {
         this.maLoai = maLoai;
         this.masp = masp;
         this.name = name;
         this.price = price;
         this.time_ship = time_ship;
         this.describe = describe;
-        this.luot_mua = luot_mua;
-        this.trangThaiFavorite = trangThaiFavorite;
         this.favorite = favorite;
         this.imgURL = imgURL;
         this.ten_loai = ten_loai;
@@ -39,13 +35,8 @@ public class Sanpham {
     }
 
 
-    public boolean isTrangThaiFavorite() {
-        return trangThaiFavorite;
-    }
 
-    public void setTrangThaiFavorite(boolean trangThaiFavorite) {
-        this.trangThaiFavorite = trangThaiFavorite;
-    }
+
 
     public String getMaLoai() {
         return maLoai;
@@ -103,13 +94,6 @@ public class Sanpham {
         this.describe = describe;
     }
 
-    public int getLuot_mua() {
-        return luot_mua;
-    }
-
-    public void setLuot_mua(int luot_mua) {
-        this.luot_mua = luot_mua;
-    }
 
     public int getFavorite() {
         return favorite;

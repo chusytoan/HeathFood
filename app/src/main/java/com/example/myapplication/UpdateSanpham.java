@@ -79,31 +79,6 @@ public class UpdateSanpham extends AppCompatActivity {
         tv_tenLoai.getEditText().setText(maLoai);
 
 
-//        db.collection("LoaiSanPhams").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if(task.isSuccessful()){
-//                    for(QueryDocumentSnapshot doc :task.getResult()){
-//                        Loaisanpham lsp = doc.toObject(Loaisanpham.class);
-//                        loaisanphamSetSpinner.add(lsp);
-//                    }
-//
-//                    spinnerLoaiSanPhamAdapter = new SpinnerLoaiSanPhamAdapter(UpdateSanpham.this, loaisanphamSetSpinner);
-//                    spinnerTenLoai.setAdapter(spinnerLoaiSanPhamAdapter);
-//                    for(int i = 0; i < loaisanphamSetSpinner.size(); i++){
-//                        if(loaisanphamSetSpinner.get(i).getMaLoai().equals(maLoai)){
-//                            spinnerTenLoai.setSelection(i);
-//                        }
-//                    }
-//                }
-//            }
-//        });
-
-//        SpinnerLoaiSanPhamAdapter lspAdapter = (SpinnerLoaiSanPhamAdapter) spinnerTenLoai.getAdapter();
-//        for(int i = 0 ;i< lspAdapter.getCount(); i++){
-//            Log.d("UPDATE LSP", "onCreate: " + lspAdapter.getItem(i));
-//        }
-
         btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

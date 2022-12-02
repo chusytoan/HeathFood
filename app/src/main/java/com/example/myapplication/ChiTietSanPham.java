@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,11 +32,8 @@ import com.example.myapplication.MODEL.GioHang;
 import com.example.myapplication.MODEL.KhachHang;
 import com.example.myapplication.MODEL.Loaisanpham;
 import com.example.myapplication.MODEL.NhanVien;
-import com.example.myapplication.MODEL.Sanpham;
 import com.example.myapplication.MODEL.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,7 +42,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -63,15 +58,20 @@ import java.util.List;
 
 
 public class ChiTietSanPham extends AppCompatActivity {
-    String TAG = "ChiTietSanPham";
-    ImageView img_sanpham, img_yeuthich, imback;
-    TextView tv_ten_sp, tv_mota, tv_gia, tv_loaips, tv_luotban, tv_tongtien, tv_value, tv_time_ship, tv_total;
-    RecyclerView recyrcleDanhGia;
-    EditText ed_cmt;
-    Button btn_cmt;
-    Button btn_add_cart;
-    List<Comment> comments;
-    CommentAdapter commentAdapter;
+String TAG  = "ChiTietSanPham";
+    RelativeLayout btn_yeuthich;
+ImageView img_sanpham,img_tym_bay,imback;
+TextView tv_ten_sp,tv_mota,tv_gia,tv_loaips,tv_luotban , tv_tongtien,tv_value,tv_time_ship,tv_total;
+RecyclerView recyrcleDanhGia;
+EditText ed_cmt;
+Button btn_cmt;
+Button btn_add_cart;
+
+
+List<Comment> comments;
+CommentAdapter commentAdapter;
+
+
 
 
     @Override
@@ -79,35 +79,35 @@ public class ChiTietSanPham extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chi_tiet_san_phamm2);
 
-        anhXaView();
-        imback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+      anhXaView();
+      imback.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+             onBackPressed();
+          }
+      });
         Intent intent = getIntent();
 
         FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String maSP = intent.getStringExtra("maSP");
-        String name = intent.getStringExtra("name");
-        double dgia = intent.getDoubleExtra("donGia", 0);
-        String urlIMG = intent.getStringExtra("hinhAnh");
-        String moTa = intent.getStringExtra("moTa");
-        int luotBan = intent.getIntExtra("LuotBan", 0);
-        int favorite = intent.getIntExtra("favorite", 0);
-        int timeShip = intent.getIntExtra("time", 0);
-        String tenLoai = intent.getStringExtra("tenLoai");
+       String name =  intent.getStringExtra("name");
+       double dgia =  intent.getDoubleExtra("donGia", 0);
+       String urlIMG =  intent.getStringExtra("hinhAnh");
+       String moTa =  intent.getStringExtra("moTa");
+       int luotBan = intent.getIntExtra("LuotBan",0);
+       int favorite = intent.getIntExtra("favorite",0);
+       int timeShip =  intent.getIntExtra("time", 0);
+       String tenLoai =  intent.getStringExtra("tenLoai");
 
         Glide.with(this).load(urlIMG).into(img_sanpham);
         tv_ten_sp.setText(name);
         tv_mota.setText(moTa);
-        tv_time_ship.setText(timeShip + " - " + (timeShip + 5) + " Min");
+        tv_time_ship.setText(timeShip +" - "+ (timeShip + 5) +" Min");
         tv_gia.setText(String.valueOf(dgia));
         tv_luotban.setText("Lượt bán: " + luotBan);
-        tv_total.setText((count * Double.parseDouble(tv_gia.getText().toString())) + "");
+        tv_total.setText((count * Double.parseDouble(tv_gia.getText().toString()))+"");
         db.collection("Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
@@ -119,7 +119,7 @@ public class ChiTietSanPham extends AppCompatActivity {
                 for (QueryDocumentSnapshot doc : value) {
 
                     Comment cm = doc.toObject(Comment.class);
-                    if (cm.getId_comment().equals(maSP)) {
+                    if(cm.getId_comment().equals(maSP)){
                         comments.add(cm);
                     }
                 }
@@ -137,99 +137,61 @@ public class ChiTietSanPham extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //kiem tra nhap trong
-                if (usercurent == null) {
+                if(usercurent==null){
                     finish();
                     startActivity(new Intent(ChiTietSanPham.this, LoginActivity.class));
                     return;
                 }
                 String content = ed_cmt.getText().toString();
-                if (content.equals("")) {
+                if(content.equals("")){
                     Toast.makeText(ChiTietSanPham.this, "vui long nhap binh luan", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (usercurent.getEmail().matches("^nhanvien+\\w+\\@+\\w+\\.+\\w+")) {
+                if(usercurent.getEmail().matches("^nhanvien+\\w+\\@+\\w+\\.+\\w+")){
                     Comments(content, 2, maSP);
-                } else {
+                }else {
                     Comments(content, 3, maSP);
                 }
 
             }
         });
 
-        img_yeuthich.setOnClickListener(new View.OnClickListener() {
+        btn_yeuthich.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Animation animation = AnimationUtils.loadAnimation(ChiTietSanPham.this,R.anim.tym_bay_animation);
-//                img_tym_bay.startAnimation(animation);
+                Animation animation = AnimationUtils.loadAnimation(ChiTietSanPham.this,R.anim.tym_bay_animation);
+                img_tym_bay.startAnimation(animation);
 
-                if (usercurent == null) {
+                if(usercurent==null) {
                     startActivity(new Intent(ChiTietSanPham.this, LoginActivity.class));
-                } else {
+                }else {
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    if(usercurent.getEmail().matches("^nhanvien+\\w+\\@+\\w+\\.+\\w+")){
+                        db.collection("Users").document("nhanvien")
+                                .collection("nhanviens")
+                                .whereEqualTo("email",usercurent.getEmail())
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            for(QueryDocumentSnapshot doc: task.getResult()){
+                                                NhanVien nv = doc.toObject(NhanVien.class);
+                                                if(!nv.isTrangThaiTym()) {
 
-                    db.collection("LoaiSanPhams").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    db.collection("Users")
+                                                            .document("nhanvien")
+                                                            .collection("nhanviens")
+                                                            .document(doc.getId()).update("trangThaiTym", true);
+                                                    addTymSanPham(maSP, tenLoai, favorite + 1);
+                                                    Log.d(TAG, "trang thai tym" + nv.isTrangThaiTym());
+                                                    Toast.makeText(ChiTietSanPham.this, "Da them vao san pham yeu thich", Toast.LENGTH_SHORT).show();
+                                                }
 
-                            if (task.isSuccessful()) {
-
-                                for (QueryDocumentSnapshot doc : task.getResult()) {
-                                    Sanpham sp=doc.toObject(Sanpham.class);
-                                    if(sp.getMaLoai().equals(tenLoai)) {
-                                        if (!sp.isTrangThaiFavorite()) {
-                                            db.collection("LoaiSanPhams").document(doc.getId())
-                                                    .update("sanphams." + maSP + ".trangThaiFavorite", true
-                                                    )
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                img_yeuthich.setImageResource(R.drawable.ic_favorite_24);
-
-                                                                Toast.makeText(getBaseContext(), "Update sản phẩm thành công", Toast.LENGTH_SHORT).show();
-                                                            }
-
-                                                        }
-                                                    });
-                                        } else {
-                                            db.collection("LoaiSanPhams").document(doc.getId())
-                                                    .update("sanphams." + maSP + ".trangThaiFavorite", false
-                                                    )
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                img_yeuthich.setImageResource(R.drawable.ic_favorite_border_24);
-
-                                                                Toast.makeText(getBaseContext(), "Bỏ sản phẩm thành công", Toast.LENGTH_SHORT).show();
-                                                            }
-
-                                                        }
-                                                    });
+                                            }
                                         }
                                     }
-//                                    Sanpham sp = doc.toObject(Sanpham.class);
-//                                                if (!sp.isTrangThaiFavorite()) {
-//                                                    img_yeuthich.setImageResource(R.drawable.ic_favorite_24);
-//                                                    db.collection("LoaiSanPhams")
-//                                                            .document(doc.getId()).update("sanphams." + maSP + ".trangThaiFavorite", true);
-////                                                    addTymSanPham(maSP, tenLoai, favorite + 1);
-//
-//                                                    Log.d(TAG, "trang thai tym" + sp.isTrangThaiFavorite());
-//                                                    Toast.makeText(ChiTietSanPham.this, "Da them vao san pham yeu thich", Toast.LENGTH_SHORT).show();
-//                                                } else {
-//                                                    db.collection("LoaiSanPhams")
-//                                                            .document(doc.getId()).update("sanphams." + maSP + ".trangThaiFavorite", false);
-////                                                    addTymSanPham(maSP, tenLoai, favorite + 1);
-//                                                    img_yeuthich.setImageResource(R.drawable.ic_favorite_border_24);
-//                                                    Log.d(TAG, "trang thai tym" + sp.isTrangThaiFavorite());
-//                                                    Toast.makeText(ChiTietSanPham.this, "Da loại bỏ san pham yeu thich", Toast.LENGTH_SHORT).show();
-//                                                }
-
-                                }
-                            }
-                        }
-                    });
+                                });
+                    }
                 }
             }
         });
@@ -237,13 +199,13 @@ public class ChiTietSanPham extends AppCompatActivity {
         btn_add_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (usercurent == null) {
+                if(usercurent==null){
                     finish();
                     startActivity(new Intent(ChiTietSanPham.this, LoginActivity.class));
                     return;
                 }
                 GioHang gh = new GioHang();
-                if (Integer.parseInt(tv_value.getText().toString()) < 1) {
+                if(Integer.parseInt(tv_value.getText().toString()) < 1){
                     Toast.makeText(ChiTietSanPham.this, "vui lòng chọn số lượng", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -270,61 +232,60 @@ public class ChiTietSanPham extends AppCompatActivity {
 
 
     }
-
-    public void addTymSanPham(String maspUpdate, String nameLoai, int favoriteUpdate) {
+    public void addTymSanPham(String maspUpdate,String nameLoai,int favoriteUpdate){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("LoaiSanPhams").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot doc: task.getResult()){
                         Loaisanpham lsp = doc.toObject(Loaisanpham.class);
-                        if (lsp.getName().equals(nameLoai)) {
+                        if(lsp.getName().equals(nameLoai)){
                             db.collection("LoaiSanPhams")
-                                    .document(doc.getId()).update("sanphams." + maspUpdate + ".favorite", favoriteUpdate);
+                                    .document(doc.getId()).update("sanphams."+maspUpdate+".favorite", favoriteUpdate);
                         }
                     }
                 }
             }
         });
     }
-
-    private void anhXaView() {
-        img_sanpham = findViewById(R.id.img_sanpham);
-        tv_ten_sp = findViewById(R.id.tv_ten_sp);
-        tv_mota = findViewById(R.id.tv_mota);
-        tv_gia = findViewById(R.id.tv_gia);
-        tv_loaips = findViewById(R.id.tv_loaips);
+    private void anhXaView(){
+         img_sanpham = findViewById(R.id.img_sanpham);
+         tv_ten_sp = findViewById(R.id.tv_ten_sp);
+         tv_mota = findViewById(R.id.tv_mota);
+         tv_gia = findViewById(R.id.tv_gia);
+         tv_loaips = findViewById(R.id.tv_loaips);
         tv_time_ship = findViewById(R.id.tv_time_ship);
-        tv_luotban = findViewById(R.id.tv_luotban);
-        recyrcleDanhGia = findViewById(R.id.recyrcleDanhGia);
-        recyrcleDanhGia.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        comments = new ArrayList<>();
-        ed_cmt = findViewById(R.id.ed_comment);
-        btn_cmt = findViewById(R.id.btn_comment);
+        tv_luotban  = findViewById(R.id.tv_luotban);
+         recyrcleDanhGia = findViewById(R.id.recyrcleDanhGia);
+         recyrcleDanhGia.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
+         comments = new ArrayList<>();
+         ed_cmt = findViewById(R.id.ed_comment);
+         btn_cmt = findViewById(R.id.btn_comment);
 
-        img_yeuthich = findViewById(R.id.img_yeuthich);
+
 
         btn_add_cart = findViewById(R.id.btn_add_Cart);
 
         tv_total = findViewById(R.id.tv_total);
         tv_value = findViewById(R.id.tv_value);
         tv_tongtien = findViewById(R.id.tv_total);
-        imback = findViewById(R.id.img_back);
+        imback=findViewById(R.id.img_back);
+
 
 
     }
 
-    private void Comments(String nd, int loaiUser, String maSP) {
+    private void Comments(String nd, int loaiUser, String maSP){
         FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         //kiem tra dang nhap
-        if (usercurent == null) {
+        if(usercurent==null){
             finish();
             startActivity(new Intent(ChiTietSanPham.this, LoginActivity.class));
-        } else {
-            if (loaiUser == 2) {
-                String iduser = usercurent.getUid();
+        }else {
+            if(loaiUser==2){
+                String iduser  = usercurent.getUid();
                 String content = ed_cmt.getText().toString();
                 db.collection("Users").document("nhanvien")
                         .collection("nhanviens")
@@ -334,9 +295,9 @@ public class ChiTietSanPham extends AppCompatActivity {
                                 if (e != null) {
                                     return;
                                 }
-                                for (QueryDocumentSnapshot document : value) {
+                                for(QueryDocumentSnapshot document : value){
                                     User usr = document.toObject(User.class);
-                                    if (usr.getId().equals(iduser)) {
+                                    if(usr.getId().equals(iduser)){
                                         Comment cm = new Comment();
                                         cm.setId_comment(maSP);
                                         cm.setId_user(iduser);
@@ -345,7 +306,7 @@ public class ChiTietSanPham extends AppCompatActivity {
                                         cm.setContent(content);
                                         String timeCureent = "";
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern( "yyyy/MM/dd HH:mm" );
                                             LocalDateTime now = LocalDateTime.now();
                                             timeCureent = dtf.format(now);
                                             cm.setTime_comment(timeCureent);
@@ -361,14 +322,14 @@ public class ChiTietSanPham extends AppCompatActivity {
                                 }
                             }
                         });
-            } else if (loaiUser == 3) {
+            }else if(loaiUser==3){
                 DatabaseReference referencekhs = FirebaseDatabase.getInstance().getReference("KhachHangs");
                 referencekhs.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                             KhachHang kh = dataSnapshot.getValue(KhachHang.class);
-                            if (kh.getId().equals(usercurent.getUid())) {
+                            if(kh.getId().equals(usercurent.getUid())){
                                 Comment cmt = new Comment();
                                 cmt.setId_comment(maSP);
                                 cmt.setId_user(kh.getId());
@@ -377,7 +338,7 @@ public class ChiTietSanPham extends AppCompatActivity {
                                 cmt.setContent(nd);
                                 String timeCureent = "";
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+                                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern( "yyyy/MM/dd HH:mm" );
                                     LocalDateTime now = LocalDateTime.now();
                                     timeCureent = dtf.format(now);
                                     cmt.setTime_comment(timeCureent);
@@ -402,22 +363,20 @@ public class ChiTietSanPham extends AppCompatActivity {
 
         }
     }
-
     int count = 1;
-
     public void onclickTang(View view) {
         count++;
         tv_value.setText(String.valueOf(count));
-        tv_total.setText((count * Double.parseDouble(tv_gia.getText().toString())) + "");
+        tv_total.setText((count * Double.parseDouble(tv_gia.getText().toString()))+"");
     }
 
     public void onClickGiam(View view) {
-        if (count <= 1) {
-            count = 1;
-        } else {
+        if(count<=1){
+            count=1;
+        }else{
             count--;
             tv_value.setText(String.valueOf(count));
-            tv_total.setText((count * Double.parseDouble(tv_gia.getText().toString())) + "");
+            tv_total.setText((count * Double.parseDouble(tv_gia.getText().toString()))+"");
         }
 
     }
