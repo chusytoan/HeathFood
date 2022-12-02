@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="4sp">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_profile"
+        android:layout_width="25sp"
+        android:scaleType="centerCrop"
+        android:layout_height="25sp"
+        android:src="@drawable/img1"
+        app:layout_constraintBottom_toBottomOf="@id/textMes"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+        android:id="@+id/textMes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/backdroud_tvchatwhite"
+        android:padding="12sp"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:layout_marginStart="4sp"
+        android:layout_marginLeft="4sp"
+        app:layout_constraintStart_toEndOf="@id/img_profile"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8"/>
+    <TextView
+        android:id="@+id/textDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4sp"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@id/textMes"
+        app:layout_constraintTop_toBottomOf="@+id/textMes"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
