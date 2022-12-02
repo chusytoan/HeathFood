@@ -21,6 +21,7 @@ public class Sanpham {
     public Sanpham() {
     }
 
+
     public Sanpham(String maLoai, String masp, String name, double price, int time_ship, String describe, int luot_mua, boolean trangThaiFavorite, int favorite, String imgURL, String ten_loai, String id_kh, int starDanhGia) {
         this.maLoai = maLoai;
         this.masp = masp;
@@ -36,6 +37,7 @@ public class Sanpham {
         this.id_kh = id_kh;
         this.starDanhGia = starDanhGia;
     }
+
 
     public boolean isTrangThaiFavorite() {
         return trangThaiFavorite;

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.myapplication.FRAGMENT.ChatMessagerFragment;
 import com.example.myapplication.FRAGMENT.FragmentUserProfile;
 import com.example.myapplication.FRAGMENT.GioHangFragment;
 import com.example.myapplication.FRAGMENT.HomeFragment;
@@ -58,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.maps:
 //                        fragment = new AddSanPhamFragment();
 //                        fragment=new HistoryFragmentMain();
-                        FirebaseAuth.getInstance().signOut();
-                        finish();
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//                        FirebaseAuth.getInstance().signOut();
+//                        finish();
+//                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        fragment = new ChatMessagerFragment();
                         break;
                     case R.id.profile:
                         fragment = new FragmentUserProfile();

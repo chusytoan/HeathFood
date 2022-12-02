@@ -44,7 +44,7 @@ public class DonHangAdapter extends BaseAdapter {
         Viewholder itemView;
         if(view==null){
             itemView = new Viewholder();
-            view = LayoutInflater.from(context).inflate(R.layout.item_don_hang_user, viewGroup, false);
+            view = LayoutInflater.from(context).inflate(R.layout.item_history_donhang, viewGroup, false);
 
             itemView.tv_trangthai = view.findViewById(R.id.tv_trangthai);
             itemView.tv_ma = view.findViewById(R.id.tv_ma_don);
@@ -56,10 +56,10 @@ public class DonHangAdapter extends BaseAdapter {
             itemView = (Viewholder) view.getTag();
 
         DonHang donHang = list.get(i);
-        itemView.tv_trangthai.setText(donHang.getTrangThai());
-        itemView.tv_dc.setText(donHang.getDiaChi());
-        itemView.tv_sdt.setText(donHang.getSdt());
-        itemView.tv_ma.setText(donHang.getMaDonHang());
+        itemView.tv_trangthai.setText("Trạng thái đơn hàng: "+donHang.getTrangThai());
+        itemView.tv_dc.setText("Địa chỉ nhận hàng: "+donHang.getDiaChi());
+        itemView.tv_sdt.setText("Số điện thoại: "+donHang.getSdt());
+        itemView.tv_ma.setText("Mã đơn hàng: "+donHang.getMaDonHang());
 
         return view;
     }

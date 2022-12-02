@@ -40,24 +40,29 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal">
                 <RelativeLayout
-                    android:id="@+id/btn_tha_tym"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_alignParentEnd="true">
+                        <ImageView
+                            android:id="@+id/img_yeuthich"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/ic_favorite_border_24" />
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_favorite_24"
-                        android:layout_marginLeft="20dp"/>
 
-                    <ImageView
-                        android:id="@+id/img_tymbay"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_favorite_24"
-                        android:layout_marginLeft="20dp"/>
+<!--                    <ImageView-->
+<!--                        android:layout_width="20dp"-->
+<!--                        android:layout_height="20dp"-->
+<!--                        android:src="@drawable/ic_favorite_24"-->
+<!--                        android:layout_marginLeft="20dp"/>-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/img_tymbay"-->
+<!--                        android:layout_width="20dp"-->
+<!--                        android:layout_height="20dp"-->
+<!--                        android:src="@drawable/ic_favorite_24"-->
+<!--                        android:layout_marginLeft="20dp"/>-->
                     <LinearLayout
                         android:layout_width="wrap_content"
 
