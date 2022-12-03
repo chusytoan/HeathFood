@@ -3,62 +3,58 @@ package com.example.myapplication.MODEL;
 import java.io.Serializable;
 
 public class ChatMessage implements Serializable {
-    private String id_user;
-    private String name_user;
-    private String img_user, messager;
-    private String time_chat;
-
-    public ChatMessage(String id_user, String name_user, String img_user, String messager, String time_chat) {
-        this.id_user = id_user;
-        this.name_user = name_user;
-        this.img_user = img_user;
-        this.messager = messager;
-        this.time_chat = time_chat;
-    }
+    private String nguoiGui;
+    private String nguoiNhan;
+    private String  msg, timeChat, imgUrl;
 
     public ChatMessage() {
     }
 
-    public String getMessager() {
-        return messager;
+    public ChatMessage(String nguoiGui, String nguoiNhan, String msg, String timeChat, String imgUrl) {
+        this.nguoiGui = nguoiGui;
+        this.nguoiNhan = nguoiNhan;
+        this.msg = msg;
+        this.timeChat = timeChat;
+        this.imgUrl = imgUrl;
     }
 
-    public void setMessager(String messager) {
-        this.messager = messager;
+    public String getTimeChat() {
+        return timeChat;
     }
 
-
-    public String getId_user() {
-        return id_user;
+    public void setTimeChat(String timeChat) {
+        this.timeChat = timeChat;
     }
 
-    public void setId_user(String id_user) {
-        this.id_user = id_user;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public String getName_user() {
-        return name_user;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
-    public void setName_user(String name_user) {
-        this.name_user = name_user;
+    public String getNguoiGui() {
+        return nguoiGui;
     }
 
-    public String getImg_user() {
-        return img_user;
+    public void setNguoiGui(String nguoiGui) {
+        this.nguoiGui = nguoiGui;
     }
 
-    public void setImg_user(String img_user) {
-        this.img_user = img_user;
+    public String getNguoiNhan() {
+        return nguoiNhan;
     }
 
-
-
-    public String getTime_chat() {
-        return time_chat;
+    public void setNguoiNhan(String nguoiNhan) {
+        this.nguoiNhan = nguoiNhan;
     }
 
-    public void setTime_chat(String time_chat) {
-        this.time_chat = time_chat;
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

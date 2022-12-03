@@ -156,45 +156,7 @@ CommentAdapter commentAdapter;
             }
         });
 
-        btn_yeuthich.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Animation animation = AnimationUtils.loadAnimation(ChiTietSanPham.this,R.anim.tym_bay_animation);
-                img_tym_bay.startAnimation(animation);
 
-                if(usercurent==null) {
-                    startActivity(new Intent(ChiTietSanPham.this, LoginActivity.class));
-                }else {
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    if(usercurent.getEmail().matches("^nhanvien+\\w+\\@+\\w+\\.+\\w+")){
-                        db.collection("Users").document("nhanvien")
-                                .collection("nhanviens")
-                                .whereEqualTo("email",usercurent.getEmail())
-                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful()){
-                                            for(QueryDocumentSnapshot doc: task.getResult()){
-                                                NhanVien nv = doc.toObject(NhanVien.class);
-                                                if(!nv.isTrangThaiTym()) {
-
-                                                    db.collection("Users")
-                                                            .document("nhanvien")
-                                                            .collection("nhanviens")
-                                                            .document(doc.getId()).update("trangThaiTym", true);
-                                                    addTymSanPham(maSP, tenLoai, favorite + 1);
-                                                    Log.d(TAG, "trang thai tym" + nv.isTrangThaiTym());
-                                                    Toast.makeText(ChiTietSanPham.this, "Da them vao san pham yeu thich", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                });
-                    }
-                }
-            }
-        });
 
         btn_add_cart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,23 +194,7 @@ CommentAdapter commentAdapter;
 
 
     }
-    public void addTymSanPham(String maspUpdate,String nameLoai,int favoriteUpdate){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("LoaiSanPhams").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for(QueryDocumentSnapshot doc: task.getResult()){
-                        Loaisanpham lsp = doc.toObject(Loaisanpham.class);
-                        if(lsp.getName().equals(nameLoai)){
-                            db.collection("LoaiSanPhams")
-                                    .document(doc.getId()).update("sanphams."+maspUpdate+".favorite", favoriteUpdate);
-                        }
-                    }
-                }
-            }
-        });
-    }
+
     private void anhXaView(){
          img_sanpham = findViewById(R.id.img_sanpham);
          tv_ten_sp = findViewById(R.id.tv_ten_sp);

@@ -37,17 +37,17 @@
             android:layout_alignParentEnd="true"
             >
 
-            <ImageView
-                android:id="@+id/img_deleLoai"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_delete" />
-            <ImageView
-                android:id="@+id/img_editLoai"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_edit"
-                android:layout_marginLeft="10dp"/>
+<!--            <ImageView-->
+<!--                android:id="@+id/img_deleLoai"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:src="@drawable/ic_delete" />-->
+<!--            <ImageView-->
+<!--                android:id="@+id/img_editLoai"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:src="@drawable/ic_edit"-->
+<!--                android:layout_marginLeft="10dp"/>-->
         </LinearLayout>
 
     </RelativeLayout>

@@ -25,6 +25,7 @@ import com.example.myapplication.ADAPTER.GioHangAdapter;
 import com.example.myapplication.ActivityGioHang;
 import com.example.myapplication.ChiTietSanPham;
 import com.example.myapplication.LoginActivity;
+import com.example.myapplication.MODEL.Admin;
 import com.example.myapplication.MODEL.ChatMessage;
 import com.example.myapplication.MODEL.Comment;
 import com.example.myapplication.MODEL.GioHang;
@@ -41,6 +42,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -57,77 +59,46 @@ import java.util.List;
 public class ChatMessagerFragment extends Fragment {
     String TAG = "ChatMessagerFragment";
     View view;
-    TextView tv_user;
-    EditText edt_chat;
-    ImageView img_send;
-    List<ChatMessage> listchats ;
-    ChatAdapter chatAdapter;
-    RecyclerView rcv_chats;
     DatabaseReference reference;
-    FirebaseUser usercurent;
+    ImageView btn_send;
+    EditText ed_message;
 
+    ChatAdapter messageAdapter;
+    List<ChatMessage> chats;
+    RecyclerView recyclerView;
+
+    FirebaseUser usercurent;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.layout_chatapp,container,false);
         anhXa();
+
         usercurent = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("ChatMess");
-        if(usercurent != null) {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Users").document("admin").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Admin admin = value.toObject(Admin.class);
+                if(admin == null)
+                    return;
 
-            reference.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                    ChatMessage chat=snapshot.getValue(ChatMessage.class);
-                    if(chat.getId_user().equals(usercurent.getUid())){
-                        listchats.add(chat);
-                    }
+                readMessages(usercurent.getUid(), "7Uh9NlGocOX0zPTnvPNzDtH4Wc63");
+            }
+        });
 
-                    chatAdapter = new ChatAdapter(getContext(),listchats);
-                    rcv_chats.setAdapter(chatAdapter);
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-
-
-
-
-
-
-        img_send.setOnClickListener(new View.OnClickListener() {
+        btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (usercurent == null) {
-                    getActivity().finish();
-                    startActivity(new Intent(getContext(), LoginActivity.class));
+                String msg = ed_message.getText().toString();
+                if (!msg.equals("")) {
+                    Chats(usercurent.getUid(), "7Uh9NlGocOX0zPTnvPNzDtH4Wc63", msg);
+                } else {
+                    Toast.makeText(getContext(), "vui long nhập nội dung tin nhắn", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String chatnd = edt_chat.getText().toString();
-                if (chatnd.equals("")) {
-                    Toast.makeText(getContext(), "vui long nhap noi dung chat", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Chats(chatnd, usercurent.getUid());
+                ed_message.setText("");
+
 
 
                 //kiem tra dang nhap
@@ -138,45 +109,22 @@ public class ChatMessagerFragment extends Fragment {
         return view;
     }
 
-    public void anhXa(){
-        tv_user=view.findViewById(R.id.tv_user);
-        edt_chat=view.findViewById(R.id.text_inputchat);
-        img_send=view.findViewById(R.id.img_send);
-        rcv_chats=view.findViewById(R.id.rcv_chat);
-        rcv_chats.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        listchats = new ArrayList<>();
-    }
-    private void Chats(String nd, String user) {
-
-        DatabaseReference referencekhs = FirebaseDatabase.getInstance().getReference("KhachHangs");
-        referencekhs.addValueEventListener(new ValueEventListener() {
+    private void readMessages(String uid, String s) {
+        reference = FirebaseDatabase.getInstance().getReference("ChatMess");
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    KhachHang kh = dataSnapshot.getValue(KhachHang.class);
-                    if (kh.getId().equals(usercurent.getUid())) {
-                        ChatMessage chat=new ChatMessage();
-                        chat.setId_user(user);
-                        chat.setName_user(kh.getName());
-                        chat.setImg_user("default");
-                        chat.setMessager(nd);
-                        String timeCureent = "";
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-                            LocalDateTime now = LocalDateTime.now();
-                            timeCureent = dtf.format(now);
-                            chat.setTime_chat(timeCureent);
-                        }
-
-                        reference.push().setValue(chat, new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                Toast.makeText(getContext(), "gửi tin nhắn thành công", Toast.LENGTH_SHORT).show();
-                                edt_chat.setText("");
-                            }
-                        });
+                chats.clear();
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    ChatMessage chat = dataSnapshot.getValue(ChatMessage.class);
+                    //neu nguoi gui la toi hoac nguoi gui la doi phuong
+                    if(chat.getNguoiNhan().equals(uid)  && chat.getNguoiGui().equals(s) || chat.getNguoiNhan().equals(s)
+                            && chat.getNguoiGui().equals(uid)){
+                        chats.add(chat);
                     }
                 }
+                messageAdapter = new ChatAdapter(getContext(), chats);
+                recyclerView.setAdapter(messageAdapter);
             }
 
             @Override
@@ -184,6 +132,32 @@ public class ChatMessagerFragment extends Fragment {
 
             }
         });
+    }
+
+    public void anhXa(){
+        btn_send = view.findViewById(R.id.img_send);
+        ed_message = view.findViewById(R.id.text_inputchat);
+        recyclerView = view.findViewById(R.id.rcv_chat);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        chats = new ArrayList<>();
+    }
+    private void Chats(String uid, String idUser, String msg) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        ChatMessage chat = new ChatMessage();
+        chat.setNguoiGui(uid);
+        chat.setNguoiNhan(idUser);
+        chat.setMsg(msg);
+        chat.setImgUrl("default");
+        String timeCureent = "";
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+            LocalDateTime now = LocalDateTime.now();
+            timeCureent = dtf.format(now);
+            chat.setTimeChat(timeCureent);
+        }
+
+        reference.child("ChatMess").push().setValue(chat);
 
     }
 

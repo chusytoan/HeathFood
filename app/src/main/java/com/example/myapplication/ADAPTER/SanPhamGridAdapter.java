@@ -84,8 +84,8 @@ public class SanPhamGridAdapter extends BaseAdapter {
             holder.img_sp = view.findViewById(R.id.img_sanpham);
             holder.img_start_four = view.findViewById(R.id.img_start4);
             holder.img_start_five = view.findViewById(R.id.img_start5);
-            holder.img_Edit = view.findViewById(R.id.img_edit);
-            holder.img_delete = view.findViewById(R.id.img_deleSP);
+//            holder.img_Edit = view.findViewById(R.id.img_edit);
+//            holder.img_delete = view.findViewById(R.id.img_deleSP);
             holder.tv_ten = view.findViewById(R.id.tv_ten_sp);
             holder.tv_mo_Ta = view.findViewById(R.id.tv_mota);
             holder.tv_gia = view.findViewById(R.id.tv_gia);
@@ -110,33 +110,33 @@ public class SanPhamGridAdapter extends BaseAdapter {
             }
         }
 
-        holder.img_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteSanpham(sp.getMasp(), sp.getMaLoai());
-
-            }
-        });
-        holder.img_Edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, UpdateSanpham.class);
-                //String masp, String name, double price, int time_ship, String describe, int amount, boolean favorite, String imgURL,
-                // Map<String, Comment> comments,String ten_loai,int starDanhGia
-                intent.putExtra("maSPUP" , sp.getMasp());
-                intent.putExtra("nameUP", sp.getName());
-                intent.putExtra("donGiaUP", sp.getPrice());
-                intent.putExtra("hinhAnhUP", sp.getImgURL());
-                intent.putExtra("moTaUP", sp.getDescribe());
-                intent.putExtra("timeUP", sp.getTime_ship());
-                intent.putExtra("MaLoai", sp.getMaLoai());
-
-
-
-                context.startActivity(intent);
-
-            }
-        });
+//        holder.img_delete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                deleteSanpham(sp.getMasp(), sp.getMaLoai());
+//
+//            }
+//        });
+//        holder.img_Edit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(context, UpdateSanpham.class);
+//                //String masp, String name, double price, int time_ship, String describe, int amount, boolean favorite, String imgURL,
+//                // Map<String, Comment> comments,String ten_loai,int starDanhGia
+//                intent.putExtra("maSPUP" , sp.getMasp());
+//                intent.putExtra("nameUP", sp.getName());
+//                intent.putExtra("donGiaUP", sp.getPrice());
+//                intent.putExtra("hinhAnhUP", sp.getImgURL());
+//                intent.putExtra("moTaUP", sp.getDescribe());
+//                intent.putExtra("timeUP", sp.getTime_ship());
+//                intent.putExtra("MaLoai", sp.getMaLoai());
+//
+//
+//
+//                context.startActivity(intent);
+//
+//            }
+//        });
 
         holder.itemsp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,61 +159,61 @@ public class SanPhamGridAdapter extends BaseAdapter {
         return view;
     }
 
-    public void deleteSanpham(String maspD,String maLoai) {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("LoaiSanPhams").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.dialog_delete);
-                Window window = dialog.getWindow();
-                if (window == null) return;
-                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                Button yes = dialog.findViewById(R.id.yes);
-                yes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (task.isSuccessful()) {
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                Loaisanpham lsp =(Loaisanpham) document.toObject(Loaisanpham.class);
-                                DocumentReference docRef = db.collection("LoaiSanPhams").document(lsp.getMaLoai());
-                                docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                        if (lsp.getMaLoai().equals(maLoai)) {
-                                            Map<String, Object> updates = new HashMap<>();
-                                            updates.put("sanphams."+maspD, FieldValue.delete());
-                                            docRef.update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if(task.isSuccessful()) {
-                                                        Toast.makeText(context, "xoa thanh cong", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Toast.makeText(context, "xoá thất bại", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                        }
-                                    }
-                                });
-
-                            }
-                        }
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-
-            }
-        });
-    }
+//    public void deleteSanpham(String maspD,String maLoai) {
+//
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("LoaiSanPhams").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//
+//                Dialog dialog = new Dialog(context);
+//                dialog.setContentView(R.layout.dialog_delete);
+//                Window window = dialog.getWindow();
+//                if (window == null) return;
+//                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                Button yes = dialog.findViewById(R.id.yes);
+//                yes.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (task.isSuccessful()) {
+//
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//
+//                                Loaisanpham lsp =(Loaisanpham) document.toObject(Loaisanpham.class);
+//                                DocumentReference docRef = db.collection("LoaiSanPhams").document(lsp.getMaLoai());
+//                                docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//                                    @Override
+//                                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                                        if (lsp.getMaLoai().equals(maLoai)) {
+//                                            Map<String, Object> updates = new HashMap<>();
+//                                            updates.put("sanphams."+maspD, FieldValue.delete());
+//                                            docRef.update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                @Override
+//                                                public void onComplete(@NonNull Task<Void> task) {
+//                                                    if(task.isSuccessful()) {
+//                                                        Toast.makeText(context, "xoa thanh cong", Toast.LENGTH_SHORT).show();
+//                                                    }
+//                                                }
+//                                            }).addOnFailureListener(new OnFailureListener() {
+//                                                @Override
+//                                                public void onFailure(@NonNull Exception e) {
+//                                                    Toast.makeText(context, "xoá thất bại", Toast.LENGTH_SHORT).show();
+//                                                }
+//                                            });
+//                                        }
+//                                    }
+//                                });
+//
+//                            }
+//                        }
+//                        dialog.dismiss();
+//                    }
+//                });
+//                dialog.show();
+//
+//            }
+//        });
+//    }
 
 }

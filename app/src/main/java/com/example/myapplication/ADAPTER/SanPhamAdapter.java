@@ -108,8 +108,8 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.Viewhold
             img_sp = itemView.findViewById(R.id.img_sanpham);
             img_start_four = itemView.findViewById(R.id.img_start4);
             img_start_five = itemView.findViewById(R.id.img_start5);
-            img_Edit = itemView.findViewById(R.id.img_edit);
-            img_delete = itemView.findViewById(R.id.img_deleSP);
+//            img_Edit = itemView.findViewById(R.id.img_edit);
+//            img_delete = itemView.findViewById(R.id.img_deleSP);
             tv_ten = itemView.findViewById(R.id.tv_ten_sp);
             tv_mo_Ta = itemView.findViewById(R.id.tv_mota);
             tv_gia = itemView.findViewById(R.id.tv_gia);

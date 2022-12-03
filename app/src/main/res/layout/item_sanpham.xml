@@ -109,17 +109,17 @@
                 android:layout_marginRight="20dp"
                 >
 
-                <ImageView
-                    android:id="@+id/img_deleSP"
-                    android:layout_width="26dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_delete" />
-                <ImageView
-                    android:id="@+id/img_edit"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:src="@drawable/ic_edit"
-                    android:layout_marginLeft="10dp"/>
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_deleSP"-->
+<!--                    android:layout_width="26dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:src="@drawable/ic_delete" />-->
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_edit"-->
+<!--                    android:layout_width="26dp"-->
+<!--                    android:layout_height="26dp"-->
+<!--                    android:src="@drawable/ic_edit"-->
+<!--                    android:layout_marginLeft="10dp"/>-->
             </LinearLayout>
         </LinearLayout>
 

@@ -41,7 +41,7 @@ public class RegisterrActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sog_in);
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
+
         anhXaView();
 
         btn_add.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +71,6 @@ public class RegisterrActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser userCurent = mAuth.getCurrentUser();
                             String userid = userCurent.getUid();
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
 
                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("KhachHangs");
                                //String id, String name, String email, String password, String imgURL, boolean trangThaiTym, int loaiUser, int soSaoDanhGia, List<DonHang> list
