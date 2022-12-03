@@ -53,6 +53,11 @@ public class SanPhamGridAdapter extends BaseAdapter {
         this.context = context;
         this.list = list;
     }
+    public void setfilterliss(List<Sanpham> fiteliss) {
+        this.list=fiteliss;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getCount() {

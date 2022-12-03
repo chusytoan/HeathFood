@@ -48,6 +48,10 @@ public class LoaiSanPhamAdapter extends RecyclerView.Adapter<LoaiSanPhamAdapter.
         this.context = context;
         this.list = list;
     }
+    public  void setfilterliss(List<Loaisanpham>filrlisst ){
+        this.list=filrlisst;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override

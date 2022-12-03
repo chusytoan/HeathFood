@@ -19,14 +19,13 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_marginRight="5dp"
-            android:padding="3dp"
+
             android:layout_height="wrap_content">
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_sp_gh"
                 android:layout_width="match_parent"
                 android:scaleType="centerCrop"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:src="@drawable/img3"/>
         </LinearLayout>
 

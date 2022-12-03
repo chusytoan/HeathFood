@@ -8,7 +8,44 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:430933615767:android:36b4ee685dcd428cb0b5d2",
+        "mobilesdk_app_id": "1:430933615767:android:5efcb55f728f5065b0b5d2",
+        "android_client_info": {
+          "package_name": "com.example.foodappserver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "430933615767-jd99ckru2kfqmks1hrq2nge8vlgn5een.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.foodappserver",
+            "certificate_hash": "72591480dc469ffcff73e996b026ccb804e008b0"
+          }
+        },
+        {
+          "client_id": "430933615767-931uoglaugb21lgrdcs811dag7kmj6v8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1kuUJooP_ONuqkVMVhH6TGaoLTpDSCxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "430933615767-931uoglaugb21lgrdcs811dag7kmj6v8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430933615767:android:d3b8f15b1d6d6f85b0b5d2",
         "android_client_info": {
           "package_name": "com.example.myapplication"
         }

@@ -176,11 +176,14 @@ public class ActivityGioHang extends AppCompatActivity {
                 if(kh==null){
                     progressDialog.dismiss();
                     Toast.makeText(ActivityGioHang.this, "vui long them sdt va dia chi", Toast.LENGTH_SHORT).show();
+
                     return;
                 }
                 if(kh.getDiachi().equals("")){
                     progressDialog.dismiss();
+                    startActivity(new Intent(ActivityGioHang.this,ProfileSetting.class));
                     Toast.makeText(ActivityGioHang.this, "Vui long them dia chi", Toast.LENGTH_SHORT).show();
+
                     return;
                 }
                 if(kh.getSdt().equals("")){
