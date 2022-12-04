@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class FragmentUserProfile extends Fragment {
     private View view;
-    private LoginActivity loginActivity;
+
     TextView tv_gmail,tv_name;
     ImageView img_setting;
     private ViewPager2 m_pager;
@@ -36,6 +36,9 @@ public class FragmentUserProfile extends Fragment {
         view =inflater.inflate(R.layout.layout_profile, container, false);
         anhxa();
         FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        if(firebaseUser==null){
+            return view;
+        }
         String email= firebaseUser.getEmail();
         String name=firebaseUser.getDisplayName();
         tv_gmail.setText(email);
@@ -72,6 +75,7 @@ public class FragmentUserProfile extends Fragment {
                         switch (position){
                             case 0:
                                 tab.setIcon(R.drawable.history).setText("Chờ xác nhận");
+
                                 break;
                             case 1:
                                 tab.setIcon(R.drawable.express).setText("Đang giao");

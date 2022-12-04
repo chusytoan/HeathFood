@@ -79,16 +79,28 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
         holder.tv_price.setText(sp.getPrice() + "$");
         holder.tv_minutes.setText(sp.getTime_ship() + "minutes");
         holder.tv_ten_loai.setText(sp.getTen_loai());
-        //holder.tv_soLuotTym.setText(sp.getFavorite()+"");
-        FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
-        String idUser = usercurent.getUid();
-        String maSp = sp.getMasp();
 
-        holder.getLikeButtonStatus(maSp, idUser);
+        FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
+
+        String maSp = sp.getMasp();
+        String maLoai = sp.getMaLoai();
+        if(usercurent==null){
+            holder.getLikeWhenUserSigOut(maSp);
+            return;
+        }
+            String idUser = usercurent.getUid();
+
+            holder.getLikeButtonStatus(maSp, idUser, maLoai);
+
+
+
         likes = FirebaseDatabase.getInstance().getReference("tyms");
         holder.imgFood_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(usercurent==null){
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
                 testclick = true;
                 likes.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -122,7 +134,7 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView img_sp, img_favorite, imgFood_favorite;
+        ImageView img_sp, imgFood_favorite;
         TextView tv_name, tv_price, tv_minutes, tv_ten_loai, tv_soLuotTym;
 
         public ViewHolder(@NonNull View itemView) {
@@ -137,8 +149,8 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
             imgFood_favorite = itemView.findViewById(R.id.imgFood_favorite);
 
         }
-
-        public void getLikeButtonStatus(String maSp, String idUser) {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        public void getLikeButtonStatus(String maSp, String idUser, String maLoai) {
             likes = FirebaseDatabase.getInstance().getReference("tyms");
             likes.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -146,10 +158,12 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
                     if (snapshot.child(maSp).hasChild(idUser)) {
                         int likeCount = (int) snapshot.child(maSp).getChildrenCount();
                         tv_soLuotTym.setText(likeCount + " favorites");
+                        firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSp +".favorite", likeCount);
                         imgFood_favorite.setImageResource(R.drawable.ic_favorite_24);
                     } else {
                         int likeCount = (int) snapshot.child(maSp).getChildrenCount();
                         tv_soLuotTym.setText(likeCount + " favorites");
+                        firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSp +".favorite", likeCount);
                         imgFood_favorite.setImageResource(R.drawable.ic_favorite_border_24);
                     }
                 }
@@ -160,6 +174,22 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
                 }
             });
 
+        }
+        public void getLikeWhenUserSigOut(String maSP){
+            likes = FirebaseDatabase.getInstance().getReference("tyms");
+            likes.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int likeCount = (int) snapshot.child(maSP).getChildrenCount();
+                    tv_soLuotTym.setText(likeCount + " favorites");
+                    imgFood_favorite.setImageResource(R.drawable.ic_favorite_24);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
     }
 

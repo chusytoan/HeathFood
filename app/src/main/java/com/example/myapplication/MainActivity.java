@@ -57,12 +57,11 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new HomeFragment();
                         break;
                     case R.id.maps:
-//                        fragment = new AddSanPhamFragment();
-//                        fragment=new HistoryFragmentMain();
-//                        FirebaseAuth.getInstance().signOut();
-//                        finish();
-//                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                        fragment = new ChatMessagerFragment();
+
+                        FirebaseAuth.getInstance().signOut();
+                        finish();
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                     //   fragment = new ChatMessagerFragment();
                         break;
                     case R.id.profile:
                         fragment = new FragmentUserProfile();

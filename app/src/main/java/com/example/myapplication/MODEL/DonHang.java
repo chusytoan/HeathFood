@@ -8,20 +8,29 @@ public class DonHang {
     private String name;
     private String diaChi;
     private double tongTien;
-    private String trangThai;
+    private String trangThai, ngayMuaHang;
     private List<GioHang> sanphams;
 
     public DonHang() {
     }
 
-    public DonHang(String maDonHang, String sdt, String name, String diaChi, double tongTien, String trangThai, List<GioHang> sanphams) {
+    public DonHang(String maDonHang, String sdt, String name, String diaChi, double tongTien, String trangThai, String ngayMuaHang, List<GioHang> sanphams) {
         this.maDonHang = maDonHang;
         this.sdt = sdt;
         this.name = name;
         this.diaChi = diaChi;
         this.tongTien = tongTien;
         this.trangThai = trangThai;
+        this.ngayMuaHang = ngayMuaHang;
         this.sanphams = sanphams;
+    }
+
+    public String getNgayMuaHang() {
+        return ngayMuaHang;
+    }
+
+    public void setNgayMuaHang(String ngayMuaHang) {
+        this.ngayMuaHang = ngayMuaHang;
     }
 
     public String getMaDonHang() {

@@ -2,6 +2,7 @@ package com.example.myapplication.FRAGMENT;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,12 +15,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.myapplication.ADAPTER.LoaiSanPhamAdapter;
-import com.example.myapplication.ADAPTER.SanPhamAdapter;
+
 import com.example.myapplication.ADAPTER.SanPhamNgangAdapter;
 import com.example.myapplication.MODEL.Loaisanpham;
 import com.example.myapplication.MODEL.Sanpham;
 import com.example.myapplication.R;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -27,6 +33,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +56,6 @@ public class HomeFragment extends Fragment {
     LoaiSanPhamAdapter loaiSanPhamAdapter;
     RecyclerView recyclerView_loaisp;
 
-
     View view;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -59,6 +66,7 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         anhXaView();
+
 
         readDataLoaiSanPhamFromServer();
         return view;
@@ -76,6 +84,7 @@ public class HomeFragment extends Fragment {
         recyclerView_loaisp.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView_sanpham.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
     }
+    List<Sanpham> sanphamsTop10Favorites = new ArrayList<>();
     public void readDataLoaiSanPhamFromServer(){
         db.collection("LoaiSanPhams")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -103,12 +112,22 @@ public class HomeFragment extends Fragment {
                             loaiSanPhams.add(lsp);
                         }
 
+                        Collections.sort(sanPhamList, new Comparator<Sanpham>() {
+                            @Override
+                            public int compare(Sanpham sanpham, Sanpham t1) {
+                                return sanpham.getFavorite() > t1.getFavorite() ? -1 : 1;
+                            }
+                        });
 
+                            for( int i = 0 ; i < 10; i ++){
+                                Sanpham sp = sanPhamList.get(i);
+                                sanphamsTop10Favorites.add(sp);
+                            }
                          loaiSanPhamAdapter = new LoaiSanPhamAdapter(getContext(), loaiSanPhams);
                           loaiSanPhamAdapter.notifyDataSetChanged();
                           recyclerView_loaisp.setAdapter(loaiSanPhamAdapter);
 
-                        sanPhamNgangAdapter = new SanPhamNgangAdapter(getContext(), sanPhamList);
+                        sanPhamNgangAdapter = new SanPhamNgangAdapter(getContext(), sanphamsTop10Favorites);
                         sanPhamNgangAdapter.notifyDataSetChanged();
                         recyclerView_sanpham.setAdapter(sanPhamNgangAdapter);
 

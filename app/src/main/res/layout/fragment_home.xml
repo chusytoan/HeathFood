@@ -58,11 +58,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:orientation="vertical">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/recyrcle_danhSachSp_horizontal"
-                    />
                 <LinearLayout
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
@@ -76,18 +71,17 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:text="Favorite restaurant"
+                        android:text="Favorite Top 10"
                         android:layout_marginLeft="10dp"
                         />
-                    <TextView
-                        android:layout_weight="3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="see all"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        />
+
                 </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recyrcle_danhSachSp_horizontal"
+                    />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_below="@id/layoutScroll"

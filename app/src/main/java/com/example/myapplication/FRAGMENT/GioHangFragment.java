@@ -50,6 +50,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -158,6 +160,14 @@ List<KhachHang> khachHangs;
                     progressDialog.dismiss();
                     Toast.makeText(getContext(), "Vui long them sdt", Toast.LENGTH_SHORT).show();
                     return;
+                }
+                String timeCureent = "";
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                    LocalDateTime now = LocalDateTime.now();
+                    timeCureent = dtf.format(now);
+                    dh.setNgayMuaHang(timeCureent);
                 }
                 dh.setTrangThai("wait for confirmation");
                 dh.setName(kh.getName());

@@ -40,7 +40,7 @@ import pl.droidsonroids.gif.GifImageView;
 
 public class ProfileSetting extends AppCompatActivity {
 
-    EditText ed_address, ed_phone;
+    EditText ed_address, ed_phone, ed_otp;
     Button btn_update;
     GifImageView avt_update;
     String TAG  ="KHDSD";
@@ -64,7 +64,7 @@ public class ProfileSetting extends AppCompatActivity {
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String otpsend = ed_otp.getText().toString();
                 String addressss = ed_address.getText().toString();
                 String phonee = ed_phone.getText().toString();
                 if(userCurrent==null){
@@ -100,36 +100,39 @@ public class ProfileSetting extends AppCompatActivity {
 
                                     @Override
                                     public void onVerificationCompleted(PhoneAuthCredential credential) {
+                                        //PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, otpsend);
 
-                                        Dialog dialog = new Dialog(ProfileSetting.this);
-                                        dialog.setContentView(R.layout.layout_update_profile);
-                                        dialog.setTitle("Enter otp");
-                                        Window window = dialog.getWindow();
-                                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT );
-                                        EditText ed_otp = dialog.findViewById(R.id.ed_otp);
-                                        Button btn_check = dialog.findViewById(R.id.btn_check);
-                                        dialog.show();
-                                        btn_check.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                String Otp = ed_otp.getText().toString();
-                                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, Otp);
-                                                userCurrent.updatePhoneNumber(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if(task.isSuccessful()){
-                                                            updateProfile();
-                                                        }
-                                                    }
-                                                }).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Toast.makeText(getBaseContext(), "cap nhat thong tin that bai", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                                dialog.dismiss();
-                                            }
-                                        });
+
+
+//                                        Dialog dialog = new Dialog(ProfileSetting.this);
+//                                        dialog.setContentView(R.layout.layout_update_profile);
+//                                        dialog.setTitle("Enter otp");
+//                                        Window window = dialog.getWindow();
+//                                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT );
+//                                        EditText ed_otp = dialog.findViewById(R.id.ed_otp);
+//                                        Button btn_check = dialog.findViewById(R.id.btn_check);
+//                                        dialog.show();
+//                                        btn_check.setOnClickListener(new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View view) {
+//                                                String Otp = ed_otp.getText().toString();
+//                                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, Otp);
+//                                                userCurrent.updatePhoneNumber(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                    @Override
+//                                                    public void onComplete(@NonNull Task<Void> task) {
+//                                                        if(task.isSuccessful()){
+//                                                            updateProfile();
+//                                                        }
+//                                                    }
+//                                                }).addOnFailureListener(new OnFailureListener() {
+//                                                    @Override
+//                                                    public void onFailure(@NonNull Exception e) {
+//                                                        Toast.makeText(getBaseContext(), "cap nhat thong tin that bai", Toast.LENGTH_SHORT).show();
+//                                                    }
+//                                                });
+//                                                dialog.dismiss();
+//                                            }
+//                                        });
 
                                     }
 
@@ -167,6 +170,7 @@ public class ProfileSetting extends AppCompatActivity {
         ed_phone = findViewById(R.id.ed_phone);
         btn_update = findViewById(R.id.btn_update);
         avt_update = findViewById(R.id.avt_update);
+        ed_otp = findViewById(R.id.ed_otp);
         progressDialog=new ProgressDialog(this);
     }
     private void updateProfile() {
@@ -195,7 +199,6 @@ public class ProfileSetting extends AppCompatActivity {
                 });
         Toast.makeText(getBaseContext(), "cap nhat thong tin thanh cong", Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(getBaseContext(), "vui long nhap dung ma otp", Toast.LENGTH_SHORT).show();
         return;
 
     }
