@@ -21,6 +21,7 @@ import com.example.myapplication.MODEL.Loaisanpham;
 import com.example.myapplication.MODEL.Sanpham;
 import com.example.myapplication.R;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,7 +49,7 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView_sanpham;
    SanPhamNgangAdapter sanPhamNgangAdapter;
     List<Sanpham> sanPhamList;
-
+    List<Sanpham> sanphamsTop10Favorites;
 
 
     //loaisanpham
@@ -66,8 +67,7 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         anhXaView();
-
-
+        readTop10SanPham();
         readDataLoaiSanPhamFromServer();
         return view;
     }
@@ -80,11 +80,14 @@ public class HomeFragment extends Fragment {
 
         sanPhamList = new ArrayList<>();
         loaiSanPhams = new ArrayList<>();
-
+       sanphamsTop10Favorites = new ArrayList<>();
         recyclerView_loaisp.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView_sanpham.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        sanPhamNgangAdapter = new SanPhamNgangAdapter(getContext(), sanphamsTop10Favorites);
+        recyclerView_sanpham.setAdapter(sanPhamNgangAdapter);
     }
-    List<Sanpham> sanphamsTop10Favorites = new ArrayList<>();
+
+    DatabaseReference top10Tyms = FirebaseDatabase.getInstance().getReference("Top10Tym");
     public void readDataLoaiSanPhamFromServer(){
         db.collection("LoaiSanPhams")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -119,20 +122,55 @@ public class HomeFragment extends Fragment {
                             }
                         });
 
-                            for( int i = 0 ; i < 10; i ++){
-                                Sanpham sp = sanPhamList.get(i);
-                                sanphamsTop10Favorites.add(sp);
-                            }
+
+                                top10Tyms.setValue(sanPhamList);
+
                          loaiSanPhamAdapter = new LoaiSanPhamAdapter(getContext(), loaiSanPhams);
                           loaiSanPhamAdapter.notifyDataSetChanged();
                           recyclerView_loaisp.setAdapter(loaiSanPhamAdapter);
 
-                        sanPhamNgangAdapter = new SanPhamNgangAdapter(getContext(), sanphamsTop10Favorites);
-                        sanPhamNgangAdapter.notifyDataSetChanged();
-                        recyclerView_sanpham.setAdapter(sanPhamNgangAdapter);
 
                     }
                 });
+    }
+    void readTop10SanPham(){
+        top10Tyms.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Sanpham sp = snapshot.getValue(Sanpham.class);
+                if(sanphamsTop10Favorites.size()<10){
+                    sanphamsTop10Favorites.add(sp);
+                    sanPhamNgangAdapter.notifyDataSetChanged();
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                Sanpham sp = snapshot.getValue(Sanpham.class);
+//                if(sanphamsTop10Favorites.size()<10){
+//                    sanphamsTop10Favorites.add(sp);
+//                }
+//                sanPhamNgangAdapter = new SanPhamNgangAdapter(getContext(), sanphamsTop10Favorites);
+//                recyclerView_sanpham.setAdapter(sanPhamNgangAdapter);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }
