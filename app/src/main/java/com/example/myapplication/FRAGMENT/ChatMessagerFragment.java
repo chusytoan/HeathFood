@@ -75,6 +75,7 @@ public class ChatMessagerFragment extends Fragment {
         anhXa();
 
         usercurent = FirebaseAuth.getInstance().getCurrentUser();
+
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("Users").document("admin").addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -91,6 +92,7 @@ public class ChatMessagerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String msg = ed_message.getText().toString();
+
                 if (!msg.equals("")) {
                     Chats(usercurent.getUid(), "7Uh9NlGocOX0zPTnvPNzDtH4Wc63", msg);
                 } else {

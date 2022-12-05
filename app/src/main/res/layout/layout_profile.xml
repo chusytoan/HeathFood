@@ -36,17 +36,16 @@
                 android:id="@+id/name_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:layout_margin="10dp"
                 android:textStyle="bold"
-                android:text="Nguyễn Văn A"/>
+                android:text="Bạn chưa đăng nhập?"/>
             <TextView
                 android:id="@+id/gmail_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textSize="16dp"
-                android:text="abc@gmail.com"/>
+                android:textSize="16dp" />
 
 
         </LinearLayout>
@@ -88,7 +87,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:text="Đơn mua"
-            android:textSize="24dp"/>
+            android:textSize="20dp"/>
 
 
 
