@@ -3,4 +3,11 @@
     <dimen name="magin_update">10dp</dimen>
     <dimen name="magin_botom">20dp</dimen>
     <dimen name="height_tv">50dp</dimen>
+    <dimen name="dm16sp">16sp</dimen>
+    <dimen name="dm12sp">12sp</dimen>
+    <dimen name="dm4sp">4sp</dimen>
+    <dimen name="dm8sp">8sp</dimen>
+    <dimen name="dm20sp">20sp</dimen>
+    <dimen name="dm5sp">5sp</dimen>
+    <dimen name="dm30sp">30sp</dimen>
 </resources>

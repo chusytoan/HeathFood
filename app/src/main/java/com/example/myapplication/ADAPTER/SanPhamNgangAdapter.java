@@ -14,8 +14,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +27,7 @@ import com.example.myapplication.LoginActivity;
 import com.example.myapplication.MODEL.Loaisanpham;
 import com.example.myapplication.MODEL.NhanVien;
 import com.example.myapplication.MODEL.Sanpham;
+import com.example.myapplication.MODEL.SanphamFavorite;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -79,16 +82,40 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
         holder.tv_price.setText(sp.getPrice() + "$");
         holder.tv_minutes.setText(sp.getTime_ship() + "minutes");
         holder.tv_ten_loai.setText(sp.getTen_loai());
-        //holder.tv_soLuotTym.setText(sp.getFavorite()+"");
+
         FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
+
         String idUser = usercurent.getUid();
         String maSp = sp.getMasp();
+        String maLoai = sp.getMaLoai();
+        String tenLoai=sp.getTen_loai();
+        String tenSp=sp.getName();
+        double donGia=sp.getPrice();
+        int star=sp.getStarDanhGia();
+        int tym=sp.getFavorite();
+        int time_ship=sp.getTime_ship();
+        String mota=sp.getDescribe();
+        String imgAnh=sp.getImgURL();
 
-        holder.getLikeButtonStatus(maSp, idUser);
+
+        if(usercurent==null){
+            holder.getLikeWhenUserSigOut(maSp);
+            return;
+        }
+
+            holder.getLikeButtonStatus(maSp, idUser, maLoai);
+
+
+
         likes = FirebaseDatabase.getInstance().getReference("tyms");
+        DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("SanPhamFavorite");
+
         holder.imgFood_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(usercurent==null){
+                    context.startActivity(new Intent(context, LoginActivity.class));
+                }
                 testclick = true;
                 likes.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -96,9 +123,11 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
                         if(testclick==true){
                             if(snapshot.child(maSp).hasChild(idUser)){
                                 likes.child(maSp).child(idUser).removeValue();
+                                reference.child(idUser).child(maSp).removeValue();
                                 testclick = false;
                             }else {
                                 likes.child(maSp).child(idUser).setValue(true);
+                                holder.SanphamFavorite(idUser,maSp,maLoai,tenLoai,tenSp,imgAnh,donGia,tym,time_ship,star,mota);
                                 testclick = false;
                             }
                         }
@@ -122,7 +151,7 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView img_sp, img_favorite, imgFood_favorite;
+        ImageView img_sp, imgFood_favorite;
         TextView tv_name, tv_price, tv_minutes, tv_ten_loai, tv_soLuotTym;
 
         public ViewHolder(@NonNull View itemView) {
@@ -137,8 +166,8 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
             imgFood_favorite = itemView.findViewById(R.id.imgFood_favorite);
 
         }
-
-        public void getLikeButtonStatus(String maSp, String idUser) {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        public void getLikeButtonStatus(String maSp, String idUser, String maLoai) {
             likes = FirebaseDatabase.getInstance().getReference("tyms");
             likes.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -146,10 +175,12 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
                     if (snapshot.child(maSp).hasChild(idUser)) {
                         int likeCount = (int) snapshot.child(maSp).getChildrenCount();
                         tv_soLuotTym.setText(likeCount + " favorites");
+                        firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSp +".favorite", likeCount);
                         imgFood_favorite.setImageResource(R.drawable.ic_favorite_24);
                     } else {
                         int likeCount = (int) snapshot.child(maSp).getChildrenCount();
                         tv_soLuotTym.setText(likeCount + " favorites");
+                        firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSp +".favorite", likeCount);
                         imgFood_favorite.setImageResource(R.drawable.ic_favorite_border_24);
                     }
                 }
@@ -159,6 +190,47 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
 
                 }
             });
+
+        }
+        public void getLikeWhenUserSigOut(String maSP){
+            likes = FirebaseDatabase.getInstance().getReference("tyms");
+            likes.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int likeCount = (int) snapshot.child(maSP).getChildrenCount();
+                    tv_soLuotTym.setText(likeCount + " favorites");
+                    imgFood_favorite.setImageResource(R.drawable.ic_favorite_24);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+        public  void SanphamFavorite(String idUser, String maSP, String maLoai,String tenLoai, String tenSP,String hinhAnh,double donGia, int favorite,int timeship,int star,String mota){
+            SanphamFavorite spYT=new SanphamFavorite();
+            spYT.setIdUser(idUser);
+            spYT.setMaSP(maSP);
+            spYT.setMaLoai(maLoai);
+            spYT.setTen_loai(tenLoai);
+            spYT.setTenSanPham(tenSP);
+            spYT.setHinhAnh(hinhAnh);
+            spYT.setDonGia(donGia);
+            spYT.setFavorite(favorite);
+            spYT.setTime_ship(timeship);
+            spYT.setStarDanhGia(star);
+            spYT.setMota(mota);
+
+            DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("SanPhamFavorite");
+            reference.child(idUser).child(maSP).setValue(spYT, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                    Toast.makeText(context, "Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
 
         }
     }

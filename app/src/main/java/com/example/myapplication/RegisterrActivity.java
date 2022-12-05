@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.myapplication.MODEL.Admin;
@@ -34,7 +35,6 @@ public class RegisterrActivity extends AppCompatActivity {
 // Initialize Firebase Auth
   EditText ed_name, ed_email,ed_password,enterpassword;
   Button btn_add;
-
   ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +106,8 @@ public class RegisterrActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+
     }
    private void anhXaView(){
         ed_name = findViewById(R.id.ed_name);

@@ -34,7 +34,7 @@
         android:drawableStart="@drawable/custom_email"
         android:layout_marginTop="10dp"
         android:background="@drawable/custom_input"
-        android:hint="Email"
+        android:hint="email"
         android:textSize="20dp" />
     <EditText
         android:id="@+id/ed_password"
@@ -82,21 +82,12 @@
             android:layout_height="wrap_content"
             android:text="Temps of Service"
             android:textStyle="bold"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" and "/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Privacy Polity"
-            android:textStyle="bold"/>
+
     </LinearLayout>
 
 
 </LinearLayout>
-
 
     <Button
         android:id="@+id/btn_ok"
@@ -108,11 +99,15 @@
         android:text="SAVE"
         android:textColor="@color/white" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="or Sign in with" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="or Sign in with " />
+
+
+
+
 
 </LinearLayout>
