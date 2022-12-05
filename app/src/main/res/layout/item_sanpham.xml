@@ -76,15 +76,21 @@
 
                 >
                 <ImageView
+                    android:visibility="invisible"
+                    android:id="@+id/img_start1"
+                    android:layout_width="20dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_star"/>
+                <ImageView
+                    android:id="@+id/img_start2"
+                    android:visibility="invisible"
                     android:layout_width="20dp"
                     android:layout_height="14dp"
                     android:src="@drawable/ic_star"/>
                 <ImageView
                     android:layout_width="20dp"
-                    android:layout_height="14dp"
-                    android:src="@drawable/ic_star"/>
-                <ImageView
-                    android:layout_width="20dp"
+                    android:visibility="invisible"
+                    android:id="@+id/img_start3"
                     android:layout_height="14dp"
                     android:src="@drawable/ic_star"/>
                 <ImageView

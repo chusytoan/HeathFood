@@ -48,7 +48,7 @@ import java.util.Map;
 public class SanPhamGridAdapter extends BaseAdapter {
     private Context context;
     private List<Sanpham> list;
-
+    int tb;
     public SanPhamGridAdapter(Context context, List<Sanpham> list) {
         this.context = context;
         this.list = list;
@@ -75,7 +75,7 @@ public class SanPhamGridAdapter extends BaseAdapter {
     }
 
     public class Viewholder{
-        ImageView img_sp, img_start_four, img_start_five,img_Edit, img_delete;
+        ImageView img_sp, img_start_four, img_start_five,img_Edit, img_delete,img_start_one,img_start_tow,img_start_three;
         TextView tv_ten,tv_mo_Ta, tv_gia, tv_ten_loai,tv_luotBan;
         CardView itemsp;
     }
@@ -89,6 +89,9 @@ public class SanPhamGridAdapter extends BaseAdapter {
             holder.img_sp = view.findViewById(R.id.img_sanpham);
             holder.img_start_four = view.findViewById(R.id.img_start4);
             holder.img_start_five = view.findViewById(R.id.img_start5);
+            holder.img_start_one = view.findViewById(R.id.img_start1);
+            holder.img_start_tow = view.findViewById(R.id.img_start2);
+            holder.img_start_three = view.findViewById(R.id.img_start3);
 //            holder.img_Edit = view.findViewById(R.id.img_edit);
 //            holder.img_delete = view.findViewById(R.id.img_deleSP);
             holder.tv_ten = view.findViewById(R.id.tv_ten_sp);
@@ -114,6 +117,55 @@ public class SanPhamGridAdapter extends BaseAdapter {
                 holder.tv_mo_Ta.setText(sp.getDescribe());
             }
         }
+
+
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+        firestore.collection("LoaiSanPhams").getFirestore().collection("sanphams").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                for (QueryDocumentSnapshot doc : value) {
+                    Sanpham sp = doc.toObject(Sanpham.class);
+                    tb=sp.getStarDanhGia();
+                    Log.d(TAG, "sao"+sp.getStarDanhGia());
+                    if (tb==1){
+                        holder.img_start_one.setVisibility(View.VISIBLE);
+                    }else   if (tb==2){
+                        holder.img_start_one.setVisibility(View.VISIBLE);
+                        holder.img_start_tow.setVisibility(View.VISIBLE);
+                    }
+                    else   if (tb==3){
+                        holder.img_start_one.setVisibility(View.VISIBLE);
+                        holder.img_start_tow.setVisibility(View.VISIBLE);
+                        holder.img_start_three.setVisibility(View.VISIBLE);
+
+                    }else
+                    if (tb==4) {
+                        holder.img_start_one.setVisibility(View.VISIBLE);
+                        holder.img_start_tow.setVisibility(View.VISIBLE);
+                        holder.img_start_three.setVisibility(View.VISIBLE);
+                        holder.img_start_four.setVisibility(View.VISIBLE);
+                    }
+                    if (tb==5) {
+                        holder.img_start_one.setVisibility(View.VISIBLE);
+                        holder.img_start_tow.setVisibility(View.VISIBLE);
+                        holder.img_start_three.setVisibility(View.VISIBLE);
+                        holder.img_start_four.setVisibility(View.VISIBLE);
+                        holder.img_start_five.setVisibility(View.VISIBLE);
+                    }
+
+
+                }
+
+            }
+
+        });
+
+
+
+
+
 
 //        holder.img_delete.setOnClickListener(new View.OnClickListener() {
 //            @Override

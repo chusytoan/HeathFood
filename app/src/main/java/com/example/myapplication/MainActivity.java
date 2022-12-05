@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.FRAGMENT.Favorite_Fragment;
 import com.example.myapplication.FRAGMENT.FragmentProfile;
 import com.example.myapplication.FRAGMENT.FragmentUserProfile;
 import com.example.myapplication.FRAGMENT.GioHangFragment;
@@ -135,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new GioHangFragment();
                         break;
                     case R.id.favorite:
+                        fragment=new Favorite_Fragment();
+                        break;
 
 
 

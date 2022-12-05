@@ -65,8 +65,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void anhXaView() {
-        ed_search_main = view.findViewById(R.id.ed_search);
-        img_boloc = view.findViewById(R.id.img_boloc);
+
         recyclerView_sanpham = view.findViewById(R.id.recyrcle_danhSachSp_horizontal);
         recyclerView_loaisp = view.findViewById(R.id.recyrcle_lsp);
 

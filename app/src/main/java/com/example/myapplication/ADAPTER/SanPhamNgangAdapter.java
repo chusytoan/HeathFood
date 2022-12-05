@@ -164,6 +164,25 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
             tv_ten_loai = itemView.findViewById(R.id.tv_gerMan_food);
             tv_soLuotTym = itemView.findViewById(R.id.tv_luotTym);
             imgFood_favorite = itemView.findViewById(R.id.imgFood_favorite);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Sanpham sp= list.get(getAdapterPosition());
+                    Intent intent = new Intent(context, ChiTietSanPham.class);
+                    intent.putExtra("maSP" , sp.getMasp());
+                    intent.putExtra("name", sp.getName());
+                    intent.putExtra("donGia", sp.getPrice());
+                    intent.putExtra("hinhAnh", sp.getImgURL());
+                    intent.putExtra("moTa", sp.getDescribe());
+                    intent.putExtra("star", sp.getStarDanhGia());
+                    intent.putExtra("favorite", sp.getFavorite());
+                    intent.putExtra("time", sp.getTime_ship());
+                    intent.putExtra("tenLoai", sp.getMaLoai());
+
+
+                    context.startActivity(intent);
+                }
+            });
 
         }
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
