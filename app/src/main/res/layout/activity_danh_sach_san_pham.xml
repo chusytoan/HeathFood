@@ -6,10 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".DanhSachSanPham"
     android:layout_margin="4dp">
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/seachviewds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="10"
+        android:background="@drawable/back_tim"
+        app:iconifiedByDefault="false"
+        app:queryHint="tìm kiếm" />
 <GridView
     android:id="@+id/grid_sp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_below="@+id/seachviewds"
     android:numColumns="2"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

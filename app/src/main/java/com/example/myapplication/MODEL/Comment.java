@@ -3,6 +3,7 @@ package com.example.myapplication.MODEL;
 import java.io.Serializable;
 
 public class Comment implements Serializable {
+    private String ma_sp;
     private String id_comment;
     private String id_user;
     private String name_user;

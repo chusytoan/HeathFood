@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class DanhSachSanPham extends AppCompatActivity {
 GridView grid_dssp;
 SanPhamGridAdapter sanPhamAdapter;
 List<Sanpham> sanphams;
+    SearchView searchView;
 
 
 Intent intent;
@@ -41,6 +43,7 @@ Intent intent;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_danh_sach_san_pham);
         anhXa();
+        timkiem();
 
         intent = getIntent();
         readDataLoaiSanPhamFromServer();
@@ -53,6 +56,9 @@ Intent intent;
 
     }
     private void anhXa(){
+
+        searchView=findViewById(R.id.seachviewds);
+        searchView.clearFocus();
         btn_add = findViewById(R.id.btn_add_sp);
         grid_dssp = findViewById(R.id.grid_sp);
         sanphams = new ArrayList<>();
@@ -85,5 +91,33 @@ Intent intent;
                         grid_dssp.setAdapter(sanPhamAdapter);
                     }
                 });
+    }
+    public void timkiem(){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterliss(newText);
+                return true;
+            }
+
+            private void filterliss(String Text) {
+                List<Sanpham> fiteliss=new ArrayList<>();
+                for (Sanpham sp: sanphams){
+                    if (sp.getName().toLowerCase().contains(Text.toLowerCase())){
+                        fiteliss.add(sp);
+                    }}
+                if (fiteliss.isEmpty()){
+
+                }else{
+                    sanPhamAdapter.setfilterliss(fiteliss);
+                }
+            }
+        });
     }
 }

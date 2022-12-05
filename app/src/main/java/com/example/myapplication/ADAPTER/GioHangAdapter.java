@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.VIewholder>{
     private Context context;
@@ -109,7 +111,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.VIewhold
     }
 
     public class VIewholder extends RecyclerView.ViewHolder {
-        ImageView img_sp;
+        CircleImageView img_sp;
         TextView  tvTenSp, tvGia, tvSoLuong;
         CardView item_gh;
 

@@ -55,6 +55,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
         holder.tv_name.setText(cmt.getName_user());
         holder.tv_time.setText(cmt.getTime_comment());
         holder.tv_comment.setText(cmt.getContent());
+        holder.tv_sao.setText(cmt.getSoSaoDanhGia()+"");
 
     }
 
@@ -67,7 +68,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
 
     public class Viewholder extends RecyclerView.ViewHolder {
         CircleImageView img_avt;
-        TextView tv_name, tv_time, tv_comment;
+        TextView tv_name, tv_time, tv_comment,tv_sao;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
@@ -75,6 +76,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_time = itemView.findViewById(R.id.tv_timeCMT);
             tv_comment = itemView.findViewById(R.id.tv_comment);
+            tv_sao=itemView.findViewById(R.id.tv_sosao);
 
         }
     }

@@ -36,6 +36,9 @@ public class FragmentUserProfile extends Fragment {
         view =inflater.inflate(R.layout.layout_profile, container, false);
         anhxa();
         FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser==null){
+            return view;
+        }
         String email= firebaseUser.getEmail();
         String name=firebaseUser.getDisplayName();
         tv_gmail.setText(email);

@@ -5,15 +5,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="8dp"
     android:padding="10dp"
-    android:layout_marginTop="5dp">
+    android:background="@drawable/back_raiting"
+   android:layout_margin="5dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="200dp"
+            android:orientation="horizontal"
+            android:id="@+id/topline"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_sosao"
+                android:layout_width="20dp"
+                android:textColor="#FF0000"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/img_avt"
+                android:text="5"
+                android:textSize="22dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star" />
+        </LinearLayout>
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_below="@id/topline"
+          android:background="#FF8C00"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:layout_marginBottom="5dp"
+          />
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_avt"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="left"
+                android:layout_below="@+id/topline"
                 android:layout_weight="1"
                 android:src="@drawable/avatar_default"
                 />
@@ -25,6 +59,7 @@
                 android:text="Tên người dùng"
                 android:textSize="18dp"
                 android:textStyle="bold"
+                android:layout_below="@+id/topline"
                 android:layout_toRightOf="@id/img_avt"
                 />
             <TextView

@@ -2,22 +2,15 @@ package com.example.myapplication.ADAPTER;
 
 import static android.content.ContentValues.TAG;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,20 +21,14 @@ import com.example.myapplication.ChiTietSanPham;
 import com.example.myapplication.MODEL.Loaisanpham;
 import com.example.myapplication.MODEL.Sanpham;
 import com.example.myapplication.R;
-import com.example.myapplication.UpdateSanpham;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,10 +36,17 @@ public class SanPhamGridAdapter extends BaseAdapter {
     private Context context;
     private List<Sanpham> list;
 
+    int tb;
+
     public SanPhamGridAdapter(Context context, List<Sanpham> list) {
         this.context = context;
         this.list = list;
     }
+    public void setfilterliss(List<Sanpham> fiteliss) {
+        this.list=fiteliss;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getCount() {
@@ -70,9 +64,10 @@ public class SanPhamGridAdapter extends BaseAdapter {
     }
 
     public class Viewholder{
-        ImageView img_sp, img_start_four, img_start_five,img_Edit, img_delete;
-        TextView tv_ten,tv_mo_Ta, tv_gia, tv_ten_loai,tv_luotBan;
+        ImageView img_sp, img_start_four, img_start_five,img_Edit, img_delete,img_start_one,img_start_tow,img_start_three;
+        TextView tv_ten,tv_mo_Ta, tv_gia, tv_ten_loai,tv_luotBan,statsao;
         CardView itemsp;
+
     }
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
@@ -80,10 +75,14 @@ public class SanPhamGridAdapter extends BaseAdapter {
         if(view == null){
             holder = new Viewholder();
             view = LayoutInflater.from(context).inflate(R.layout.item_sanpham, viewGroup, false);
-
+//            holder.statsao=view.findViewById(R.id.statsao);
             holder.img_sp = view.findViewById(R.id.img_sanpham);
             holder.img_start_four = view.findViewById(R.id.img_start4);
             holder.img_start_five = view.findViewById(R.id.img_start5);
+            holder.img_start_one = view.findViewById(R.id.img_start1);
+            holder.img_start_tow = view.findViewById(R.id.img_start2);
+            holder.img_start_three = view.findViewById(R.id.img_start3);
+
 //            holder.img_Edit = view.findViewById(R.id.img_edit);
 //            holder.img_delete = view.findViewById(R.id.img_deleSP);
             holder.tv_ten = view.findViewById(R.id.tv_ten_sp);
@@ -97,11 +96,16 @@ public class SanPhamGridAdapter extends BaseAdapter {
             holder = (Viewholder) view.getTag();
 
         Sanpham sp = list.get(i);
+
+
+
         Glide.with(context).load(sp.getImgURL()).into(holder.img_sp);
         holder.tv_ten.setText(sp.getName());
 
         holder.tv_gia.setText("Giá: " + sp.getPrice()+"$");
         holder.tv_ten_loai.setText(sp.getTen_loai());
+
+
         if(sp.getDescribe()!=null){
             if(sp.getDescribe().length()>50){
                 holder.tv_mo_Ta.setText(sp.getDescribe().substring(0,50) + "...");
@@ -110,33 +114,57 @@ public class SanPhamGridAdapter extends BaseAdapter {
             }
         }
 
-//        holder.img_delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                deleteSanpham(sp.getMasp(), sp.getMaLoai());
-//
-//            }
-//        });
-//        holder.img_Edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(context, UpdateSanpham.class);
-//                //String masp, String name, double price, int time_ship, String describe, int amount, boolean favorite, String imgURL,
-//                // Map<String, Comment> comments,String ten_loai,int starDanhGia
-//                intent.putExtra("maSPUP" , sp.getMasp());
-//                intent.putExtra("nameUP", sp.getName());
-//                intent.putExtra("donGiaUP", sp.getPrice());
-//                intent.putExtra("hinhAnhUP", sp.getImgURL());
-//                intent.putExtra("moTaUP", sp.getDescribe());
-//                intent.putExtra("timeUP", sp.getTime_ship());
-//                intent.putExtra("MaLoai", sp.getMaLoai());
-//
-//
-//
-//                context.startActivity(intent);
-//
-//            }
-//        });
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+                        firestore.collection("LoaiSanPhams").getFirestore().collection("sanphams").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                for (QueryDocumentSnapshot doc : value) {
+                                    Sanpham sp = doc.toObject(Sanpham.class);
+                                    tb=sp.getStarDanhGia();
+                                    Log.d(TAG, "sao"+sp.getStarDanhGia());
+                                    if (tb==1){
+                                        holder.img_start_one.setVisibility(View.VISIBLE);
+                                    }else   if (tb==2){
+                                        holder.img_start_one.setVisibility(View.VISIBLE);
+                                        holder.img_start_tow.setVisibility(View.VISIBLE);
+                                    }
+                                    else   if (tb==3){
+                                        holder.img_start_one.setVisibility(View.VISIBLE);
+                                        holder.img_start_tow.setVisibility(View.VISIBLE);
+                                        holder.img_start_three.setVisibility(View.VISIBLE);
+
+                                    }else
+                                    if (tb==4) {
+                                        holder.img_start_one.setVisibility(View.VISIBLE);
+                                        holder.img_start_tow.setVisibility(View.VISIBLE);
+                                        holder.img_start_three.setVisibility(View.VISIBLE);
+                                        holder.img_start_four.setVisibility(View.VISIBLE);
+                                    }
+                                    if (tb==5) {
+                                        holder.img_start_one.setVisibility(View.VISIBLE);
+                                        holder.img_start_tow.setVisibility(View.VISIBLE);
+                                        holder.img_start_three.setVisibility(View.VISIBLE);
+                                        holder.img_start_four.setVisibility(View.VISIBLE);
+                                        holder.img_start_five.setVisibility(View.VISIBLE);
+                                    }
+
+
+                                }
+
+                            }
+
+                        });
+
+
+
+
+
+
+
+
+
+
 
         holder.itemsp.setOnClickListener(new View.OnClickListener() {
             @Override

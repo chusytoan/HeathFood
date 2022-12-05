@@ -84,7 +84,11 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
         holder.tv_ten_loai.setText(sp.getTen_loai());
 
         FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
+        if (usercurent==null){
+            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+            return;
 
+        }
         String idUser = usercurent.getUid();
         String maSp = sp.getMasp();
         String maLoai = sp.getMaLoai();
@@ -96,14 +100,11 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
         int time_ship=sp.getTime_ship();
         String mota=sp.getDescribe();
         String imgAnh=sp.getImgURL();
-
-
         if(usercurent==null){
             holder.getLikeWhenUserSigOut(maSp);
             return;
         }
-
-            holder.getLikeButtonStatus(maSp, idUser, maLoai);
+        holder.getLikeButtonStatus(maSp, idUser, maLoai);
 
 
 
@@ -164,6 +165,25 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
             tv_ten_loai = itemView.findViewById(R.id.tv_gerMan_food);
             tv_soLuotTym = itemView.findViewById(R.id.tv_luotTym);
             imgFood_favorite = itemView.findViewById(R.id.imgFood_favorite);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Sanpham sp= list.get(getAdapterPosition());
+                    Intent intent = new Intent(context, ChiTietSanPham.class);
+                    intent.putExtra("maSP" , sp.getMasp());
+                    intent.putExtra("name", sp.getName());
+                    intent.putExtra("donGia", sp.getPrice());
+                    intent.putExtra("hinhAnh", sp.getImgURL());
+                    intent.putExtra("moTa", sp.getDescribe());
+                    intent.putExtra("star", sp.getStarDanhGia());
+                    intent.putExtra("favorite", sp.getFavorite());
+                    intent.putExtra("time", sp.getTime_ship());
+                    intent.putExtra("tenLoai", sp.getMaLoai());
+
+
+                    context.startActivity(intent);
+                }
+            });
 
         }
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -208,7 +228,9 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
                 }
             });
         }
-        public  void SanphamFavorite(String idUser, String maSP, String maLoai,String tenLoai, String tenSP,String hinhAnh,double donGia, int favorite,int timeship,int star,String mota){
+
+        public  void SanphamFavorite(String idUser, String maSP, String maLoai,String tenLoai,
+                                     String tenSP,String hinhAnh,double donGia, int favorite,int timeship,int star,String mota){
             SanphamFavorite spYT=new SanphamFavorite();
             spYT.setIdUser(idUser);
             spYT.setMaSP(maSP);
