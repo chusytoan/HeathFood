@@ -34,4 +34,8 @@
         android:name="com.example.myapplication.LoginActivity"
         android:label="LoginActivity" />
 
+    <fragment android:id="@+id/id_doimatkhau"
+        android:name="com.example.myapplication.FRAGMENT.DoiMatKhauFragment"
+        tools:layout="@layout/fragment_doi_mat_khau"
+        android:label="Doi Mat Khau"/>
 </navigation>

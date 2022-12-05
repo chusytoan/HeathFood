@@ -52,7 +52,18 @@
         android:background="@drawable/backdrouprofile"
         android:text="+84"
         />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
+        android:padding="30dp"
+        android:inputType="number"
+        android:hint="nhap otp"
+        android:id="@+id/ed_otp"
+        android:layout_below="@+id/ed_adress"
+        android:background="@drawable/backdrouprofile"
+
+        />
     <Button
         android:id="@+id/btn_update"
         android:layout_width="wrap_content"

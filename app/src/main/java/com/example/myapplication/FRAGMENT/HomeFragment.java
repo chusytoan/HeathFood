@@ -3,7 +3,6 @@ package com.example.myapplication.FRAGMENT;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.myapplication.ADAPTER.LoaiSanPhamAdapter;
 import com.example.myapplication.ADAPTER.SanPhamAdapter;
@@ -37,7 +35,7 @@ public class HomeFragment extends Fragment {
     TextInputEditText ed_search_main;
     private String TAG = "homefragment";
 
-    SearchView searchView;
+
 
     RecyclerView recyclerView_sanpham;
    SanPhamNgangAdapter sanPhamNgangAdapter;
@@ -61,16 +59,14 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         anhXaView();
-        timkiem();
 
         readDataLoaiSanPhamFromServer();
         return view;
     }
 
     private void anhXaView() {
-        searchView=view.findViewById(R.id.seachview);
-        searchView.clearFocus();
-
+        ed_search_main = view.findViewById(R.id.ed_search);
+        img_boloc = view.findViewById(R.id.img_boloc);
         recyclerView_sanpham = view.findViewById(R.id.recyrcle_danhSachSp_horizontal);
         recyclerView_loaisp = view.findViewById(R.id.recyrcle_lsp);
 
@@ -118,34 +114,6 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-    }
-    public void timkiem(){
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterliss(newText);
-                return true;
-            }
-
-            private void filterliss(String Text) {
-                List<Loaisanpham> fiteliss=new ArrayList<>();
-                for (Loaisanpham loaisan: loaiSanPhams){
-                    if (loaisan.getName().toLowerCase().contains(Text.toLowerCase())){
-                        fiteliss.add(loaisan);
-                    }}
-                if (fiteliss.isEmpty()){
-                    Toast.makeText(getContext(), "k có loại sản phẩm này", Toast.LENGTH_SHORT).show();
-                }else{
-                    loaiSanPhamAdapter.setfilterliss(fiteliss);
-                }
-            }
-        });
     }
 
 }

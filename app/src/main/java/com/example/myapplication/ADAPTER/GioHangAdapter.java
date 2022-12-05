@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,13 +67,38 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.VIewhold
         if(gh==null)
             return;
 
-        //Log.d(TAG, "ghadapter: " + gh.getTenLoaiSanPham());
         Glide.with(context).load(gh.getHinhAnh()).into(holder.img_sp);
         holder.tvTenSp.setText(gh.getTenSanPham());
         holder.tvGia.setText("" + gh.getDonGia());
         holder.tvSoLuong.setText("" + gh.getSoLuong());
         count  = gh.getSoLuong();
 
+        holder.item_gh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // Toast.makeText(context, "rac af", Toast.LENGTH_SHORT).show();
+                Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.dialog_delete);
+                Window window = dialog.getWindow();
+                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Button yes = dialog.findViewById(R.id.yes);
+                dialog.show();
+                yes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("GioHangs");
+                        reference.child(gh.getMaSP()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(context, "xoa thanh cong", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                });
+            }
+        });
 
 
 
@@ -87,43 +113,16 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.VIewhold
     public class VIewholder extends RecyclerView.ViewHolder {
         CircleImageView img_sp;
         TextView  tvTenSp, tvGia, tvSoLuong;
-        ImageView tang,giam;
+        CardView item_gh;
+
         public VIewholder(@NonNull View itemView) {
             super(itemView);
             img_sp = itemView.findViewById(R.id.img_sp_gh);
             tvTenSp= itemView.findViewById(R.id.tv_tensp);
             tvGia = itemView.findViewById(R.id.tv_gia);
             tvSoLuong = itemView.findViewById(R.id.tv_soluong);
-            //tang=itemView.findViewById(R.id.tang);
-           // giam=itemView.findViewById(R.id.giam);
+            item_gh = itemView.findViewById(R.id.item_gh);
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    Dialog dialog = new Dialog(context);
-                    dialog.setContentView(R.layout.dialog_delete);
-                    Window window = dialog.getWindow();
-                    window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-                    window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    Button yes = dialog.findViewById(R.id.yes);
-                    yes.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("GioHangs");
-                            reference.child(list.get(getAdapterPosition()).getMaSP()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(context, "xoa thanh cong", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    });
-                    return false;
-                }
-            });
         }
     }
 }
-
-//    public void increm(View view){ count  ; value.setText("" count); }
-//    public void decrem(View view){ if (count<=0) count=0; else count--; value.setText("" count); }

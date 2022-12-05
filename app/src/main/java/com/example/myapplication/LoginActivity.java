@@ -4,12 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.FRAGMENT.FragmentUserProfile;
@@ -30,13 +34,13 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
-ImageView img_login;
+
 EditText ed_user, ed_pass;
 Button btn_login, btn_dangky;
 private FirebaseAuth mAuth;
-GoogleSignInOptions googleSignInOptions;
-GoogleSignInClient googleSignInClient;
-int REQUEST_CODE_SIGIN = 100;
+    ProgressDialog progressDialog;
+    TextView btn_forgot;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,19 +66,13 @@ int REQUEST_CODE_SIGIN = 100;
                 startActivity(new Intent(LoginActivity.this, RegisterrActivity.class));
             }
         });
-        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-        img_login.setOnClickListener(new View.OnClickListener() {
+        btn_forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sigIn();
+
+                startActivity(new Intent(LoginActivity.this, ForgotPassWordActivity.class));
             }
         });
-
-
 
     }
     @Override
@@ -104,44 +102,33 @@ int REQUEST_CODE_SIGIN = 100;
                         }
                     }
                 });
+
     }
-
-
     private void anhxaview(){
-        img_login = findViewById(R.id.loginWithGoogle);
+        btn_forgot=findViewById(R.id.tv_forgot);
+        progressDialog = new ProgressDialog(this);
         ed_user = findViewById(R.id.ed_username);
         ed_pass = findViewById(R.id.ed_password);
         btn_login = findViewById(R.id.btn_login);
         btn_dangky = findViewById(R.id.btn_dangky);
     }
-
-
-    private void sigIn() {
-        Intent intent = googleSignInClient.getSignInIntent();
-        startActivityForResult(intent, REQUEST_CODE_SIGIN);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==REQUEST_CODE_SIGIN){
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                task.getResult(ApiException.class);
-                 mainActivity();
-
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void mainActivity() {
-        finish();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-//    public void logout(View view){
-//        mAuth.signOut();
+//    private void forGotPassWord(String email) {
+//        progressDialog.show();
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
+//        auth.sendPasswordResetEmail(email)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        progressDialog.dismiss();
+//                        if (task.isSuccessful()) {
+//                            Toast.makeText(LoginActivity.this, "EMAIL sent", Toast.LENGTH_SHORT).show();
+//
+//                        }
+//                    }
+//                });
 //    }
+
+
+
+
 }
