@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 
 import com.example.myapplication.FRAGMENT.ChatMessagerFragment;
+import com.example.myapplication.FRAGMENT.Favorite_Fragment;
 import com.example.myapplication.FRAGMENT.FragmentUserProfile;
 import com.example.myapplication.FRAGMENT.GioHangFragment;
 import com.example.myapplication.FRAGMENT.HomeFragment;
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new GioHangFragment();
                         break;
                     case R.id.favorite:
+                        fragment=new Favorite_Fragment();
+                        break;
 
 
 

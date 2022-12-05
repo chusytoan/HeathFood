@@ -14,8 +14,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +27,7 @@ import com.example.myapplication.LoginActivity;
 import com.example.myapplication.MODEL.Loaisanpham;
 import com.example.myapplication.MODEL.NhanVien;
 import com.example.myapplication.MODEL.Sanpham;
+import com.example.myapplication.MODEL.SanphamFavorite;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -82,19 +85,31 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
 
         FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
 
+        String idUser = usercurent.getUid();
         String maSp = sp.getMasp();
         String maLoai = sp.getMaLoai();
+        String tenLoai=sp.getTen_loai();
+        String tenSp=sp.getName();
+        double donGia=sp.getPrice();
+        int star=sp.getStarDanhGia();
+        int tym=sp.getFavorite();
+        int time_ship=sp.getTime_ship();
+        String mota=sp.getDescribe();
+        String imgAnh=sp.getImgURL();
+
+
         if(usercurent==null){
             holder.getLikeWhenUserSigOut(maSp);
             return;
         }
-            String idUser = usercurent.getUid();
 
             holder.getLikeButtonStatus(maSp, idUser, maLoai);
 
 
 
         likes = FirebaseDatabase.getInstance().getReference("tyms");
+        DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("SanPhamFavorite");
+
         holder.imgFood_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,9 +123,11 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
                         if(testclick==true){
                             if(snapshot.child(maSp).hasChild(idUser)){
                                 likes.child(maSp).child(idUser).removeValue();
+                                reference.child(idUser).child(maSp).removeValue();
                                 testclick = false;
                             }else {
                                 likes.child(maSp).child(idUser).setValue(true);
+                                holder.SanphamFavorite(idUser,maSp,maLoai,tenLoai,tenSp,imgAnh,donGia,tym,time_ship,star,mota);
                                 testclick = false;
                             }
                         }
@@ -190,6 +207,31 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
 
                 }
             });
+        }
+        public  void SanphamFavorite(String idUser, String maSP, String maLoai,String tenLoai, String tenSP,String hinhAnh,double donGia, int favorite,int timeship,int star,String mota){
+            SanphamFavorite spYT=new SanphamFavorite();
+            spYT.setIdUser(idUser);
+            spYT.setMaSP(maSP);
+            spYT.setMaLoai(maLoai);
+            spYT.setTen_loai(tenLoai);
+            spYT.setTenSanPham(tenSP);
+            spYT.setHinhAnh(hinhAnh);
+            spYT.setDonGia(donGia);
+            spYT.setFavorite(favorite);
+            spYT.setTime_ship(timeship);
+            spYT.setStarDanhGia(star);
+            spYT.setMota(mota);
+
+            DatabaseReference  reference = FirebaseDatabase.getInstance().getReference("SanPhamFavorite");
+            reference.child(idUser).child(maSP).setValue(spYT, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                    Toast.makeText(context, "Đã thêm vào danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+
         }
     }
 
