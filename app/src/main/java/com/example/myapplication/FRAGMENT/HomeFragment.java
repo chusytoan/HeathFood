@@ -33,8 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {
-    ImageView img_boloc;
-    TextInputEditText ed_search_main;
+
     private String TAG = "homefragment";
 
     SearchView searchView;
@@ -140,7 +139,7 @@ public class HomeFragment extends Fragment {
                         fiteliss.add(loaisan);
                     }}
                 if (fiteliss.isEmpty()){
-                    Toast.makeText(getContext(), "k có loại sản phẩm này", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
                 }else{
                     loaiSanPhamAdapter.setfilterliss(fiteliss);
                 }

@@ -115,12 +115,13 @@
                  android:layout_height="wrap_content"
                  android:orientation="horizontal"
                  android:layout_margin="10dp"
+                 android:gravity="center"
                  android:weightSum="10">
                  <LinearLayout
                      android:layout_width="0dp"
                      android:layout_height="wrap_content"
                      android:layout_gravity="center"
-                     android:layout_weight="5">
+                     android:layout_weight="4">
                      <LinearLayout
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content">
@@ -191,22 +192,25 @@
                  <LinearLayout
                      android:layout_width="0dp"
                      android:layout_height="wrap_content"
-                     android:layout_weight="1.5"
+                     android:layout_weight="1.8"
                      android:background="@drawable/backbround_start_chi_tiet_san_pham"
                      android:gravity="center"
+                     android:paddingLeft="10dp"
                      android:layout_marginLeft="20dp"
                      >
 
                      <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
+                         android:id="@+id/tbsao"
+                         android:layout_width="20dp"
+                         android:layout_height="24dp"
+
                          android:layout_marginRight="5dp"
-                         android:text="5"
                          android:textColor="@color/black" />
 
                      <ImageView
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
+                         android:id="@+id/saoo"
                          android:src="@drawable/ic_star" />
 
                  </LinearLayout>
@@ -275,11 +279,39 @@
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content"
                      android:padding="20dp"/>
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:gravity="center"
+             android:orientation="vertical"
+             >
+             <RatingBar
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:numStars="5"
+                 android:rating="0"
+                 android:layout_margin="5dp"
+                 android:stepSize="1"
+                 android:padding="5dp"
+                 android:id="@+id/raitingbar"
+                 />
+             <Button
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/getsao"
+                 android:text="Get"
+                 />
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:id="@+id/ratecount"
+                 android:textAppearance="?android:textAppearanceMedium"
+                 />
              <LinearLayout
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:orientation="horizontal"
-                 android:paddingTop="30dp"
+
                  android:paddingBottom="100dp"
                  android:weightSum="10">
 
@@ -304,6 +336,7 @@
 
 
 
+         </LinearLayout>
          </LinearLayout>
 
 
