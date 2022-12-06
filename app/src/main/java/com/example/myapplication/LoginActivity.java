@@ -129,6 +129,9 @@ private FirebaseAuth mAuth;
 //    }
 
 
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
 }

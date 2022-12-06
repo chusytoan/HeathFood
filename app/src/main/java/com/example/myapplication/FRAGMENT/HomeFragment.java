@@ -183,7 +183,6 @@ public class HomeFragment extends Fragment {
                         fiteliss.add(loaisan);
                     }}
                 if (fiteliss.isEmpty()){
-                    Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
                 }else{
                     loaiSanPhamAdapter.setfilterliss(fiteliss);
                 }
