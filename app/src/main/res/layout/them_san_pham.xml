@@ -1,138 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/img"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_add_food"
     android:orientation="vertical"
-    android:layout_height="match_parent">
-    <TextView
-        android:background="#FFC107"
-        android:layout_width="match_parent"
-        android:text="THÊM SẢN PHẨM"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="25dp"
-        android:textColor="@color/black"
-        android:layout_height="@dimen/height_tv"/>
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/add_food" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/background_box_shadowww"
+                android:gravity="center"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/btn_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/up_anh" />
+
+            </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ed_ma_sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/magin_update"
-                android:hint="Nhập mã sản phẩm"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:hint="Nhập mã sản phẩm">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ed_name_sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Nhập tên sản phẩm"
-                android:layout_marginTop="@dimen/magin_update"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="Nhập tên sản phẩm">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <Spinner
                 android:id="@+id/spinner_loai_sp"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_width="350dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp" />
 
-            <ImageView
-                android:id="@+id/img_sp"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:layout_marginTop="@dimen/magin_update"
-                android:src="@drawable/img1" />
-
-            <ImageView
-                android:id="@+id/btn_upload"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="@dimen/magin_update"
-                android:src="@drawable/up_file" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ed_gia_sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/magin_update"
-                android:hint="Nhập giá sản phẩm"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="Nhập giá sản phẩm">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ed_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/magin_update"
-                android:hint="Thời gian dự kiến"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="Thời gian dự kiến">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ed_mota"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/magin_update"
-                android:hint="Nhập mô tả"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                >
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="Nhập mô tả">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
-
 
 
             <Button
                 android:id="@+id/btn_add_sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#FF9800"
-                android:textColor="#f000"
-                android:textSize="16dp"
-                android:layout_gravity="right"
-                android:textStyle="bold"
+                android:layout_width="183dp"
+                android:layout_height="44dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:text="Đăng"/>
+                android:backgroundTint="@color/black"
+                android:text="Đăng"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </ScrollView>
-
 </LinearLayout>
-
-
-
-
-

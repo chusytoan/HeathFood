@@ -17,6 +17,11 @@
         android:icon="@drawable/icon_add"
         />
     <item
+        android:id="@+id/id_slider"
+        android:title="ADD BANNER"
+        android:icon="@drawable/icon_add"
+        />
+    <item
         android:id="@+id/id_editprofile"
         android:title="profile"
         android:icon="@drawable/icon_addnv"

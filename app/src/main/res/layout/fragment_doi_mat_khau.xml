@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    android:background="#fff"
+    android:background="@drawable/background"
+
     tools:context=".FRAGMENT.DoiMatKhauFragment">
 
     <EditText

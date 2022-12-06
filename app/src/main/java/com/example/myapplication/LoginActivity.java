@@ -105,7 +105,7 @@ private FirebaseAuth mAuth;
 
     }
     private void anhxaview(){
-        btn_forgot=findViewById(R.id.tv_forgot);
+        btn_forgot=findViewById(R.id.forgot);
         progressDialog = new ProgressDialog(this);
         ed_user = findViewById(R.id.ed_username);
         ed_pass = findViewById(R.id.ed_password);

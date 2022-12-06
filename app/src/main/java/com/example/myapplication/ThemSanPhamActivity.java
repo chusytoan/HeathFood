@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ThemSanPhamActivity extends AppCompatActivity {
-    ImageView btn_upload,img_sp;
+    ImageView btn_upload;
 
     TextInputLayout ed_ten,ed_gia, ed_masp, ed_time, ed_mo_ta;
     ProgressDialog progressDialog;
@@ -102,7 +102,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 progressDialog.dismiss();
                                 if(task.isSuccessful()) {
-                                    img_sp.setImageResource(R.drawable.img1);
+                                    btn_upload.setImageResource(R.drawable.up_anh);
                                     ed_ten.getEditText().setText("");
                                     ed_masp.getEditText().setText("");
                                     ed_gia.getEditText().setText("");
@@ -131,7 +131,6 @@ public class ThemSanPhamActivity extends AppCompatActivity {
     }
     private void anhXaView() {
         btn_upload = findViewById(R.id.btn_upload);
-        img_sp =findViewById(R.id.img_sp);
         ed_ten = findViewById(R.id.ed_name_sp);
         ed_gia = findViewById(R.id.ed_gia_sp);
         ed_masp = findViewById(R.id.ed_ma_sp);
@@ -177,7 +176,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                     if(task.isSuccessful()){
                         Uri dowloaduri = (Uri) task.getResult();
                         muri = dowloaduri.toString();
-                        Glide.with(ThemSanPhamActivity.this).load(muri).into(img_sp);
+                        Glide.with(ThemSanPhamActivity.this).load(muri).into(btn_upload);
                         dialog.dismiss();
                     }
                     else {

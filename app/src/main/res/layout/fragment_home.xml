@@ -44,6 +44,20 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:orientation="vertical">
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager2"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp" />
+
+                <me.relex.circleindicator.CircleIndicator3
+                    android:id="@+id/circle_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    app:ci_drawable="@drawable/bg_indicator"/>
                 <LinearLayout
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
@@ -73,12 +87,13 @@
                     android:layout_below="@id/layoutScroll"
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="800dp"
+                    android:layout_height="wrap_content"
                     android:numColumns="2"
                     android:verticalSpacing="10dp"
                     android:horizontalSpacing="10dp"
                     android:id="@+id/recyrcle_lsp"
                     />
+
 
             </LinearLayout>
 
