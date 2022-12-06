@@ -1,55 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="4dp"
+    android:layout_marginEnd="10dp"
+    app:cardCornerRadius="60dp"
     android:layout_marginBottom="8dp"
 
     >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
+        android:layout_height="40dp"
+        android:background="@drawable/background_box_shadow"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_lsp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img1"
-            />
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_launcher_background" />
+
         <TextView
             android:id="@+id/tv_tenLoai"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:layout_alignParentTop="true"
-            android:background="#4f0e0d0e"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:text="TEN LOAI SP"
-            android:textStyle="bold"
-            />
-        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            >
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:text="loai 1"
+            android:textSize="16dp"
+            android:textStyle="bold|italic" />
 
-<!--            <ImageView-->
-<!--                android:id="@+id/img_deleLoai"-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:src="@drawable/ic_delete" />-->
-<!--            <ImageView-->
-<!--                android:id="@+id/img_editLoai"-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:src="@drawable/ic_edit"-->
-<!--                android:layout_marginLeft="10dp"/>-->
-        </LinearLayout>
+    </LinearLayout>
 
-    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

@@ -3,20 +3,24 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#b3e4f2"
     android:padding="10dp"
     android:weightSum="10">
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="lspxxx"
-        android:layout_weight="3"
         android:id="@+id/tv_ma_loai_spinner"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:text="lspxxx"
+        android:textStyle="bold" />
+    <TextView
+        android:layout_marginStart="20dp"
+        android:id="@+id/tv_name_loaisp_spinner"
+        android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:text="Ten loai sp"
+        android:layout_weight="7"
         />
-<TextView
-    android:id="@+id/tv_name_loaisp_spinner"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Ten loai sp"
-    android:layout_weight="7"
-    />
 </LinearLayout>

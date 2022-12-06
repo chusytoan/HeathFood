@@ -3,9 +3,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-<TextView
-    android:id="@+id/tv_Address"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="HN "/>
+    <TextView
+        android:id="@+id/tv_Address"
+        android:padding="3dp"
+        android:textStyle="bold|italic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HN"/>
 </LinearLayout>

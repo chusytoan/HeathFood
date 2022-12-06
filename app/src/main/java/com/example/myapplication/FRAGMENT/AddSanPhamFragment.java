@@ -54,7 +54,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddSanPhamFragment extends Fragment {
     //view
-    ImageView btn_upload,img_sp;
+    ImageView btn_upload;
 
     TextInputLayout ed_ten,ed_gia, ed_masp, ed_time, ed_mo_ta;
     ProgressDialog progressDialog;
@@ -117,7 +117,7 @@ public class AddSanPhamFragment extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         progressDialog.dismiss();
                         if(task.isSuccessful()) {
-                            img_sp.setImageResource(R.drawable.img1);
+                            btn_upload.setImageResource(R.drawable.up_anh);
                             ed_ten.getEditText().setText("");
                             ed_masp.getEditText().setText("");
                             ed_gia.getEditText().setText("");
@@ -147,7 +147,6 @@ public class AddSanPhamFragment extends Fragment {
 
     private void anhXaView() {
         btn_upload = view.findViewById(R.id.btn_upload);
-        img_sp = view.findViewById(R.id.img_sp);
         ed_ten = view.findViewById(R.id.ed_name_sp);
         ed_gia = view.findViewById(R.id.ed_gia_sp);
         ed_masp = view.findViewById(R.id.ed_ma_sp);
@@ -194,7 +193,7 @@ public class AddSanPhamFragment extends Fragment {
                     if(task.isSuccessful()){
                         Uri dowloaduri = (Uri) task.getResult();
                         muri = dowloaduri.toString();
-                        Glide.with(getContext()).load(muri).into(img_sp);
+                        Glide.with(getContext()).load(muri).into(btn_upload);
                         dialog.dismiss();
                     }
                     else {

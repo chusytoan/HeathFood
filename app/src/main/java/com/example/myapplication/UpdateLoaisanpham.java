@@ -62,7 +62,7 @@ public class UpdateLoaisanpham extends AppCompatActivity {
         Loaimuri = intent.getStringExtra("hinhanhLoai");
 
 
-        Glide.with(this).load(Loaimuri).into(img_LoaisanphamUp);
+        Glide.with(this).load(Loaimuri).into(btn_upload);
         ed_nameLoai.getEditText().setText(tenLoai);
         tv_maLoai.getEditText().setText(maLoai);
 
@@ -125,7 +125,6 @@ public class UpdateLoaisanpham extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         ed_nameLoai = findViewById(R.id.ed_nameLoai);
         tv_maLoai = findViewById(R.id.tv_maLoai);
-        img_LoaisanphamUp=findViewById(R.id.img_LoaisanphamUP);
         btn_upload=findViewById(R.id.btn_uploadLoai);
         btn_updateLoai=findViewById(R.id.btn_updateLoai);
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
@@ -160,7 +159,7 @@ public class UpdateLoaisanpham extends AppCompatActivity {
                     if(task.isSuccessful()){
                         Uri dowloaduri = (Uri) task.getResult();
                         Loaimuri = dowloaduri.toString();
-                        Glide.with(UpdateLoaisanpham.this).load(Loaimuri).into(img_LoaisanphamUp);
+                        Glide.with(UpdateLoaisanpham.this).load(Loaimuri).into(btn_upload);
                     }
                     else {
                         Toast.makeText(getBaseContext(), "failed!", Toast.LENGTH_SHORT).show();
