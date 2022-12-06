@@ -1,12 +1,14 @@
 package com.example.myapplication.FRAGMENT;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,9 +64,14 @@ public class AddSlider extends Fragment {
             public void onClick(View view) {
                 progressDialog.show();
                 Photo photo= new Photo();
+
                 photo.setResource(muri);
-
-
+                Log.d(TAG, "onClickkkkkkkkkkkkk: "+muri);
+                if (muri==null){
+                    Toast.makeText(getContext(), "Bạn chưa thêm ảnh?", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    return;
+                }
 
 
                 reference.push().setValue(photo).addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -85,7 +85,7 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
 
         FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
         if (usercurent==null){
-            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+
             return;
 
         }

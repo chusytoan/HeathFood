@@ -38,13 +38,15 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class AddLoaiSanPham extends Fragment {
 
 TextInputLayout ed_ten, ed_ma;
 Button btnadd, btn_xoa_trang;
 ProgressDialog progressDialog;
-    ImageView btn_upload,img_sp;
+    ImageView btn_upload;
 
     //store
     StorageReference storageReference;
@@ -95,7 +97,7 @@ ProgressDialog progressDialog;
                                 public void onComplete(@NonNull Task<Void> task) {
                                     progressDialog.dismiss();
                                     if(task.isSuccessful()){
-                                        img_sp.setImageResource(R.drawable.img1);
+                                        btn_upload.setImageResource(R.drawable.img1);
                                         ed_ten.getEditText().setText("");
                                         ed_ma.getEditText().setText("");
 
@@ -121,7 +123,7 @@ ProgressDialog progressDialog;
     }
     private void anhXaView(){
         btn_upload = view.findViewById(R.id.btn_upload);
-        img_sp = view.findViewById(R.id.img_sp);
+//        img_sp = view.findViewById(R.id.img_sp);
         progressDialog = new ProgressDialog(getContext());
         ed_ten = view.findViewById(R.id.ed_ten_loai);
         ed_ma = view.findViewById(R.id.ed_ma_loai);
@@ -163,7 +165,7 @@ ProgressDialog progressDialog;
                     if(task.isSuccessful()){
                         Uri dowloaduri = (Uri) task.getResult();
                         muri = dowloaduri.toString();
-                        Glide.with(getContext()).load(muri).into(img_sp);
+                        Glide.with(getContext()).load(muri).into(btn_upload);
                         dialog.dismiss();
                     }
                     else {
