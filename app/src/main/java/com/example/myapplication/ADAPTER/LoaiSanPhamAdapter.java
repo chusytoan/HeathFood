@@ -70,48 +70,7 @@ public class LoaiSanPhamAdapter extends RecyclerView.Adapter<LoaiSanPhamAdapter.
         Glide.with(context).load(lsp.getImgURL()).into(holder.img_lsp);
         holder.tv_name.setText(lsp.getName());
 
-//        holder.img_edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(context, UpdateLoaisanpham.class);
-//                intent.putExtra("maLoai",lsp.getMaLoai());
-//                intent.putExtra("tenLoai", lsp.getName());
-//                intent.putExtra("hinhanhLoai",lsp.getImgURL());
-//                context.startActivity(intent);
-//            }
-//        });
-//        holder.img_delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Dialog dialog = new Dialog(context);
-//                dialog.setContentView(R.layout.dialog_delete);
-//                Window window = dialog.getWindow();
-//                if (window == null) return;
-//                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-//                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                Button yes = dialog.findViewById(R.id.yes);
-//                yes.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//                        db.collection("LoaiSanPhams").document(list.get(holder.getAdapterPosition()).getMaLoai()).delete();
-//                        Toast.makeText(context, "Xoá Loại sản phẩm thành công", Toast.LENGTH_SHORT).show();
-//                        dialog.dismiss();
-//                    }
-//                });
-//                dialog.show();
-//            }
-//
-//        });
 
-//        holder.img_lsp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(context, DanhSachSanPham.class);
-//                intent.putExtra("tenLoai", lsp.getName());
-//                context.startActivity(intent);
-//            }
-//        });
     }
 
     @Override
@@ -128,8 +87,7 @@ public class LoaiSanPhamAdapter extends RecyclerView.Adapter<LoaiSanPhamAdapter.
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_tenLoai);
             img_lsp =itemView.findViewById(R.id.img_lsp);
-            //img_edit=itemView.findViewById(R.id.img_editLoai);
-            //img_delete=itemView.findViewById(R.id.img_deleLoai);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -140,28 +98,28 @@ public class LoaiSanPhamAdapter extends RecyclerView.Adapter<LoaiSanPhamAdapter.
                 }
             });
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.dialog_delete);
-                Window window = dialog.getWindow();
-                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                Button yes = dialog.findViewById(R.id.yes);
-                yes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        db.collection("LoaiSanPhams").document(list.get(getAdapterPosition()).getMaLoai()).delete();
-                        Toast.makeText(context, "Xoá Loại sản phẩm thành công", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-                    return false;
-                }
-            });
+//            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View view) {
+//                    Dialog dialog = new Dialog(context);
+//                dialog.setContentView(R.layout.dialog_delete);
+//                Window window = dialog.getWindow();
+//                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                Button yes = dialog.findViewById(R.id.yes);
+//                yes.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//                        db.collection("LoaiSanPhams").document(list.get(getAdapterPosition()).getMaLoai()).delete();
+//                        Toast.makeText(context, "Xoá Loại sản phẩm thành công", Toast.LENGTH_SHORT).show();
+//                        dialog.dismiss();
+//                    }
+//                });
+//                dialog.show();
+//                    return false;
+//                }
+//            });
         }
     }
 

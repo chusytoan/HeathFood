@@ -13,13 +13,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,15 +24,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.ADAPTER.CommentAdapter;
 
-import com.example.myapplication.ADAPTER.DanhgiaAdapter;
 import com.example.myapplication.MODEL.Comment;
 import com.example.myapplication.MODEL.DanhGia;
 import com.example.myapplication.MODEL.GioHang;
 import com.example.myapplication.MODEL.KhachHang;
-import com.example.myapplication.MODEL.Loaisanpham;
-import com.example.myapplication.MODEL.NhanVien;
-import com.example.myapplication.MODEL.Sanpham;
-import com.example.myapplication.MODEL.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,9 +49,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class ChiTietSanPham extends AppCompatActivity {
@@ -84,7 +73,7 @@ public class ChiTietSanPham extends AppCompatActivity {
     CommentAdapter commentAdapter;
     Button GET;
     List<DanhGia> danhGias;
-    DanhgiaAdapter danhgiaAdapter;
+
     int tb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,12 +163,9 @@ public class ChiTietSanPham extends AppCompatActivity {
                 if (content.equals("")) {
                     Toast.makeText(ChiTietSanPham.this, "vui long nhap binh luan", Toast.LENGTH_SHORT).show();
                     return;
-                }
-                if (usercurent.getEmail().matches("^nhanvien+\\w+\\@+\\w+\\.+\\w+")) {
-                    Comments(content, 2, maSP);
-                } else {
+                }else
                     Comments(content, 3, maSP);
-                }
+
 
             }
         });
@@ -231,7 +217,7 @@ public class ChiTietSanPham extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.child(maSP).hasChild(userId)) {
-                            Log.d(TAG, "dcmm: " + maLoai);
+
                             DanhGia dgupdate = new DanhGia();
                             dgupdate.setSosaoDanhgia(rating);
                             danhGias.child(maSP).child(userId).setValue(dgupdate);
@@ -239,28 +225,23 @@ public class ChiTietSanPham extends AppCompatActivity {
                            danhGias.child(maSP).addValueEventListener(new ValueEventListener() {
                                @Override
                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                   //Log.d(TAG, "onDataChange: " + snapshot);
+
                                    int saoTong = 0;
                                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                                        DanhGia dg = dataSnapshot.getValue(DanhGia.class);
                                        if(dg==null)
                                            return;
-                                      // Log.d(TAG, "onDataChange: " + dg.getSosaoDanhgia());
                                        saoTong += dg.getSosaoDanhgia();
                                    }
                                    float tbsaodg;
-
-                                   Log.d(TAG, "tong: "+ saoTong);
-                                  // Log.d(TAG, "onDataChange: " + maLoai);
-                                   Log.d(TAG, "so chia: " +snapshot.getChildrenCount());
                                    tbsaodg=saoTong/snapshot.getChildrenCount();
-                                   Log.d(TAG, "tb: "+ tbsaodg);
+
 
 
 
                                    firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSP +".starDanhGia", tbsaodg);
 
-//                                   tbsao.setText(tbsaodg+"");
+
                                }
 
                                @Override
@@ -268,12 +249,11 @@ public class ChiTietSanPham extends AppCompatActivity {
 
                                }
                            });
-                           // firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSP +".starDanhGia", rating);
+
                         }else{
                             DanhGia dg = new DanhGia();
                             dg.setSosaoDanhgia(rating);
                             danhGias.child(maSP).child(userId).setValue(dg);
-                           // firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSP +".starDanhGia", rating);
                         }
                     }
 
@@ -293,19 +273,7 @@ public class ChiTietSanPham extends AppCompatActivity {
             }
         });
         tbsao.setText(saodanggia+"");
-//        db.collection("sanphams").addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                for (QueryDocumentSnapshot doc : value) {
-//                    Sanpham sp = doc.toObject(Sanpham.class);
-//                    tb=sp.getStarDanhGia();
-//                    Log.d(TAG, "sao"+sp.getStarDanhGia());
-//                    tbsao.setText(sp.getStarDanhGia());
-//                }
-//
-//            }
-//
-//        });
+
     }
 
     private void anhXaView() {
@@ -338,24 +306,6 @@ public class ChiTietSanPham extends AppCompatActivity {
 
     }
 
-//
-//public void TbDanhGia(){
-//    FirebaseFirestore db = FirebaseFirestore.getInstance();
-//    db.collection("sanphams").addSnapshotListener(new EventListener<QuerySnapshot>() {
-//        @Override
-//        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//            for (QueryDocumentSnapshot doc : value) {
-//                Sanpham sp = doc.toObject(Sanpham.class);
-//                Tbdanhgia=sp.getStarDanhGia();
-//                Log.d(TAG, "sao lay ve"+Tbdanhgia);
-//                tbsao.setText(Tbdanhgia+"");
-//            }
-//
-//        }
-//
-//    });
-//
-//}
 
     private void Comments(String nd, int loaiUser, String maSP) {
         FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
@@ -366,48 +316,7 @@ public class ChiTietSanPham extends AppCompatActivity {
             finish();
             startActivity(new Intent(ChiTietSanPham.this, LoginActivity.class));
         } else {
-            if (loaiUser == 2) {
-                String iduser = usercurent.getUid();
-                String content = ed_cmt.getText().toString();
-                db.collection("Users").document("nhanvien")
-                        .collection("nhanviens")
-                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException e) {
-                                if (e != null) {
-                                    return;
-                                }
-                                for (QueryDocumentSnapshot document : value) {
-                                    User usr = document.toObject(User.class);
-                                    if (usr.getId().equals(iduser)) {
-                                        Comment cm = new Comment();
-                                        cm.setId_comment(maSP);
-                                        cm.setId_user(iduser);
-                                        cm.setName_user(usr.getName());
-                                        cm.setImg_user("default");
-                                        cm.setContent(content);
-                                        String timeCureent = "";
-                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-                                            LocalDateTime now = LocalDateTime.now();
-                                            timeCureent = dtf.format(now);
-                                            cm.setTime_comment(timeCureent);
-                                        }
-
-                                        cm.setSoSaoDanhGia(rating);
-
-
-                                        db.collection("Comments").document(content).set(cm).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                ed_cmt.setText("");
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-                        });
-            } else if (loaiUser == 3) {
+            if (loaiUser == 3) {
                 DatabaseReference referencekhs = FirebaseDatabase.getInstance().getReference("KhachHangs");
                 referencekhs.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -428,14 +337,15 @@ public class ChiTietSanPham extends AppCompatActivity {
                                     timeCureent = dtf.format(now);
                                     cmt.setTime_comment(timeCureent);
                                 }
-                                cmt.setSoSaoDanhGia(rating);
 
-                                db.collection("Comments").document(nd).set(cmt).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        ed_cmt.setText("");
-                                    }
-                                });
+
+                            db.collection("Comments").document(nd).set(cmt).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    ed_cmt.setText("");
+                                }
+                            });
+
                             }
                         }
                     }
@@ -473,7 +383,3 @@ public class ChiTietSanPham extends AppCompatActivity {
         startActivity(new Intent(ChiTietSanPham.this, ActivityGioHang.class));
     }
 }
-//    float sosap = cmt.getSoSaoDanhGia();
-//                Tbdanhgia=sosap;
-//                tbsao.setText(Tbdanhgia+"");
-//                return;

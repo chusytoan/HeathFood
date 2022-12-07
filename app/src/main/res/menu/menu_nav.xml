@@ -7,16 +7,6 @@
         android:icon="@drawable/icon_home"
         />
     <item
-        android:id="@+id/id_adloaisp"
-        android:title="ADD LOẠI SẢN PHẨM"
-        android:icon="@drawable/icon_add"
-        />
-    <item
-        android:id="@+id/id_addsanpham"
-        android:title="ADD SẢN PHẨM"
-        android:icon="@drawable/icon_add"
-        />
-    <item
         android:id="@+id/id_slider"
         android:title="ADD BANNER"
         android:icon="@drawable/icon_add"

@@ -85,11 +85,11 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
 
         FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
         if (usercurent==null){
-
+            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
             return;
 
         }
-        String idUser = usercurent.getUid();
+
         String maSp = sp.getMasp();
         String maLoai = sp.getMaLoai();
         String tenLoai=sp.getTen_loai();
@@ -104,6 +104,7 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
             holder.getLikeWhenUserSigOut(maSp);
             return;
         }
+        String idUser = usercurent.getUid();
         holder.getLikeButtonStatus(maSp, idUser, maLoai);
 
 

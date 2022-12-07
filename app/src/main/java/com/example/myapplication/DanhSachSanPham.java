@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -16,6 +17,11 @@ import com.example.myapplication.ADAPTER.SanPhamNgangAdapter;
 import com.example.myapplication.MODEL.Loaisanpham;
 import com.example.myapplication.MODEL.Sanpham;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -37,7 +43,7 @@ List<Sanpham> sanphams;
 
 
 Intent intent;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +52,7 @@ Intent intent;
         timkiem();
 
         intent = getIntent();
-        readDataLoaiSanPhamFromServer();
+       readDataSanPhamFromDB();
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,35 +68,64 @@ Intent intent;
         btn_add = findViewById(R.id.btn_add_sp);
         grid_dssp = findViewById(R.id.grid_sp);
         sanphams = new ArrayList<>();
+        sanPhamAdapter = new SanPhamGridAdapter(this, sanphams);
+        grid_dssp.setAdapter(sanPhamAdapter);
     }
-    public void readDataLoaiSanPhamFromServer(){
-        db.collection("LoaiSanPhams")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        sanphams.clear();
-
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
-
-                        for (QueryDocumentSnapshot doc : value) {
-                            Loaisanpham lsp = doc.toObject(Loaisanpham.class);
-                            if(lsp.getName().equals(intent.getStringExtra("tenLoai"))){
-                                Map<String, Sanpham> map_sp = lsp.getSanphams();
-                                if(map_sp!=null){
-                                    for(Sanpham sp : map_sp.values()){
-                                        sanphams.add(sp);
-                                    }
-                                }
-                            }
-                        }
-                        sanPhamAdapter = new SanPhamGridAdapter(DanhSachSanPham.this, sanphams);
-                        grid_dssp.setAdapter(sanPhamAdapter);
+    public void readDataSanPhamFromDB(){
+        DatabaseReference SanPhams = FirebaseDatabase.getInstance().getReference("sanphams");
+        SanPhams.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot==null)
+                    return;
+                Sanpham sp = snapshot.getValue(Sanpham.class);
+                if(sp.getTen_loai().equals(intent.getStringExtra("tenLoai"))){
+                    if(sp != null){
+                        sanphams.add(sp);
+                        sanPhamAdapter.notifyDataSetChanged();
                     }
-                });
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Sanpham sanpham = snapshot.getValue(Sanpham.class);
+                if(sanpham==null)
+                    return;
+                for(int i = 0; i < sanphams.size();i++){
+                    if(sanpham.getMasp().equals(sanphams.get(i).getMasp())){
+                        sanphams.set(i, sanpham);
+                        break;
+                    }
+                }
+                sanPhamAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Sanpham sanpham = snapshot.getValue(Sanpham.class);
+                if(sanpham==null)
+                    return;
+                for(int i = 0; i < sanphams.size();i++){
+                    if(sanpham.getMasp().equals(sanphams.get(i).getMasp())){
+                        sanphams.remove(sanphams.get(i));
+                        break;
+                    }
+                }
+                sanPhamAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
     public void timkiem(){
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

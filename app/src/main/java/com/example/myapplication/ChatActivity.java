@@ -61,6 +61,7 @@ public class ChatActivity extends AppCompatActivity {
         if(usercurent == null){
             finish();
             startActivity(new Intent(ChatActivity.this, LoginActivity.class));
+            return;
         }
             readMessages(usercurent.getUid(), "7Uh9NlGocOX0zPTnvPNzDtH4Wc63");
 

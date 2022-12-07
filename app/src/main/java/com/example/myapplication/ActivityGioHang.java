@@ -165,6 +165,12 @@ public class ActivityGioHang extends AppCompatActivity {
         btn_mua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(userCurrent==null){
+                    finish();
+                    startActivity(new Intent(ActivityGioHang.this, LoginActivity.class));
+                    return;
+                }
                 progressDialog.show();
                     DatabaseReference  referencedh =  FirebaseDatabase.getInstance().getReference("DonHangs");
 

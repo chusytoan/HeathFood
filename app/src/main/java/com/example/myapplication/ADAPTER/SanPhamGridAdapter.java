@@ -23,6 +23,11 @@ import com.example.myapplication.MODEL.Sanpham;
 import com.example.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -42,8 +47,9 @@ public class SanPhamGridAdapter extends BaseAdapter {
         this.context = context;
         this.list = list;
     }
+
     public void setfilterliss(List<Sanpham> fiteliss) {
-        this.list=fiteliss;
+        this.list = fiteliss;
         notifyDataSetChanged();
     }
 
@@ -63,19 +69,20 @@ public class SanPhamGridAdapter extends BaseAdapter {
         return i;
     }
 
-    public class Viewholder{
-        ImageView img_sp, img_start_four, img_start_five,img_Edit, img_delete,img_start_one,img_start_tow,img_start_three;
-        TextView tv_ten,tv_mo_Ta, tv_gia, tv_ten_loai,tv_luotBan,statsao;
+    public class Viewholder {
+        ImageView img_sp, img_start_four, img_start_five, img_Edit, img_delete, img_start_one, img_start_tow, img_start_three;
+        TextView tv_ten, tv_mo_Ta, tv_gia, tv_ten_loai, tv_luotBan, statsao;
         CardView itemsp;
 
     }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         Viewholder holder;
-        if(view == null){
+        if (view == null) {
             holder = new Viewholder();
             view = LayoutInflater.from(context).inflate(R.layout.item_sanpham, viewGroup, false);
-//            holder.statsao=view.findViewById(R.id.statsao);
+
             holder.img_sp = view.findViewById(R.id.img_sanpham);
             holder.img_start_four = view.findViewById(R.id.img_start4);
             holder.img_start_five = view.findViewById(R.id.img_start5);
@@ -83,85 +90,85 @@ public class SanPhamGridAdapter extends BaseAdapter {
             holder.img_start_tow = view.findViewById(R.id.img_start2);
             holder.img_start_three = view.findViewById(R.id.img_start3);
 
-//            holder.img_Edit = view.findViewById(R.id.img_edit);
-//            holder.img_delete = view.findViewById(R.id.img_deleSP);
             holder.tv_ten = view.findViewById(R.id.tv_ten_sp);
             holder.tv_mo_Ta = view.findViewById(R.id.tv_mota);
             holder.tv_gia = view.findViewById(R.id.tv_gia);
-            holder.tv_ten_loai =view.findViewById(R.id.tv_loaips);
+            holder.tv_ten_loai = view.findViewById(R.id.tv_loaips);
             holder.tv_luotBan = view.findViewById(R.id.tv_luotban);
             holder.itemsp = view.findViewById(R.id.item_sp);
             view.setTag(holder);
-        }else
+        } else
             holder = (Viewholder) view.getTag();
 
         Sanpham sp = list.get(i);
 
 
-
         Glide.with(context).load(sp.getImgURL()).into(holder.img_sp);
         holder.tv_ten.setText(sp.getName());
 
-        holder.tv_gia.setText("Giá: " + sp.getPrice()+"$");
+        holder.tv_gia.setText("Giá: " + sp.getPrice() + "$");
         holder.tv_ten_loai.setText(sp.getTen_loai());
 
 
-        if(sp.getDescribe()!=null){
-            if(sp.getDescribe().length()>50){
-                holder.tv_mo_Ta.setText(sp.getDescribe().substring(0,50) + "...");
-            }else {
+        if (sp.getDescribe() != null) {
+            if (sp.getDescribe().length() > 50) {
+                holder.tv_mo_Ta.setText(sp.getDescribe().substring(0, 50) + "...");
+            } else {
                 holder.tv_mo_Ta.setText(sp.getDescribe());
             }
         }
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DatabaseReference SanPhams = FirebaseDatabase.getInstance().getReference("sanphams");
+        SanPhams.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot == null)
+                    return;
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    Sanpham spss = dataSnapshot.getValue(Sanpham.class);
+                    if(spss==null)
+                        return;
 
-                        firestore.collection("LoaiSanPhams").getFirestore().collection("sanphams").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                for (QueryDocumentSnapshot doc : value) {
-                                    Sanpham sp = doc.toObject(Sanpham.class);
-                                    tb=sp.getStarDanhGia();
-                                    Log.d(TAG, "sao"+sp.getStarDanhGia());
-                                    if (tb==1){
-                                        holder.img_start_one.setVisibility(View.VISIBLE);
-                                    }else   if (tb==2){
-                                        holder.img_start_one.setVisibility(View.VISIBLE);
-                                        holder.img_start_tow.setVisibility(View.VISIBLE);
-                                    }
-                                    else   if (tb==3){
-                                        holder.img_start_one.setVisibility(View.VISIBLE);
-                                        holder.img_start_tow.setVisibility(View.VISIBLE);
-                                        holder.img_start_three.setVisibility(View.VISIBLE);
+                    if (sp.getMasp() == null)
+                        return;
+                    if (sp.getMasp().equals(spss.getMasp())) {
+                        switch (sp.getStarDanhGia()) {
+                            case 1:
+                                holder.img_start_one.setVisibility(View.VISIBLE);
+                                break;
+                            case 2:
+                                holder.img_start_one.setVisibility(View.VISIBLE);
+                                holder.img_start_tow.setVisibility(View.VISIBLE);
+                                break;
+                            case 3:
+                                holder.img_start_one.setVisibility(View.VISIBLE);
+                                holder.img_start_tow.setVisibility(View.VISIBLE);
+                                holder.img_start_three.setVisibility(View.VISIBLE);
+                                break;
+                            case 4:
+                                holder.img_start_one.setVisibility(View.VISIBLE);
+                                holder.img_start_tow.setVisibility(View.VISIBLE);
+                                holder.img_start_three.setVisibility(View.VISIBLE);
+                                holder.img_start_four.setVisibility(View.VISIBLE);
+                                break;
+                            case 5:
+                                holder.img_start_one.setVisibility(View.VISIBLE);
+                                holder.img_start_tow.setVisibility(View.VISIBLE);
+                                holder.img_start_three.setVisibility(View.VISIBLE);
+                                holder.img_start_four.setVisibility(View.VISIBLE);
+                                holder.img_start_five.setVisibility(View.VISIBLE);
+                                break;
+                        }
+                    }
 
-                                    }else
-                                    if (tb==4) {
-                                        holder.img_start_one.setVisibility(View.VISIBLE);
-                                        holder.img_start_tow.setVisibility(View.VISIBLE);
-                                        holder.img_start_three.setVisibility(View.VISIBLE);
-                                        holder.img_start_four.setVisibility(View.VISIBLE);
-                                    }
-                                    if (tb==5) {
-                                        holder.img_start_one.setVisibility(View.VISIBLE);
-                                        holder.img_start_tow.setVisibility(View.VISIBLE);
-                                        holder.img_start_three.setVisibility(View.VISIBLE);
-                                        holder.img_start_four.setVisibility(View.VISIBLE);
-                                        holder.img_start_five.setVisibility(View.VISIBLE);
-                                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                                }
-
-                            }
-
-                        });
-
-
-
-
-
-
-
+            }
+        });
 
 
 
@@ -172,7 +179,7 @@ public class SanPhamGridAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, ChiTietSanPham.class);
                 //String masp, String name, double price, int time_ship, String describe, int amount, boolean favorite, String imgURL,
                 // Map<String, Comment> comments,String ten_loai,int starDanhGia
-                intent.putExtra("maSP" , sp.getMasp());
+                intent.putExtra("maSP", sp.getMasp());
                 intent.putExtra("name", sp.getName());
                 intent.putExtra("donGia", sp.getPrice());
                 intent.putExtra("hinhAnh", sp.getImgURL());
@@ -187,61 +194,5 @@ public class SanPhamGridAdapter extends BaseAdapter {
         return view;
     }
 
-//    public void deleteSanpham(String maspD,String maLoai) {
-//
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection("LoaiSanPhams").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//
-//                Dialog dialog = new Dialog(context);
-//                dialog.setContentView(R.layout.dialog_delete);
-//                Window window = dialog.getWindow();
-//                if (window == null) return;
-//                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-//                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                Button yes = dialog.findViewById(R.id.yes);
-//                yes.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        if (task.isSuccessful()) {
-//
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//
-//                                Loaisanpham lsp =(Loaisanpham) document.toObject(Loaisanpham.class);
-//                                DocumentReference docRef = db.collection("LoaiSanPhams").document(lsp.getMaLoai());
-//                                docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-//                                    @Override
-//                                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                                        if (lsp.getMaLoai().equals(maLoai)) {
-//                                            Map<String, Object> updates = new HashMap<>();
-//                                            updates.put("sanphams."+maspD, FieldValue.delete());
-//                                            docRef.update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                                @Override
-//                                                public void onComplete(@NonNull Task<Void> task) {
-//                                                    if(task.isSuccessful()) {
-//                                                        Toast.makeText(context, "xoa thanh cong", Toast.LENGTH_SHORT).show();
-//                                                    }
-//                                                }
-//                                            }).addOnFailureListener(new OnFailureListener() {
-//                                                @Override
-//                                                public void onFailure(@NonNull Exception e) {
-//                                                    Toast.makeText(context, "xoá thất bại", Toast.LENGTH_SHORT).show();
-//                                                }
-//                                            });
-//                                        }
-//                                    }
-//                                });
-//
-//                            }
-//                        }
-//                        dialog.dismiss();
-//                    }
-//                });
-//                dialog.show();
-//
-//            }
-//        });
-//    }
 
 }

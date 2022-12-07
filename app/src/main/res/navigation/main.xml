@@ -9,16 +9,7 @@
         android:name="com.example.myapplication.FRAGMENT.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home"/>
-    <fragment
-        android:id="@+id/id_adloaisp"
-        android:name="com.example.myapplication.FRAGMENT.AddLoaiSanPham"
-        android:label="LoaiSanPhamFragment"
-        tools:layout="@layout/them_loai_san_pham"/>
-    <fragment
-        android:id="@+id/id_addsanpham"
-        android:name="com.example.myapplication.FRAGMENT.AddSanPhamFragment"
-        android:label="SanPhamFragment"
-        tools:layout="@layout/them_san_pham"/>
+
     <fragment
         android:id="@+id/id_editprofile"
         android:name="com.example.myapplication.FRAGMENT.FragmentProfile"

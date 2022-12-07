@@ -30,6 +30,7 @@ import com.example.myapplication.Photo;
 import com.example.myapplication.PhotoAdapter;
 import com.example.myapplication.R;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -82,7 +83,7 @@ public class HomeFragment extends Fragment {
         anhXaView();
         timkiem();
         Slider();
-
+        readDataSanPhamFromDB();
         readDataLoaiSanPhamFromServer();
         return view;
     }
@@ -99,7 +100,12 @@ public class HomeFragment extends Fragment {
         loaiSanPhams = new ArrayList<>();
 
         recyclerView_loaisp.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        loaiSanPhamAdapter =new LoaiSanPhamAdapter(getContext(), loaiSanPhams);
+        recyclerView_loaisp.setAdapter(loaiSanPhamAdapter);
+
         recyclerView_sanpham.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        sanPhamNgangAdapter = new SanPhamNgangAdapter(getContext(), sanPhamList);
+        recyclerView_sanpham.setAdapter(sanPhamNgangAdapter);
 
         mViewpager2 = view.findViewById(R.id.viewPager2);
         mCircleIndicator3 = view.findViewById(R.id.circle_indicator);
@@ -123,44 +129,107 @@ public class HomeFragment extends Fragment {
 
 
     }
-    public void readDataLoaiSanPhamFromServer(){
-        db.collection("LoaiSanPhams")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
+    public void readDataSanPhamFromDB(){
+        DatabaseReference SanPhams = FirebaseDatabase.getInstance().getReference("sanphams");
+        SanPhams.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot==null)
+                    return;
 
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        sanPhamList.clear();
-                        loaiSanPhams.clear();
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
+                Sanpham sp = snapshot.getValue(Sanpham.class);
+                Log.d(TAG, "onChildAdded: "+sp.getName());
+                if(sp != null){
+                    sanPhamList.add(sp);
+                    sanPhamNgangAdapter.notifyDataSetChanged();
+                }
+            }
 
-                        for (QueryDocumentSnapshot doc : value) {
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                            Loaisanpham lsp = doc.toObject(Loaisanpham.class);
+            }
 
-                            Map<String, Sanpham> map_sp = lsp.getSanphams();
-                            if(map_sp!=null){
-                                for(Sanpham sp : map_sp.values()){
-                                    sanPhamList.add(sp);
-                                }
-                            }
-                            loaiSanPhams.add(lsp);
-                        }
-
-
-                         loaiSanPhamAdapter = new LoaiSanPhamAdapter(getContext(), loaiSanPhams);
-                          loaiSanPhamAdapter.notifyDataSetChanged();
-                          recyclerView_loaisp.setAdapter(loaiSanPhamAdapter);
-
-                        sanPhamNgangAdapter = new SanPhamNgangAdapter(getContext(), sanPhamList);
-                        sanPhamNgangAdapter.notifyDataSetChanged();
-                        recyclerView_sanpham.setAdapter(sanPhamNgangAdapter);
-
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Sanpham sanpham = snapshot.getValue(Sanpham.class);
+                if(sanpham==null)
+                    return;
+                for(int i = 0; i < sanPhamList.size();i++){
+                    if(sanpham.getMasp().equals(sanPhamList.get(i).getMasp())){
+                        sanPhamList.set(i, sanpham);
+                        break;
                     }
-                });
+                }
+                sanPhamNgangAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void readDataLoaiSanPhamFromServer(){
+        DatabaseReference LoaiSanPhams  = FirebaseDatabase.getInstance().getReference("LoaiSanPhams");
+        LoaiSanPhams.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot==null)
+                    return;
+                Loaisanpham lsp = snapshot.getValue(Loaisanpham.class);
+                if(lsp != null){
+                    loaiSanPhams.add(lsp);
+                    loaiSanPhamAdapter.notifyDataSetChanged();
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Loaisanpham loaisp = snapshot.getValue(Loaisanpham.class);
+                if(loaisp==null)
+                    return;
+                for(int i = 0; i < loaiSanPhams.size();i++){
+                    if(loaisp.getMaLoai().equals(loaiSanPhams.get(i).getMaLoai())){
+                        loaiSanPhams.set(i, loaisp);
+                        break;
+                    }
+                }
+                loaiSanPhamAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Loaisanpham loaisp = snapshot.getValue(Loaisanpham.class);
+                if(loaisp==null)
+                    return;
+                for(int i = 0; i < loaiSanPhams.size();i++){
+                    if(loaisp.getMaLoai().equals(loaiSanPhams.get(i).getMaLoai())){
+                        loaiSanPhams.remove(loaiSanPhams.get(i));
+                        break;
+                    }
+                }
+                loaiSanPhamAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
     public void timkiem(){
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -183,6 +252,7 @@ public class HomeFragment extends Fragment {
                         fiteliss.add(loaisan);
                     }}
                 if (fiteliss.isEmpty()){
+
                 }else{
                     loaiSanPhamAdapter.setfilterliss(fiteliss);
                 }

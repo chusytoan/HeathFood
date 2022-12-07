@@ -3,6 +3,7 @@ package com.example.myapplication.ADAPTER;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,15 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.ChiTietSanPham;
 import com.example.myapplication.LoginActivity;
 import com.example.myapplication.MODEL.Comment;
+import com.example.myapplication.MODEL.DanhGia;
 import com.example.myapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -55,7 +62,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
         holder.tv_name.setText(cmt.getName_user());
         holder.tv_time.setText(cmt.getTime_comment());
         holder.tv_comment.setText(cmt.getContent());
-        holder.tv_sao.setText(cmt.getSoSaoDanhGia()+"");
+
+
 
     }
 
@@ -68,7 +76,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
 
     public class Viewholder extends RecyclerView.ViewHolder {
         CircleImageView img_avt;
-        TextView tv_name, tv_time, tv_comment,tv_sao;
+        TextView tv_name, tv_time, tv_comment;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
@@ -76,7 +84,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_time = itemView.findViewById(R.id.tv_timeCMT);
             tv_comment = itemView.findViewById(R.id.tv_comment);
-            tv_sao=itemView.findViewById(R.id.tv_sosao);
 
         }
     }

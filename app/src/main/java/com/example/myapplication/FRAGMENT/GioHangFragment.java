@@ -138,6 +138,13 @@ List<KhachHang> khachHangs;
         btn_mua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                if(userCurrent==null){
+
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+                    return;
+                }
                 progressDialog.show();
                 DatabaseReference  referencedh =  FirebaseDatabase.getInstance().getReference("DonHangs");
 

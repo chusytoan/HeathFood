@@ -64,7 +64,6 @@ public class ProfileSetting extends AppCompatActivity {
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String otpsend = ed_otp.getText().toString();
                 String addressss = ed_address.getText().toString();
                 String phonee = ed_phone.getText().toString();
                 if(userCurrent==null){
@@ -100,39 +99,36 @@ public class ProfileSetting extends AppCompatActivity {
 
                                     @Override
                                     public void onVerificationCompleted(PhoneAuthCredential credential) {
-                                        //PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, otpsend);
 
-
-
-//                                        Dialog dialog = new Dialog(ProfileSetting.this);
-//                                        dialog.setContentView(R.layout.layout_update_profile);
-//                                        dialog.setTitle("Enter otp");
-//                                        Window window = dialog.getWindow();
-//                                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT );
-//                                        EditText ed_otp = dialog.findViewById(R.id.ed_otp);
-//                                        Button btn_check = dialog.findViewById(R.id.btn_check);
-//                                        dialog.show();
-//                                        btn_check.setOnClickListener(new View.OnClickListener() {
-//                                            @Override
-//                                            public void onClick(View view) {
-//                                                String Otp = ed_otp.getText().toString();
-//                                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, Otp);
-//                                                userCurrent.updatePhoneNumber(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                                    @Override
-//                                                    public void onComplete(@NonNull Task<Void> task) {
-//                                                        if(task.isSuccessful()){
-//                                                            updateProfile();
-//                                                        }
-//                                                    }
-//                                                }).addOnFailureListener(new OnFailureListener() {
-//                                                    @Override
-//                                                    public void onFailure(@NonNull Exception e) {
-//                                                        Toast.makeText(getBaseContext(), "cap nhat thong tin that bai", Toast.LENGTH_SHORT).show();
-//                                                    }
-//                                                });
-//                                                dialog.dismiss();
-//                                            }
-//                                        });
+                                        Dialog dialog = new Dialog(ProfileSetting.this);
+                                        dialog.setContentView(R.layout.layout_update_profile);
+                                        dialog.setTitle("Enter otp");
+                                        Window window = dialog.getWindow();
+                                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT );
+                                        EditText ed_otp = dialog.findViewById(R.id.ed_otp);
+                                        Button btn_check = dialog.findViewById(R.id.btn_check);
+                                        dialog.show();
+                                        btn_check.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                String Otp = ed_otp.getText().toString();
+                                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, Otp);
+                                                userCurrent.updatePhoneNumber(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+                                                            updateProfile();
+                                                        }
+                                                    }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Toast.makeText(getBaseContext(), "cap nhat thong tin that bai", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                                dialog.dismiss();
+                                            }
+                                        });
 
                                     }
 
