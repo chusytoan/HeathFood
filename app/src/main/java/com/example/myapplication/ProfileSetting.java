@@ -1,22 +1,29 @@
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.MODEL.KhachHang;
 import com.example.myapplication.MODEL.Token;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +37,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,23 +51,32 @@ import pl.droidsonroids.gif.GifImageView;
 
 public class ProfileSetting extends AppCompatActivity {
 
-    EditText ed_address, ed_phone, ed_otp;
+    DatabaseReference referencekhs;
+    private View view;
+
+    EditText ed_address, ed_phone;
     Button btn_update;
-    GifImageView avt_update;
+    ImageView avt_update;
     String TAG  ="KHDSD";
-    List<KhachHang> list;
-    private Uri muri;
+
     String mVerificationId;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser userCurrent;
     FirebaseFirestore db;
-    DatabaseReference referencekhs;
     ProgressDialog progressDialog;
+
+
+
+    StorageReference storageReference;
+    private static final int IMAGE_REQUEST = 1;
+    private Uri img_uri;
+    private StorageTask uploadtalk;
+    private String muri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_setting);
+        setContentView(R.layout.fragment_profile);
         anhXa();
         db= FirebaseFirestore.getInstance();
         userCurrent = mAuth.getCurrentUser();
@@ -64,21 +84,22 @@ public class ProfileSetting extends AppCompatActivity {
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // progressDialog.show();
                 String addressss = ed_address.getText().toString();
                 String phonee = ed_phone.getText().toString();
                 if(userCurrent==null){
                     progressDialog.dismiss();
-                    startActivity(new Intent(getBaseContext(), LoginActivity.class));
+                    startActivity(new Intent(ProfileSetting.this, LoginActivity.class));
                     return;
                 }
                 if(addressss.equals("")){
                     progressDialog.dismiss();
-                    Toast.makeText(getBaseContext(), "khong duoc de trong dia chi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileSetting.this, "khong duoc de trong dia chi", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(phonee.equals("")){
                     progressDialog.dismiss();
-                    Toast.makeText(getBaseContext(), "khong dc de trong sdt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileSetting.this, "khong dc de trong sdt", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(!phonee.matches("^[+84]{1}+\\d{11,12}")){
@@ -123,7 +144,7 @@ public class ProfileSetting extends AppCompatActivity {
                                                 }).addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
-                                                        Toast.makeText(getBaseContext(), "cap nhat thong tin that bai", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(ProfileSetting.this, "cap nhat thong tin that bai", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
                                                 dialog.dismiss();
@@ -134,8 +155,8 @@ public class ProfileSetting extends AppCompatActivity {
 
                                     @Override
                                     public void onVerificationFailed(FirebaseException e) {
-                                        Toast.makeText(getBaseContext(), "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
-//                                        progressDialog.dismiss();
+                                        Toast.makeText(ProfileSetting.this, "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
                                         return;
                                         // Show a message and update the UI
                                     }
@@ -157,23 +178,26 @@ public class ProfileSetting extends AppCompatActivity {
         avt_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                openImg();
             }
         });
-    }
-    private void anhXa(){
-        ed_address =findViewById(R.id.ed_adress);
+
+    }  private void anhXa(){
+        ed_address = findViewById(R.id.ed_adress);
         ed_phone = findViewById(R.id.ed_phone);
         btn_update = findViewById(R.id.btn_update);
-        avt_update = findViewById(R.id.avt_update);
-        ed_otp = findViewById(R.id.ed_otp);
-        progressDialog=new ProgressDialog(this);
+        avt_update =findViewById(R.id.avt_update);
+
+        progressDialog = new ProgressDialog(ProfileSetting.this);
+        storageReference = FirebaseStorage.getInstance().getReference("uploads");
     }
+
     private void updateProfile() {
 
         Map<String, Object> map = new HashMap<>();
         map.put("diachi", ed_address.getText().toString());
         map.put("sdt", ed_phone.getText().toString());
+        map.put("imgURL", muri);
         referencekhs.child(userCurrent.getUid()).updateChildren(map);
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -190,12 +214,85 @@ public class ProfileSetting extends AppCompatActivity {
                         token_Model.setToken(token);
                         token_Model.setServerToken(false);
                         tokens.child(ed_phone.getText().toString()).setValue(token_Model);
-
+                        Toast.makeText(ProfileSetting.this, "cap nhat thong tin thanh cong", Toast.LENGTH_SHORT).show();
                     }
                 });
-        Toast.makeText(getBaseContext(), "cap nhat thong tin thanh cong", Toast.LENGTH_SHORT).show();
+
+
 
         return;
 
+    }
+    private void openImg() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, IMAGE_REQUEST);
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = ProfileSetting.this.getContentResolver();
+
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    private void uploadImage() {
+        final ProgressDialog dialog = new ProgressDialog(ProfileSetting.this);
+        dialog.setMessage("Uploading");
+        dialog.show();
+        if (img_uri != null) {
+            final StorageReference storage = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(img_uri));
+            uploadtalk = storage.putFile(img_uri);
+
+
+
+            uploadtalk.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return storage.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+                        Uri dowloaduri = (Uri) task.getResult();
+                        muri = dowloaduri.toString();
+                        Log.d("CLMM", "clmm: " + muri);
+                        Glide.with(ProfileSetting.this).load(muri).into(avt_update);
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(ProfileSetting.this, "failed!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(ProfileSetting.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+        } else {
+
+            Toast.makeText(ProfileSetting.this, "no image selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            img_uri = data.getData();
+            if (uploadtalk != null && uploadtalk.isInProgress()) {
+                Toast.makeText(ProfileSetting.this, "upload in progress", Toast.LENGTH_SHORT).show();
+            } else {
+                uploadImage();
+            }
+
+        }
     }
 }

@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -205,56 +206,43 @@ public class ChiTietSanPham extends AppCompatActivity {
             }
         });
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
+        DatabaseReference reference  = FirebaseDatabase.getInstance().getReference("sanphams");
         GET.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+                if (firebaseUser==null){
+                    Toast.makeText(ChiTietSanPham.this, "Bạn chưa Đằng Nhập", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String userId = usercurent.getUid();
                 DatabaseReference danhGias = FirebaseDatabase.getInstance().getReference("DanhGias");
-                danhGias.addValueEventListener(new ValueEventListener() {
+                DanhGia dg = new DanhGia();
+                dg.setSosaoDanhgia(rating);
+                danhGias.child(maSP).child(userId).setValue(dg);
+
+                danhGias.child(maSP).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.child(maSP).hasChild(userId)) {
-
-                            DanhGia dgupdate = new DanhGia();
-                            dgupdate.setSosaoDanhgia(rating);
-                            danhGias.child(maSP).child(userId).setValue(dgupdate);
-//
-                           danhGias.child(maSP).addValueEventListener(new ValueEventListener() {
-                               @Override
-                               public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                   int saoTong = 0;
-                                   for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                                       DanhGia dg = dataSnapshot.getValue(DanhGia.class);
-                                       if(dg==null)
-                                           return;
-                                       saoTong += dg.getSosaoDanhgia();
-                                   }
-                                   float tbsaodg;
-                                   tbsaodg=saoTong/snapshot.getChildrenCount();
-
-
-
-
-                                   firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSP +".starDanhGia", tbsaodg);
-
-
-                               }
-
-                               @Override
-                               public void onCancelled(@NonNull DatabaseError error) {
-
-                               }
-                           });
-
-                        }else{
-                            DanhGia dg = new DanhGia();
-                            dg.setSosaoDanhgia(rating);
-                            danhGias.child(maSP).child(userId).setValue(dg);
+                        int saoTong = 0;
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            DanhGia dg = dataSnapshot.getValue(DanhGia.class);
+                            if (dg == null)
+                                return;
+                            saoTong += dg.getSosaoDanhgia();
+                            Log.d(TAG, "tong sao" + saoTong);
                         }
+                        float tbsaodg;
+                        Log.d(TAG, "so nguoi " + snapshot.getChildrenCount());
+                        tbsaodg = saoTong / snapshot.getChildrenCount();
+
+                        Log.d(TAG, "trung binh" + tbsaodg);
+
+                        HashMap<String, Object> updatedabangia = new HashMap<>();
+                        updatedabangia.put("starDanhGia", tbsaodg);
+                        reference.child(maSP).updateChildren(updatedabangia);
+                        tbsao.setText(saodanggia + "");
                     }
 
                     @Override
@@ -262,16 +250,62 @@ public class ChiTietSanPham extends AppCompatActivity {
 
                     }
                 });
+//                danhGias.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        if(snapshot.child(maSP).hasChild(userId)) {
+//
+//                            DanhGia dgupdate = new DanhGia();
+//                            dgupdate.setSosaoDanhgia(rating);
+//                            danhGias.child(maSP).child(userId).setValue(dgupdate);
+//                           danhGias.child(maSP).addValueEventListener(new ValueEventListener() {
+//                               @Override
+//                               public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                                   int saoTong = 0;
+//                                   for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+//                                       DanhGia dg = dataSnapshot.getValue(DanhGia.class);
+//                                       if(dg==null)
+//                                           return;
+//                                       saoTong += dg.getSosaoDanhgia();
+//                                       Log.d(TAG, "tong sao"+saoTong);
+//                                   }
+//                                   float tbsaodg;
+//                                   Log.d(TAG, "so nguoi "+snapshot.getChildrenCount());
+//                                   tbsaodg=saoTong/snapshot.getChildrenCount();
+//
+//                                   Log.d(TAG, "trung binh"+tbsaodg);
+//
+//                                   HashMap<String,Object> updatedabangia=new HashMap<>();
+//                                   updatedabangia.put("starDanhGia", tbsaodg);
+//                                    reference.child(maSP).updateChildren(updatedabangia);
+//                                   tbsao.setText(saodanggia+"");
+//
+//                               }
+//
+//                               @Override
+//                               public void onCancelled(@NonNull DatabaseError error) {
+//
+//                               }
+//                           });
+//
+//                        }else{
+//                            DanhGia dg = new DanhGia();
+//                            dg.setSosaoDanhgia(rating);
+//                            danhGias.child(maSP).child(userId).setValue(dg);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
 
 
             }
         });
-        db.collection("LoaiSanPhams").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-            }
-        });
         tbsao.setText(saodanggia+"");
 
     }
