@@ -4,27 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DanhSachSanPham"
-    android:layout_margin="4dp">
+    android:background="@drawable/bgr_app"
+    tools:context=".DanhSachSanPham">
     <androidx.appcompat.widget.SearchView
         android:id="@+id/seachviewds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:layout_weight="10"
         android:background="@drawable/back_tim"
         app:iconifiedByDefault="false"
         app:queryHint="tìm kiếm" />
-<GridView
-    android:id="@+id/grid_sp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@+id/seachviewds"
-    android:numColumns="2"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/grid_sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/seachviewds"
+        android:layout_marginStart="@dimen/dm8sp"
+        android:layout_marginTop="@dimen/dm8sp"
+        android:layout_marginEnd="@dimen/dm8sp"
+        android:layout_marginBottom="@dimen/dm70sp"
+
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_add_sp"

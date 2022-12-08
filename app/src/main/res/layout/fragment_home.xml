@@ -4,45 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/nean"
+    android:background="@drawable/bg_add_food"
     tools:context=".FRAGMENT.HomeFragment">
 
-    <LinearLayout
-        android:id="@+id/header_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal"
-        android:padding="4dp"
-        android:weightSum="10">
 
-        <androidx.appcompat.widget.SearchView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:queryHint="tìm kiếm"
-            android:id="@+id/seachview"
-            android:layout_weight="10"
-            android:background="@drawable/back_tim"
-            app:iconifiedByDefault="false"
-            />
-    </LinearLayout>
     <LinearLayout
         android:id="@+id/layoutScroll"
-        android:layout_below="@id/header_search"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="100dp">
-            <LinearLayout
+            android:layout_height="match_parent">
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="@dimen/dm10sp"
+                android:layout_marginRight="@dimen/dm10sp"
+                android:layout_marginLeft="@dimen/dm10sp"
+                android:layout_marginBottom="@dimen/dm5sp"
                 android:orientation="vertical">
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager2"
@@ -52,18 +31,54 @@
                     android:paddingEnd="5dp" />
 
                 <me.relex.circleindicator.CircleIndicator3
+                    android:layout_below="@id/viewPager2"
                     android:id="@+id/circle_indicator"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     app:ci_drawable="@drawable/bg_indicator"/>
+
                 <LinearLayout
-                    android:layout_marginTop="20dp"
+                    android:id="@+id/ln_text1"
+                    android:layout_below="@id/circle_indicator"
+                    android:layout_marginTop="@dimen/dm16sp"
                     android:layout_width="match_parent"
                     android:weightSum="10"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:padding="@dimen/dm5sp"
+                    >
+                    <TextView
+                        android:layout_weight="7"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:text="Loại Sản Phẩm"
+                        android:layout_marginLeft="10dp"
+                        />
+
+                </LinearLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_below="@id/ln_text1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numColumns="2"
+                    android:verticalSpacing="10dp"
+                    android:horizontalSpacing="10dp"
+                    android:id="@+id/recyrcle_lsp"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/ln_text"
+                    android:layout_below="@id/recyrcle_lsp"
+                    android:layout_marginTop="@dimen/dm16sp"
+                    android:layout_width="match_parent"
+                    android:weightSum="10"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dm5sp"
                     >
                     <TextView
                         android:layout_weight="7"
@@ -77,25 +92,44 @@
 
                 </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
+                    android:layout_below="@+id/ln_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/recyrcle_danhSachSp_horizontal"
                     />
 
+                <LinearLayout
+                    android:id="@+id/ln_text2"
+                    android:layout_below="@id/recyrcle_danhSachSp_horizontal"
+                    android:layout_marginTop="@dimen/dm16sp"
+                    android:layout_width="match_parent"
+                    android:weightSum="10"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dm5sp"
+                    >
+                    <TextView
+                        android:layout_weight="7"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:text="Sản Phẩm Khác"
+                        android:layout_marginLeft="10dp"
+                        />
 
+                </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_below="@id/layoutScroll"
-                    android:layout_marginTop="20dp"
+                    android:layout_below="@id/ln_text2"
+                    android:layout_marginTop="@dimen/dm16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:numColumns="2"
-                    android:verticalSpacing="10dp"
-                    android:horizontalSpacing="10dp"
-                    android:id="@+id/recyrcle_lsp"
+                    android:layout_marginBottom="@dimen/dm70sp"
+                    android:id="@+id/rcv_sanphams"
                     />
 
 
-            </LinearLayout>
+
+            </RelativeLayout>
 
         </ScrollView>
 

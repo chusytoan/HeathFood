@@ -56,7 +56,7 @@ public class LoaiSanPhamAdapter extends RecyclerView.Adapter<LoaiSanPhamAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_loai_sp,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_loaisanpham,parent,false);
 
         return new ViewHolder(view);
     }

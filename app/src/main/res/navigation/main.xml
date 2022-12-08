@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/id_HOME"
         android:name="com.example.myapplication.FRAGMENT.HomeFragment"
-        android:label="HomeFragment"
+        android:label="Healthy Food"
         tools:layout="@layout/fragment_home"/>
 
     <fragment
@@ -33,8 +33,8 @@
         android:name="com.example.myapplication.FRAGMENT.DoiMatKhauFragment"
         tools:layout="@layout/fragment_doi_mat_khau"
         android:label="Doi Mat Khau"/>
-    <fragment
-        android:id="@+id/id_slider"
-        android:name="com.example.myapplication.FRAGMENT.AddSlider"
-        android:label="AddSlider" />
+<!--    <fragment-->
+<!--        android:id="@+id/id_slider"-->
+<!--        android:name="com.example.myapplication.FRAGMENT.AddSlider"-->
+<!--        android:label="AddSlider" />-->
 </navigation>

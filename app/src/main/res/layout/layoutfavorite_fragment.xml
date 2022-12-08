@@ -3,10 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#Ffff"
+    android:background="@drawable/bgr_app"
     android:id="@+id/liner_express">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_favorite"
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dm14sp"
+        android:layout_marginLeft="@dimen/dm14sp"
+        android:layout_marginRight="@dimen/dm14sp"
+        android:layout_marginBottom="@dimen/dm50sp"/>
 </LinearLayout>

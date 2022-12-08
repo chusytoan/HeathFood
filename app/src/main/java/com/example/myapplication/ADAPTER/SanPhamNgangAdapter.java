@@ -46,6 +46,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -84,11 +85,6 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
         holder.tv_ten_loai.setText(sp.getTen_loai());
 
         FirebaseUser usercurent = FirebaseAuth.getInstance().getCurrentUser();
-        if (usercurent==null){
-            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-            return;
-
-        }
 
         String maSp = sp.getMasp();
         String maLoai = sp.getMaLoai();
@@ -187,7 +183,7 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
             });
 
         }
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DatabaseReference reference  = FirebaseDatabase.getInstance().getReference("sanphams");
         public void getLikeButtonStatus(String maSp, String idUser, String maLoai) {
             likes = FirebaseDatabase.getInstance().getReference("tyms");
             likes.addValueEventListener(new ValueEventListener() {
@@ -196,12 +192,18 @@ public class SanPhamNgangAdapter extends RecyclerView.Adapter<SanPhamNgangAdapte
                     if (snapshot.child(maSp).hasChild(idUser)) {
                         int likeCount = (int) snapshot.child(maSp).getChildrenCount();
                         tv_soLuotTym.setText(likeCount + " favorites");
-                        firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSp +".favorite", likeCount);
+                        HashMap<String,Object> updateLike=new HashMap<>();
+                        updateLike.put("favorite",likeCount);
+                        reference.child(maSp).updateChildren(updateLike);
+//                        firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSp +".favorite", likeCount);
                         imgFood_favorite.setImageResource(R.drawable.ic_favorite_24);
                     } else {
                         int likeCount = (int) snapshot.child(maSp).getChildrenCount();
                         tv_soLuotTym.setText(likeCount + " favorites");
-                        firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSp +".favorite", likeCount);
+                        HashMap<String,Object> updateLike=new HashMap<>();
+                        updateLike.put("favorite",likeCount);
+                        reference.child(maSp).updateChildren(updateLike);
+//                        firestore.collection("LoaiSanPhams").document(maLoai).update("sanphams." + maSp +".favorite", likeCount);
                         imgFood_favorite.setImageResource(R.drawable.ic_favorite_border_24);
                     }
                 }

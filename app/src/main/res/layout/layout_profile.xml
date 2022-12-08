@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#FFFF"
+    android:background="@drawable/bg_add_food"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
-        android:background="#b3e4f2"
+        android:background="@drawable/backdrou_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -24,13 +24,29 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center">
-            <ImageView
-                android:id="@+id/setting"
+            <LinearLayout
+                android:id="@+id/all_setting"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_baseline_settings_24"
-                />
+                android:layout_gravity="end">
+                <ImageView
+                    android:id="@+id/setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dm8sp"
+                    android:src="@drawable/ic_baseline_settings_24"
+                    />
+                <ImageView
+                    android:id="@+id/sigout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_sigout"
+                    />
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/name_user"
@@ -46,6 +62,16 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:textSize="16dp" />
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="@dimen/dm16sp"
+                android:backgroundTint="@color/login"
+                android:textColor="@color/white"
+                android:text="@string/login"
+                android:visibility="gone"/>
 
 
         </LinearLayout>

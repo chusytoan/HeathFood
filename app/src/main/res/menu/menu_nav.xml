@@ -6,21 +6,21 @@
         android:title="HOME"
         android:icon="@drawable/icon_home"
         />
-    <item
-        android:id="@+id/id_slider"
-        android:title="ADD BANNER"
-        android:icon="@drawable/icon_add"
-        />
-    <item
-        android:id="@+id/id_editprofile"
-        android:title="profile"
-        android:icon="@drawable/icon_addnv"
-        />
-    <item
-        android:id="@+id/id_add_donhang"
-        android:title="cart"
-        android:icon="@drawable/icon_addnv"
-        />
+<!--    <item-->
+<!--        android:id="@+id/id_slider"-->
+<!--        android:title="ADD BANNER"-->
+<!--        android:icon="@drawable/icon_add"-->
+<!--        />-->
+<!--    <item-->
+<!--        android:id="@+id/id_editprofile"-->
+<!--        android:title="profile"-->
+<!--        android:icon="@drawable/icon_addnv"-->
+<!--        />-->
+<!--    <item-->
+<!--        android:id="@+id/id_add_donhang"-->
+<!--        android:title="cart"-->
+<!--        android:icon="@drawable/icon_addnv"-->
+<!--        />-->
     <item android:title="">
         <menu>
             <item

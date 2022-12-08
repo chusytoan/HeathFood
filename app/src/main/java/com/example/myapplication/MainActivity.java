@@ -57,14 +57,14 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.home:
                         fragment = new HomeFragment();
                         break;
-                    case R.id.maps:
-//                        fragment = new AddSanPhamFragment();
-//                        fragment=new HistoryFragmentMain();
-                        FirebaseAuth.getInstance().signOut();
-                        finish();
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//                    case R.id.maps:
+////                        fragment = new AddSanPhamFragment();
+////                        fragment=new HistoryFragmentMain();
+//                        FirebaseAuth.getInstance().signOut();
+//                        finish();
+//                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
-                        break;
+//                        break;
                     case R.id.profile:
                         fragment = new FragmentUserProfile();
                         break;
@@ -84,24 +84,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        findViewById(R.id.immenu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mdrawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
+//        findViewById(R.id.immenu).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mdrawerLayout.openDrawer(GravityCompat.START);
+//            }
+//        });
         // navigation
-        navigationView.setItemIconTintList(null);
-         NavController navController = Navigation.findNavController(this, R.id.naHostFratment);
-        NavigationUI.setupWithNavController(navigationView, navController);
-
-       final TextView textTitle= findViewById(R.id.textTitle);
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
-                textTitle.setText(navDestination.getLabel());
-            }
-        });
+//        navigationView.setItemIconTintList(null);
+//         NavController navController = Navigation.findNavController(this, R.id.naHostFratment);
+//        NavigationUI.setupWithNavController(navigationView, navController);
+//
+//       final TextView textTitle= findViewById(R.id.textTitle);
+//        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+//            @Override
+//            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+//                textTitle.setText(navDestination.getLabel());
+//            }
+//        });
 
 
 
