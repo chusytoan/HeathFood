@@ -20,7 +20,7 @@
                 android:id="@+id/layoutToolBar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:background="@drawable/layout_top"
+                android:background="@drawable/backdrou_hedertop1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingStart="15dp"
@@ -32,11 +32,11 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content">
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:id="@+id/immenu"
-                        android:src="@drawable/iconmenu" />
+<!--                    <ImageView-->
+<!--                        android:layout_width="40dp"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:id="@+id/immenu"-->
+<!--                        android:src="@drawable/iconmenu" />-->
                 </LinearLayout>
 
 
@@ -48,7 +48,7 @@
                     android:text="HELTHY FOOOD"
                     android:id="@+id/textTitle"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -58,7 +58,7 @@
                     android:layout_height="40dp"
                     android:id="@+id/avata_top"
                     android:layout_marginLeft="20dp"
-                    android:src="@drawable/icon_profile" />
+                    android:src="@drawable/app" />
 
             </LinearLayout>
 

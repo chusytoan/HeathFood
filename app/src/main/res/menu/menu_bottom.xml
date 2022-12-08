@@ -9,13 +9,13 @@
         app:cnb_iconColor="#fff"
         app:cnb_textColor="#fff"
         />
-    <item android:id="@+id/maps"
-        android:title="map"
-        android:icon="@drawable/ic_map_24"
-        app:cnb_backgroundColor="#FFCE21"
-        app:cnb_iconColor="#fff"
-        app:cnb_textColor="#fff"
-        />
+<!--    <item android:id="@+id/maps"-->
+<!--        android:title="map"-->
+<!--        android:icon="@drawable/ic_map_24"-->
+<!--        app:cnb_backgroundColor="#FFCE21"-->
+<!--        app:cnb_iconColor="#fff"-->
+<!--        app:cnb_textColor="#fff"-->
+<!--        />-->
     <item android:id="@+id/profile"
         android:title="profile"
         android:icon="@drawable/ic_person_24"

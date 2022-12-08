@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -18,33 +19,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.myapplication.ADAPTER.LoaiSanPhamAdapter;
-import com.example.myapplication.ADAPTER.SanPhamAdapter;
+import com.example.myapplication.ADAPTER.SanPhamHomeAdapter;
 import com.example.myapplication.ADAPTER.SanPhamNgangAdapter;
 import com.example.myapplication.MODEL.Loaisanpham;
 import com.example.myapplication.MODEL.Sanpham;
 import com.example.myapplication.Photo;
 import com.example.myapplication.PhotoAdapter;
 import com.example.myapplication.R;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import me.relex.circleindicator.CircleIndicator3;
 
@@ -54,9 +47,11 @@ public class HomeFragment extends Fragment {
 
     SearchView searchView;
 
-    RecyclerView recyclerView_sanpham;
-   SanPhamNgangAdapter sanPhamNgangAdapter;
+    RecyclerView recyclerView_sanpham,rcv_sanphams;
+    SanPhamNgangAdapter sanPhamNgangAdapter;
     List<Sanpham> sanPhamList;
+    SanPhamHomeAdapter sanPhamHomeAdapter;
+    List<Sanpham> sanphamHome;
 
     private ViewPager2 mViewpager2;
     private CircleIndicator3 mCircleIndicator3;
@@ -81,31 +76,38 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         anhXaView();
-        timkiem();
+//        timkiem();
         Slider();
         readDataSanPhamFromDB();
+        readDataSanPhamHome();
+
         readDataLoaiSanPhamFromServer();
         return view;
     }
 
     private void anhXaView() {
-        searchView=view.findViewById(R.id.seachview);
-        searchView.clearFocus();
-
         recyclerView_sanpham = view.findViewById(R.id.recyrcle_danhSachSp_horizontal);
         recyclerView_loaisp = view.findViewById(R.id.recyrcle_lsp);
+        rcv_sanphams=view.findViewById(R.id.rcv_sanphams);
 
         mlistPhoto = new ArrayList<>();
         sanPhamList = new ArrayList<>();
         loaiSanPhams = new ArrayList<>();
+        sanphamHome = new ArrayList<>();
 
         recyclerView_loaisp.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        loaiSanPhamAdapter =new LoaiSanPhamAdapter(getContext(), loaiSanPhams);
+        loaiSanPhamAdapter = new LoaiSanPhamAdapter(getContext(), loaiSanPhams);
         recyclerView_loaisp.setAdapter(loaiSanPhamAdapter);
 
         recyclerView_sanpham.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         sanPhamNgangAdapter = new SanPhamNgangAdapter(getContext(), sanPhamList);
         recyclerView_sanpham.setAdapter(sanPhamNgangAdapter);
+
+        //set adapter sanphamhome
+        rcv_sanphams.setLayoutManager(new GridLayoutManager(getContext(),2,RecyclerView.VERTICAL,false));
+        sanPhamHomeAdapter=new SanPhamHomeAdapter(getContext(),sanphamHome);
+        rcv_sanphams.setAdapter(sanPhamHomeAdapter);
+
 
         mViewpager2 = view.findViewById(R.id.viewPager2);
         mCircleIndicator3 = view.findViewById(R.id.circle_indicator);
@@ -127,19 +129,19 @@ public class HomeFragment extends Fragment {
         mViewpager2.setPageTransformer(compositePageTransformer);
 
 
-
     }
-    public void readDataSanPhamFromDB(){
+
+    public void readDataSanPhamFromDB() {
         DatabaseReference SanPhams = FirebaseDatabase.getInstance().getReference("sanphams");
         SanPhams.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if(snapshot==null)
+                if (snapshot == null)
                     return;
 
                 Sanpham sp = snapshot.getValue(Sanpham.class);
-                Log.d(TAG, "onChildAdded: "+sp.getName());
-                if(sp != null){
+                Log.d(TAG, "onChildAdded: " + sp.getName());
+                if (sp != null) {
                     sanPhamList.add(sp);
                     sanPhamNgangAdapter.notifyDataSetChanged();
                 }
@@ -153,10 +155,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Sanpham sanpham = snapshot.getValue(Sanpham.class);
-                if(sanpham==null)
+                if (sanpham == null)
                     return;
-                for(int i = 0; i < sanPhamList.size();i++){
-                    if(sanpham.getMasp().equals(sanPhamList.get(i).getMasp())){
+                for (int i = 0; i < sanPhamList.size(); i++) {
+                    if (sanpham.getMasp().equals(sanPhamList.get(i).getMasp())) {
                         sanPhamList.set(i, sanpham);
                         break;
                     }
@@ -175,15 +177,62 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-    public void readDataLoaiSanPhamFromServer(){
-        DatabaseReference LoaiSanPhams  = FirebaseDatabase.getInstance().getReference("LoaiSanPhams");
+    public void readDataSanPhamHome() {
+        DatabaseReference SanPhams = FirebaseDatabase.getInstance().getReference("sanphams");
+        SanPhams.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot == null)
+                    return;
+
+                Sanpham sp = snapshot.getValue(Sanpham.class);
+                Log.d(TAG, "onChildAdded: " + sp.getName());
+                if (sp != null) {
+                    sanphamHome.add(sp);
+                    sanPhamHomeAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Sanpham sanpham = snapshot.getValue(Sanpham.class);
+                if (sanpham == null)
+                    return;
+                for (int i = 0; i < 20; i++) {
+                    if (sanpham.getMasp().equals(sanphamHome.get(i).getMasp())) {
+                        sanphamHome.set(i, sanpham);
+                        break;
+                    }
+                }
+                sanPhamNgangAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void readDataLoaiSanPhamFromServer() {
+        DatabaseReference LoaiSanPhams = FirebaseDatabase.getInstance().getReference("LoaiSanPhams");
         LoaiSanPhams.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if(snapshot==null)
+                if (snapshot == null)
                     return;
                 Loaisanpham lsp = snapshot.getValue(Loaisanpham.class);
-                if(lsp != null){
+                if (lsp != null) {
                     loaiSanPhams.add(lsp);
                     loaiSanPhamAdapter.notifyDataSetChanged();
                 }
@@ -194,10 +243,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Loaisanpham loaisp = snapshot.getValue(Loaisanpham.class);
-                if(loaisp==null)
+                if (loaisp == null)
                     return;
-                for(int i = 0; i < loaiSanPhams.size();i++){
-                    if(loaisp.getMaLoai().equals(loaiSanPhams.get(i).getMaLoai())){
+                for (int i = 0; i < loaiSanPhams.size(); i++) {
+                    if (loaisp.getMaLoai().equals(loaiSanPhams.get(i).getMaLoai())) {
                         loaiSanPhams.set(i, loaisp);
                         break;
                     }
@@ -208,10 +257,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Loaisanpham loaisp = snapshot.getValue(Loaisanpham.class);
-                if(loaisp==null)
+                if (loaisp == null)
                     return;
-                for(int i = 0; i < loaiSanPhams.size();i++){
-                    if(loaisp.getMaLoai().equals(loaiSanPhams.get(i).getMaLoai())){
+                for (int i = 0; i < loaiSanPhams.size(); i++) {
+                    if (loaisp.getMaLoai().equals(loaiSanPhams.get(i).getMaLoai())) {
                         loaiSanPhams.remove(loaiSanPhams.get(i));
                         break;
                     }
@@ -231,34 +280,7 @@ public class HomeFragment extends Fragment {
         });
 
     }
-    public void timkiem(){
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
 
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterliss(newText);
-                return true;
-            }
-
-            private void filterliss(String Text) {
-                List<Loaisanpham> fiteliss=new ArrayList<>();
-                for (Loaisanpham loaisan: loaiSanPhams){
-                    if (loaisan.getName().toLowerCase().contains(Text.toLowerCase())){
-                        fiteliss.add(loaisan);
-                    }}
-                if (fiteliss.isEmpty()){
-
-                }else{
-                    loaiSanPhamAdapter.setfilterliss(fiteliss);
-                }
-            }
-        });
-    }
     private void Slider() {
         reference.addValueEventListener(new ValueEventListener() {
             @Override

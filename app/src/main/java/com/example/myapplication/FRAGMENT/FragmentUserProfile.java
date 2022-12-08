@@ -1,11 +1,16 @@
 package com.example.myapplication.FRAGMENT;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +20,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.myapplication.ADAPTER.HistoryAdapterPager;
 import com.example.myapplication.LoginActivity;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.ProfileSetting;
 import com.example.myapplication.R;
 import com.google.android.material.tabs.TabLayout;
@@ -25,8 +31,10 @@ import com.google.firebase.auth.FirebaseUser;
 public class FragmentUserProfile extends Fragment {
     private View view;
 
+    LinearLayout ln_allsetting;
     TextView tv_gmail,tv_name;
-    ImageView img_setting;
+    ImageView img_setting,img_sigout;
+    Button btn_login;
     private ViewPager2 m_pager;
     private TabLayout mTablayout;
     private HistoryAdapterPager historyAdapterPager;
@@ -37,10 +45,22 @@ public class FragmentUserProfile extends Fragment {
         anhxa();
         FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser==null){
+            ln_allsetting.setVisibility(View.INVISIBLE);
+            btn_login.setVisibility(View.VISIBLE);
+            btn_login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+                }
+            });
+
             return view;
         }
+        btn_login.setVisibility(View.INVISIBLE);
+        ln_allsetting.setVisibility(View.VISIBLE);
         String email= firebaseUser.getEmail();
         String name=firebaseUser.getDisplayName();
+        Log.d(TAG, "onCreateView nameeeeeeeeeee: "+name);
         tv_gmail.setText(email);
         tv_name.setText(name);
         img_setting.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +71,16 @@ public class FragmentUserProfile extends Fragment {
 
             }
         });
+        img_sigout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                getActivity().finish();
+                startActivity(new Intent(getContext(), LoginActivity.class));
+
+            }
+        });
+
         tabLayout();
 
 
@@ -63,6 +93,9 @@ public class FragmentUserProfile extends Fragment {
         tv_name=view.findViewById(R.id.name_user);
         m_pager=view.findViewById(R.id.history_pager);
         mTablayout=view.findViewById(R.id.tab_history);
+        img_sigout=view.findViewById(R.id.sigout);
+        ln_allsetting=view.findViewById(R.id.all_setting);
+        btn_login=view.findViewById(R.id.btn_login);
     }
     public void tabLayout(){
         historyAdapterPager =new HistoryAdapterPager(this);
