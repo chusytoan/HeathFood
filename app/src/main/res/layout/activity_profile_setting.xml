@@ -9,20 +9,15 @@
     android:gravity="center_horizontal"
     tools:context=".FRAGMENT.FragmentProfile">
 
-    <!--    <de.hdodenhof.circleimageview.CircleImageView-->
-    <!--        android:layout_width="100dp"-->
-    <!--        android:layout_height="100dp"-->
-    <!--        android:layout_gravity="center_horizontal"-->
-    <!--        android:layout_marginTop="20dp"-->
-    <!--        android:src="@drawable/avatar_default"-->
-    <!--        android:id="@+id/avt_update"-->
-    <!--        />-->
-    <pl.droidsonroids.gif.GifImageView
-        android:layout_width="wrap_content"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/gifadmin"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/avatar_default"
         android:id="@+id/avt_update"
         />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,18 +47,7 @@
         android:background="@drawable/backdrouprofile"
         android:text="+84"
         />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
-        android:padding="30dp"
-        android:inputType="number"
-        android:hint="nhap otp"
-        android:id="@+id/ed_otp"
-        android:layout_below="@+id/ed_adress"
-        android:background="@drawable/backdrouprofile"
-
-        />
     <Button
         android:id="@+id/btn_update"
         android:layout_width="wrap_content"
