@@ -1,6 +1,7 @@
 package com.example.myapplication.FRAGMENT;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class ChoxacnhanFragment extends Fragment {
                 for(int i = 0; i < list.size();i++){
                         if(donHang.getMaDonHang().equals(list.get(i).getMaDonHang()) &&donHang.getTrangThai().equals("wait for confirmation") ){
                             list.set(i, donHang);
+                            break;
                         }
 
 
@@ -89,7 +91,7 @@ public class ChoxacnhanFragment extends Fragment {
         listView = view.findViewById(R.id.lv_choxacnhan);
         list = new ArrayList<>();
         adapter = new DonHangAdapter(getContext(), list);
-
+        adapter.notifyDataSetChanged();
         listView.setAdapter(adapter);
     }
 }

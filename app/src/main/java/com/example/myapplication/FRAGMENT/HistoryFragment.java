@@ -61,7 +61,7 @@ public class HistoryFragment extends Fragment {
                 for(int i = 0; i < list.size();i++){
                         if(donHang.getMaDonHang().equals(list.get(i).getMaDonHang()) &&donHang.getTrangThai().equals("successful delivery") ){
                             list.set(i, donHang);
-
+                            break;
                         }
 
                 }

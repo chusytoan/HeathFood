@@ -68,6 +68,15 @@
         android:text="Sign up"
         android:id="@+id/btn_dangky"
         android:textColor="@color/white" />
+<!--    <Button-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:backgroundTint="#181818"-->
+<!--        android:text="Change password"-->
+<!--        android:onClick="DoiMatKhau"-->
+<!--        android:textColor="@color/white" />-->
 
     <TextView
         android:layout_width="match_parent"
@@ -77,5 +86,6 @@
         android:id="@+id/forgot"
         android:layout_marginTop="20dp"
         android:layout_marginStart="40dp"
+        android:textColor="#03A9F4"
         android:layout_marginEnd="40dp"/>
 </LinearLayout>

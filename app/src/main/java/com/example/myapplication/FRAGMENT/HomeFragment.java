@@ -47,14 +47,15 @@ public class HomeFragment extends Fragment {
 
     private String TAG = "homefragment";
 
-    SearchView searchView;
+
 
     RecyclerView recyclerView_sanpham,rcv_sanphams;
     SanPhamNgangAdapter sanPhamNgangAdapter;
     List<Sanpham> sanPhamList;
     SanPhamHomeAdapter sanPhamHomeAdapter;
     List<Sanpham> sanphamHome;
-    List<Sanpham> spTop10;
+    List<Sanpham> spTop10homes;
+
     private ViewPager2 mViewpager2;
     private CircleIndicator3 mCircleIndicator3;
     private List<Photo> mlistPhoto;
@@ -69,7 +70,7 @@ public class HomeFragment extends Fragment {
 
 
     View view;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,15 +97,13 @@ public class HomeFragment extends Fragment {
         sanPhamList = new ArrayList<>();
         loaiSanPhams = new ArrayList<>();
         sanphamHome = new ArrayList<>();
-        spTop10=new ArrayList<>();
-
-
+        spTop10homes = new ArrayList<>();
         recyclerView_loaisp.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         loaiSanPhamAdapter = new LoaiSanPhamAdapter(getContext(), loaiSanPhams);
         recyclerView_loaisp.setAdapter(loaiSanPhamAdapter);
 
         recyclerView_sanpham.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        sanPhamNgangAdapter = new SanPhamNgangAdapter(getContext(), spTop10);
+        sanPhamNgangAdapter = new SanPhamNgangAdapter(getContext(), spTop10homes);
         recyclerView_sanpham.setAdapter(sanPhamNgangAdapter);
 
         //set adapter sanphamhome
@@ -135,7 +134,6 @@ public class HomeFragment extends Fragment {
 
     }
 
-
     public void readDataSanPhamFromDB() {
         DatabaseReference SanPhams = FirebaseDatabase.getInstance().getReference("sanphams");
         SanPhams.addChildEventListener(new ChildEventListener() {
@@ -145,7 +143,7 @@ public class HomeFragment extends Fragment {
                     return;
 
                 Sanpham sp = snapshot.getValue(Sanpham.class);
-                Log.d(TAG, "onChildAdded: " + sp.getName());
+                //Log.d(TAG, "onChildAdded: " + sp.getName());
                 if (sp != null) {
                     sanPhamList.add(sp);
                     sanPhamNgangAdapter.notifyDataSetChanged();
@@ -153,25 +151,21 @@ public class HomeFragment extends Fragment {
                 Collections.sort(sanPhamList, new Comparator<Sanpham>() {
                     @Override
                     public int compare(Sanpham sanpham, Sanpham t1) {
-                        return sanpham.getFavorite() > t1.getFavorite() ? -1 : 1;
+                        return sanpham.getFavorite() > t1.getFavorite() ?  -1 : 1;
                     }
                 });
-                spTop10.clear();
-                for( int i = 0 ; i < sanPhamList.size();i++){
-                    if(spTop10.size() < 10){
-                        spTop10.add(sanPhamList.get(i));
-                        sanPhamNgangAdapter.notifyDataSetChanged();
+                spTop10homes.clear();
+                for(int i = 0; i < sanPhamList.size(); i ++){
+                    if(spTop10homes.size() < 10){
+                        spTop10homes.add(sanPhamList.get(i));
                     }
                 }
+
+
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Sanpham sanpham = snapshot.getValue(Sanpham.class);
                 if (sanpham == null)
                     return;
@@ -182,6 +176,46 @@ public class HomeFragment extends Fragment {
                     }
                 }
                 sanPhamNgangAdapter.notifyDataSetChanged();
+
+                Collections.sort(sanPhamList, new Comparator<Sanpham>() {
+                    @Override
+                    public int compare(Sanpham sanpham, Sanpham t1) {
+                        return sanpham.getFavorite() > t1.getFavorite() ?  -1 : 1;
+                    }
+                });
+                spTop10homes.clear();
+                for(int i = 0; i < sanPhamList.size(); i ++){
+                    if(spTop10homes.size() < 10){
+                        spTop10homes.add(sanPhamList.get(i));
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Sanpham sanpham = snapshot.getValue(Sanpham.class);
+                if (sanpham == null)
+                    return;
+                for (int i = 0; i < sanPhamList.size(); i++) {
+                    if (sanpham.getMasp().equals(sanPhamList.get(i).getMasp())) {
+                        sanPhamList.remove(sanPhamList.get(i));
+                        break;
+                    }
+                }
+                sanPhamNgangAdapter.notifyDataSetChanged();
+
+                Collections.sort(sanPhamList, new Comparator<Sanpham>() {
+                    @Override
+                    public int compare(Sanpham sanpham, Sanpham t1) {
+                        return sanpham.getFavorite() > t1.getFavorite() ?  -1 : 1;
+                    }
+                });
+                spTop10homes.clear();
+                for(int i = 0; i < sanPhamList.size(); i ++){
+                    if(spTop10homes.size() < 10){
+                        spTop10homes.add(sanPhamList.get(i));
+                    }
+                }
             }
 
             @Override
@@ -203,34 +237,40 @@ public class HomeFragment extends Fragment {
                 if (snapshot == null)
                     return;
 
-
                 Sanpham sp = snapshot.getValue(Sanpham.class);
-                Log.d(TAG, "onChildAdded: " + sp.getName());
-                if (sp != null) {
 
-                    if (sanphamHome.size()<20){
+                if (sp != null) {
                     sanphamHome.add(sp);
                     sanPhamHomeAdapter.notifyDataSetChanged();
-                } }
+                }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                Sanpham sanpham = snapshot.getValue(Sanpham.class);
+                if (sanpham == null)
+                    return;
+                for (int i = 0; i < 20; i++) {
+                    if (sanpham.getMasp().equals(sanphamHome.get(i).getMasp())) {
+                        sanphamHome.set(i, sanpham);
+                        break;
+                    }
+                }
+                sanPhamNgangAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//                Sanpham sanpham = snapshot.getValue(Sanpham.class);
-//                if (sanpham == null)
-//                    return;
-//                for (int i = 0; i < 20; i++) {
-//                    if (sanpham.getMasp().equals(sanphamHome.get(i).getMasp())) {
-//                        sanphamHome.set(i, sanpham);
-//                        break;
-//                    }
-//                }
-//                sanPhamNgangAdapter.notifyDataSetChanged();
+                Sanpham sanpham = snapshot.getValue(Sanpham.class);
+                if (sanpham == null)
+                    return;
+                for (int i = 0; i < 20; i++) {
+                    if (sanpham.getMasp().equals(sanphamHome.get(i).getMasp())) {
+                        sanphamHome.remove(sanphamHome.get(i));
+                        break;
+                    }
+                }
+                sanPhamNgangAdapter.notifyDataSetChanged();
             }
 
             @Override

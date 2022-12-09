@@ -116,8 +116,6 @@ public class ProfileSetting extends AppCompatActivity {
                                 .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                                 .setActivity(ProfileSetting.this)                 // Activity (for callback binding)
                                 .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-
                                     @Override
                                     public void onVerificationCompleted(PhoneAuthCredential credential) {
 
@@ -197,7 +195,13 @@ public class ProfileSetting extends AppCompatActivity {
         Map<String, Object> map = new HashMap<>();
         map.put("diachi", ed_address.getText().toString());
         map.put("sdt", ed_phone.getText().toString());
-        map.put("imgURL", muri);
+        if(muri==null){
+            Log.d(TAG, "updateProfile: "+muri);
+            map.put("imgURL", "default");
+        }else{
+            map.put("imgURL", muri);
+        }
+
         referencekhs.child(userCurrent.getUid()).updateChildren(map);
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {

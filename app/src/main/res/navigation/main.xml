@@ -10,31 +10,9 @@
         android:label="Healthy Food"
         tools:layout="@layout/fragment_home"/>
 
-    <fragment
-        android:id="@+id/id_editprofile"
-        android:name="com.example.myapplication.FRAGMENT.FragmentProfile"
-        android:label="SanPhamFragment"
-        tools:layout="@layout/fragment_profile"/>
-    <fragment
-        android:id="@+id/id_add_donhang"
-        android:name="com.example.myapplication.FRAGMENT.GioHangFragment"
-        android:label="SanPhamFragment"
-        tools:layout="@layout/fragment_gio_hang"/>
-    <activity
-        android:id="@+id/id_dangxuat"
-        android:name="com.example.myapplication.LoginActivity"
-        android:label="LoginActivity" />
-
-    <activity
-        android:id="@+id/id_dangnhap"
-        android:name="com.example.myapplication.LoginActivity"
-        android:label="LoginActivity" />
     <fragment android:id="@+id/id_doimatkhau"
         android:name="com.example.myapplication.FRAGMENT.DoiMatKhauFragment"
         tools:layout="@layout/fragment_doi_mat_khau"
         android:label="Doi Mat Khau"/>
-<!--    <fragment-->
-<!--        android:id="@+id/id_slider"-->
-<!--        android:name="com.example.myapplication.FRAGMENT.AddSlider"-->
-<!--        android:label="AddSlider" />-->
+
 </navigation>

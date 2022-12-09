@@ -52,8 +52,7 @@ import java.util.List;
 public class ActivityGioHang extends AppCompatActivity {
 
 
-
-    String TAG  = "GIOHANG";
+    String TAG = "GIOHANG";
     private View view;
     TextView tv_tongTien, tv_phone;
     ImageView img_onBack;
@@ -61,13 +60,14 @@ public class ActivityGioHang extends AppCompatActivity {
     RecyclerView recyclerView;
     GioHangAdapter gioHangAdapter;
     List<GioHang> list;
-    LinearLayout btn_start_buy,layout_buy;
+    LinearLayout btn_start_buy, layout_buy;
     ProgressDialog progressDialog;
     //spinner kh
     Spinner spin_Adress;
     SpinnerAddressAdapter addressAdapter;
     List<KhachHang> khachHangs;
     DatabaseReference reference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,23 +83,23 @@ public class ActivityGioHang extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         reference = FirebaseDatabase.getInstance().getReference("GioHangs");
         FirebaseUser userCurrent = FirebaseAuth.getInstance().getCurrentUser();
-        if(userCurrent != null){
+        if (userCurrent != null) {
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     list.clear();
                     double tongTien = 0;
-                    for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-                        GioHang gh =dataSnapshot.getValue(GioHang.class);
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        GioHang gh = dataSnapshot.getValue(GioHang.class);
 
-                        if(gh.getIdUser().equals(userCurrent.getUid())){
+                        if (gh.getIdUser().equals(userCurrent.getUid())) {
                             list.add(gh);
 
-                            tongTien += gh.getDonGia()*gh.getSoLuong();
+                            tongTien += gh.getDonGia() * gh.getSoLuong();
                         }
 
                     }
-                    tv_tongTien.setText(tongTien+"");
+                    tv_tongTien.setText(tongTien + "");
                     gioHangAdapter = new GioHangAdapter(ActivityGioHang.this, list);
                     recyclerView.setAdapter(gioHangAdapter);
                 }
@@ -112,45 +112,80 @@ public class ActivityGioHang extends AppCompatActivity {
         }
 
 
-
         DatabaseReference referencekhs = FirebaseDatabase.getInstance().getReference("KhachHangs");
-        referencekhs.child(userCurrent.getUid()).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+        referencekhs.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                    }
+                KhachHang kh = snapshot.getValue(KhachHang.class);
+                if(kh==null)
+                    return;
+                if(khachHangs!=null)
+                {
+                    khachHangs.clear();
+                }
+                if(userCurrent == null){
+                    return;
+                }else{
+                    if(kh.getId().equals(userCurrent.getUid())){
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        KhachHang kh = snapshot.getValue(KhachHang.class);
                         khachHangs.add(kh);
-                        addressAdapter = new SpinnerAddressAdapter(khachHangs);
-                        spin_Adress.setAdapter(addressAdapter);
+                        addressAdapter.notifyDataSetChanged();
                         tv_phone.setText(kh.getSdt());
                     }
+                }
 
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                KhachHang kh = snapshot.getValue(KhachHang.class);
+
+                if(kh==null)
+                    return;
+                if(userCurrent==null)
+                    return;
+                else{
+                    if(kh.getId().equals(userCurrent.getUid())){
+                        for(int i = 0; i < khachHangs.size(); i ++){
+                            if(kh.getId().equals(khachHangs.get(i).getId())){
+                                khachHangs.set(i, kh);
+                                break;
+                            }
+                        }
+                        addressAdapter.notifyDataSetChanged();
                     }
+                }
 
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                tv_phone.setText(kh.getSdt());
+            }
 
-                    }
-                });
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
-        if(userCurrent!=null){
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        if (userCurrent != null) {
             referencekhs.child(userCurrent.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if(task.isSuccessful()){
-                        Log.d(TAG, "onComplete: " + task.getResult().getValue());
+                    if (task.isSuccessful()) {
+
                         KhachHang kh = task.getResult().getValue(KhachHang.class);
                         khachHangs.add(kh);
                         addressAdapter = new SpinnerAddressAdapter(khachHangs);
@@ -166,33 +201,33 @@ public class ActivityGioHang extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(userCurrent==null){
+                if (userCurrent == null) {
                     finish();
                     startActivity(new Intent(ActivityGioHang.this, LoginActivity.class));
                     return;
                 }
                 progressDialog.show();
-                    DatabaseReference  referencedh =  FirebaseDatabase.getInstance().getReference("DonHangs");
+                DatabaseReference referencedh = FirebaseDatabase.getInstance().getReference("DonHangs");
 
                 DonHang dh = new DonHang();
                 String maDH = String.valueOf(System.currentTimeMillis());
                 dh.setMaDonHang(maDH);
                 dh.setTongTien(Double.parseDouble(tv_tongTien.getText().toString()));
                 KhachHang kh = (KhachHang) spin_Adress.getSelectedItem();
-                if(kh==null){
+                if (kh == null) {
                     progressDialog.dismiss();
                     Toast.makeText(ActivityGioHang.this, "vui long them sdt va dia chi", Toast.LENGTH_SHORT).show();
 
                     return;
                 }
-                if(kh.getDiachi().equals("")){
+                if (kh.getDiachi().equals("")) {
                     progressDialog.dismiss();
-                    startActivity(new Intent(ActivityGioHang.this,ProfileSetting.class));
+                    startActivity(new Intent(ActivityGioHang.this, ProfileSetting.class));
                     Toast.makeText(ActivityGioHang.this, "Vui long them dia chi", Toast.LENGTH_SHORT).show();
 
                     return;
                 }
-                if(kh.getSdt().equals("")){
+                if (kh.getSdt().equals("")) {
                     progressDialog.dismiss();
                     Toast.makeText(ActivityGioHang.this, "Vui long them sdt", Toast.LENGTH_SHORT).show();
                     return;
@@ -208,7 +243,7 @@ public class ActivityGioHang extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Token token = snapshot.getValue(Token.class);
                         FCMSend.pushNotification(ActivityGioHang.this, token.getToken(), "Thông báo đơn hàng mới", "Bạn vừa nhận 1 đơn hàng mới:"
-                                +"\n" + kh.getName() +"\n"+ kh.getSdt() +"\n" + kh.getDiachi());
+                                + "\n" + kh.getName() + "\n" + kh.getSdt() + "\n" + kh.getDiachi());
                     }
 
                     @Override
@@ -221,7 +256,7 @@ public class ActivityGioHang extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         progressDialog.dismiss();
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(ActivityGioHang.this, "Gui don hang thanh cong", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -232,13 +267,10 @@ public class ActivityGioHang extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
-
-    private void anhXa(){
+    private void anhXa() {
         recyclerView = findViewById(R.id.rcv_gioHang);
         list = new ArrayList<>();
         tv_tongTien = findViewById(R.id.tv_tong_tien);
@@ -250,6 +282,9 @@ public class ActivityGioHang extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         khachHangs = new ArrayList<>();
+
+        addressAdapter = new SpinnerAddressAdapter(khachHangs);
+        spin_Adress.setAdapter(addressAdapter);
     }
 
 }

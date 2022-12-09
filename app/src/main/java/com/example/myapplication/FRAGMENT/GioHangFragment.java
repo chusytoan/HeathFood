@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +43,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -115,15 +117,80 @@ List<KhachHang> khachHangs;
             });
         }
 
-        FirebaseUser userCurrent = FirebaseAuth.getInstance().getCurrentUser();
-
         DatabaseReference referencekhs = FirebaseDatabase.getInstance().getReference("KhachHangs");
-        if(userCurrent!=null){
-            referencekhs.child(userCurrent.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        referencekhs.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                KhachHang kh = snapshot.getValue(KhachHang.class);
+                if(kh==null)
+                    return;
+                if(khachHangs!=null)
+                {
+                    khachHangs.clear();
+                }
+                if(user == null){
+                    return;
+                }else{
+                    if(kh.getId().equals(user.getUid())){
+
+                        khachHangs.add(kh);
+                        addressAdapter.notifyDataSetChanged();
+                        tv_phone.setText(kh.getSdt());
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                KhachHang kh = snapshot.getValue(KhachHang.class);
+
+                if(kh==null)
+                    return;
+                if(user==null)
+                    return;
+                else{
+                    if(kh.getId().equals(user.getUid())){
+                        for(int i = 0; i < khachHangs.size(); i ++){
+                            if(kh.getId().equals(khachHangs.get(i).getId())){
+                                khachHangs.set(i, kh);
+                                break;
+                            }
+                        }
+                        addressAdapter.notifyDataSetChanged();
+                    }
+                }
+
+
+
+                tv_phone.setText(kh.getSdt());
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        if(user!=null){
+            referencekhs.child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if(task.isSuccessful()){
-                        Log.d(TAG, "onComplete: " + task.getResult().getValue());
+                        //Log.d(TAG, "onComplete: " + task.getResult().getValue());
                         KhachHang kh = task.getResult().getValue(KhachHang.class);
                         khachHangs.add(kh);
                         addressAdapter = new SpinnerAddressAdapter(khachHangs);
@@ -140,7 +207,7 @@ List<KhachHang> khachHangs;
             public void onClick(View view) {
 
 
-                if(userCurrent==null){
+                if(user==null){
 
                     startActivity(new Intent(getContext(), LoginActivity.class));
                     return;
@@ -195,9 +262,6 @@ List<KhachHang> khachHangs;
 
                     }
                 });
-
-
-
                 referencedh.child(maDH).setValue(dh).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -219,10 +283,12 @@ List<KhachHang> khachHangs;
         tv_tongTien = view.findViewById(R.id.tv_tong_tien);
         btn_mua = view.findViewById(R.id.btn_dat_hang);
        spin_Adress = view.findViewById(R.id.spinner_diachi);
-    //    img_onBack = view.findViewById(R.id.img_onBack);
         tv_phone = view.findViewById(R.id.tv_sdt);
     progressDialog = new ProgressDialog(getContext());
         khachHangs = new ArrayList<>();
+
+        addressAdapter = new SpinnerAddressAdapter(khachHangs);
+        spin_Adress.setAdapter(addressAdapter);
     }
 
 }
