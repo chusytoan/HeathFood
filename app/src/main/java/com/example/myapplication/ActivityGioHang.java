@@ -45,6 +45,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -214,23 +216,28 @@ public class ActivityGioHang extends AppCompatActivity {
                 dh.setMaDonHang(maDH);
                 dh.setTongTien(Double.parseDouble(tv_tongTien.getText().toString()));
                 KhachHang kh = (KhachHang) spin_Adress.getSelectedItem();
-                if (kh == null) {
+                if(kh==null){
                     progressDialog.dismiss();
                     Toast.makeText(ActivityGioHang.this, "vui long them sdt va dia chi", Toast.LENGTH_SHORT).show();
-
                     return;
                 }
-                if (kh.getDiachi().equals("")) {
+                if(kh.getDiachi().equals("")){
                     progressDialog.dismiss();
-                    startActivity(new Intent(ActivityGioHang.this, ProfileSetting.class));
                     Toast.makeText(ActivityGioHang.this, "Vui long them dia chi", Toast.LENGTH_SHORT).show();
-
                     return;
                 }
-                if (kh.getSdt().equals("")) {
+                if(kh.getSdt().equals("")){
                     progressDialog.dismiss();
                     Toast.makeText(ActivityGioHang.this, "Vui long them sdt", Toast.LENGTH_SHORT).show();
                     return;
+                }
+                String timeCureent = "";
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                    LocalDateTime now = LocalDateTime.now();
+                    timeCureent = dtf.format(now);
+                    dh.setNgayMuaHang(timeCureent);
                 }
                 dh.setTrangThai("wait for confirmation");
                 dh.setName(kh.getName());
